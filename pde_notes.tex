@@ -1,0 +1,1667 @@
+\documentclass[a4j]{ltjsarticle}
+\usepackage{bookmark}
+\usepackage{color}
+
+% 数式
+\usepackage{luatexja}
+\usepackage{amsmath,amsfonts,amssymb,ascmac}
+\usepackage{bm}
+\usepackage{url}
+\usepackage{xurl}
+\usepackage{mathtools}
+\usepackage[shortlabels]{enumitem}
+\usepackage{mathrsfs}
+\usepackage{tikz}
+\usepackage{tipa}
+\usetikzlibrary{cd}
+\setcounter{tocdepth}{2}
+\newcommand{\Rset}{\mathbb{R}}
+\newcommand{\Nset}{\mathbb{N}}
+\newcommand{\Zset}{\mathbb{Z}}
+\newcommand{\Qset}{\mathbb{Q}}
+\newcommand{\Cset}{\mathbb{C}}
+\newcommand{\opensub}{\underset{\text{open}}{\subset}}
+\newcommand{\closedsub}{\underset{\text{closed}}{\subset}}
+\newcommand{\transpose}[1]{\prescript{t}{}{#1}}
+\newcommand{\Om}{\Omega}
+\newcommand{\pOm}{\partial\Omega}
+\newcommand{\Ombar}{\overline{\Omega}}
+\newcommand{\ssubset}{\subset\subset}
+\newcommand{\Lm}{\mathcal{L}}
+\newcommand{\Hm}{\mathcal{H}}
+\newcommand{\inn}{\quad\text{in}\ }
+\newcommand{\on}{\quad \text{on}\ }
+\newcommand{\loc}{\text{loc}}
+\newcommand{\pvert}[1]{\frac{\partial #1}{\partial \nu}}
+\newcommand{\snorm}[1]{\left[#1\right]}
+\DeclareMathOperator{\diam}{\mathrm{diam}}
+\DeclareMathOperator{\dist}{\mathrm{dist}}
+\DeclareMathOperator{\supp}{\mathrm{supp}}
+\DeclareMathOperator*{\osc}{\mathrm{osc}}
+\mathtoolsset{showonlyrefs=true}
+\numberwithin{equation}{section}
+\usepackage{physics}
+% 画像
+\usepackage{graphicx}
+
+% 定理環境
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{thm}{定理}[section]
+\newtheorem{cor}[thm]{系}
+\newtheorem{dfn}[thm]{定義}
+\newtheorem{prop}[thm]{命題}
+\newtheorem{lem}[thm]{補題}
+\newtheorem{rmk}[thm]{注意}
+\newtheorem{eg}[thm]{例}
+
+\begin{document}
+
+\title{楕円型偏微分方程式の正則性理論}
+\author{ウ}
+\date{\today}
+\maketitle
+\begin{abstract}
+    このPDFは，筆者がB4セミナーで発表した(もしくは発表しきれなかった)内容をまとめたものである．全体の流れはセミナーの文献\cite{fr}に概ね依っているが，他の文献も随所で参照している．
+\end{abstract}
+\tableofcontents
+\newpage
+\begin{thebibliography}{99}
+    \bibitem[Bre]{bre}
+    H. Brezis, 
+    \newblock {\em Functional Analysis, Sobolev Spaces and Partial Differential Equations},
+    \newblock Universitext, Springer, 2011.
+
+    \bibitem[FR]{fr}
+    X. Fernàndez-Real and X. Ros-Oton, 
+    \newblock {\em Regularity Theory for Elliptic PDE}\footnote{\url{https://arxiv.org/abs/2301.01564}},
+    \newblock arXiv:2301.01564, 2023.
+
+    \bibitem[GT]{gt}
+    D. Gilbarg and N. S. Trudinger, 
+    \newblock {\em Elliptic Partial Differential Equations of Second Order},
+    \newblock Classics in Mathematics, Springer Berlin, 2001.
+
+    \bibitem[Mped]{mped}
+    Mathpedia，「Hölder空間の基本事項」．\url{https://old.math.jp/wiki/H%C3%B6lder%E7%A9%BA%E9%96%93%E3%81%AE%E5%9F%BA%E6%9C%AC%E4%BA%8B%E9%A0%85}
+\end{thebibliography}
+\newpage
+\section*{記号}
+\begin{itemize}
+    \item $\Nset=\qty{1,2,\ldots}$,
+    \item $\Nset_{0}=\Nset\cup\qty{0}$,
+    \item $\Lm^n \colon \text{$\Rset^n$上のLebesgue測度}$,    
+    \item $\Hm^s  \colon \text{$\Rset^n$上の$s$次元Hausdorff測度}$,
+    \item $B_R(x_0)\coloneq \qty{x\in\Rset^n\mid \abs{x-x_0}<R}$,
+    \item $\omega_n\coloneq \Lm^n(B_1(0))=\pi^{n/2}/\varGamma(n/2)$．このとき$\Hm^{n-1}(\partial B_1(0))=n\omega_n$,
+    \item $\Omega'\ssubset\Omega \,:\Longleftrightarrow \overline{\Omega'}$がコンパクトかつ$\overline{\Omega'}\subset \Omega$,
+    \item $D_i=\frac{\partial}{\partial x_i},\ D_{ij}=\frac{\partial^2}{\partial x_i\partial x_j}$  etc.,
+    \item 一般に，多重添字$\gamma=(i_1,\ldots,i_n)\in \Nset_0^n$に対して$\abs{\gamma}=i_1+\cdots+i_n$を$\gamma$の長さといい，
+    \begin{equation}
+        D^\gamma=D_1^{i_1}\cdots D_n^{i_n}=\frac{\partial^{\abs{\gamma}}}{\partial x_1^{i_1}\cdots \partial x_n^{i_n}}
+    \end{equation}
+    と表記する．
+    \item Laplacian：$\Delta=\sum_{i=1}^n D_{ii}$,
+    \item $Du=\transpose{(D_1u,\ldots,D_nu)},\ D^2u=\qty(D_{ij}u)_{i,j}$
+    \item $x\leq C_{\alpha,\beta,\ldots} y$：「$x$は$y$で，$\alpha,\beta,\ldots$にのみ依存する定数を用いて上から抑えられる」．定数が何に依存するかはしばしば省略される．
+\end{itemize}
+\newpage
+\section{Hölder空間}
+本節では，おおよそ\cite{mped}，\cite{gt}に従ってHölder空間の基本事項について述べる．
+\subsection{定義}
+以下，とくに断らない限り$\Omega\subset \Rset^n$は有界領域であると仮定する．
+\begin{dfn}[Hölder (セミ)ノルム]
+    $u\colon \Om\to \Rset$に対して，
+    \begin{align}
+        \abs{u}_{0;\Omega}=[u]_{0;\Om}&\coloneq \sup_{x\in\Om}\abs{u(x)},\\
+        [u]_{0,\alpha;\Om}&\coloneq \sup_{x\neq y\in\Om}\frac{\abs{u(x)-u(y)}}{\abs{x-y}^\alpha} \quad (\alpha\in(0,1])
+    \end{align}
+    としてHölderセミノルムを定める．また
+    \begin{equation}
+        \abs{u}_{0,\alpha;\Om}\coloneq \abs{u}_{0;\Om}+[u]_{0,\alpha;\Om}
+    \end{equation}
+    とHölderノルムを定義する．Hölder空間
+    \begin{equation}
+        C^{0,\alpha}(\Ombar)\coloneq \qty{u\in C(\Ombar)\mid [u]_{0,\alpha;\Om}<\infty} 
+    \end{equation}
+    の元$u\in C^{0,\alpha}(\Ombar)$を$\alpha$-Hölder連続関数と呼ぶ．$1$-連続関数はLipschitz連続関数のことである．
+
+    また，$u\in C^k(\Ombar)\ (k\in\Nset)$に対して
+    \begin{align}
+        [u]_{k,0;\Om}&=[u]_{k;\Om}\coloneq \sup_{\abs{\gamma}=k}[D^\gamma u]_{0;\Om}\\
+        \abs{u}_{k,0;\Om}&=\abs{u}_{k;\Om}\coloneq \sum_{j=0}^k [u]_{j;\Om},\\
+        [u]_{k,\alpha;\Om}&\coloneq \sup_{\abs{\gamma}=k}[D^\gamma u]_{0,\alpha;\Om},\\
+        \abs{u}_{k,\alpha;\Om}&\coloneq \abs{u}_{k;\Om}+[u]_{k,\alpha;\Om}\quad (\alpha\in(0,1])
+    \end{align}
+    と定義し，
+    \begin{equation}
+        C^{k,\alpha}(\Ombar)\coloneq\qty{u\in C^k(\Ombar)\mid [u]_{k,\alpha;\Om}<\infty}
+    \end{equation}
+    と定義する．
+
+    最後に，局所Hölder連続関数の空間を
+    \begin{equation}
+        C^{k,\alpha}(\Om)\coloneq \qty{u\colon \Om\to\Rset\mid \forall \Om'\ssubset \Om;\ u\in C^{k,\alpha}(\overline{\Om'})}
+    \end{equation}
+\end{dfn}
+$C^{k,\alpha}(\Ombar)$に，``無次元ノルム''と呼ばれる以下の$\abs{\bullet}_{k,\alpha;\Om}$と同値なノルムを定義しておくと，ノルム評価の記述が簡潔になって便利なことがある．
+\begin{dfn}[無次元ノルム]
+    $R=\diam\Om$として，次のように無次元ノルムを定義する．
+    \begin{align}
+        [u]_{k,0;\Om}'=[u]_{k;\Om}'&\coloneq R^k[u]_{k;\Om},\\
+        [u]_{k,\alpha;\Om}'&\coloneq R^{k+\alpha}[u]_{k,\alpha;\Om}\quad (\alpha\in(0,1]),\\
+        \abs{u}_{k,0;\Om}'=\abs{u}_{k;\Om}'&\coloneq \sum_{j=0}^k [u]_{j;\Om}',\\
+        \abs{u}_{k,\alpha;\Om}'&\coloneq \abs{u}_{k;\Om}'+[u]_{k,\alpha;\Om}'\quad (\alpha\in(0,1])
+    \end{align}
+\end{dfn}
+\subsection{Hölder (セミ)ノルムの基本的な性質}
+\begin{lem}[Hölderセミノルムの下半連続性]\label{lem:holder_sn_lsc}
+    $\alpha\in[0,1],\ \qty{u_m}_{m\in\Nset}\subset C^{0,\alpha}(\Ombar)$が$u\colon \Om\to \Rset$に各点収束しているとする．このとき
+    \begin{equation}
+        [u]_{0,\alpha;\Om}\leq \liminf_{m\to\infty}[u_m]_{0,\alpha;\Om}
+    \end{equation}
+    が成り立つ．とくに$\sup_{m\in\Nset}[u_m]_{0,\alpha;\Om}<\infty$ならば$[u]_{0,\alpha;\Om}<\infty$である．
+\end{lem}
+\begin{proof}
+    $\alpha=0$の場合：$x\in\Om$に対して
+    \begin{equation}
+        \abs{u_m(x)}\leq [u_m]_{0;\Om} \quad (m\in\Nset)
+    \end{equation}
+    が成り立っている．両辺の$\liminf_{m}$を取って
+    \begin{equation}
+        \abs{u(x)}\leq \liminf_{m\to\infty}[u_m]_{0;\Om} 
+    \end{equation}
+    となり，$x\in\Om$は任意なので$[u]_{0;\Om}\leq \liminf_{m}[u_m]_{0;\Om}$を得る．
+
+    $\alpha>0$の場合：$x,y\in\Om$に対して
+    \begin{equation}
+        \abs{u_m(x)-u_m(y)}\leq [u_m]_{0,\alpha;\Om}\abs{x-y}^\alpha \quad (m\in\Nset) 
+    \end{equation}
+    が成り立っている．両辺の$\liminf_m$を取って同様にやればよい．
+\end{proof}
+\begin{thm}
+    ノルム空間$(C^{k,\alpha}(\Ombar),\,\abs{\bullet}_{k,\alpha;\Om})$はBanach空間である．
+\end{thm}
+\begin{proof}
+    \paragraph*{\#1}$k=0,\ \alpha=0$の場合．
+
+    $\qty{u_m}_{m}\subset C(\Ombar)$をCauchy列とする．
+    \begin{equation}
+        \lim_{m_0\to\infty}\sup_{m,l\geq m_0}\sup_{x\in\Om}\abs{u_l(x)-u_m(x)}=0
+    \end{equation}
+    なので，とくに各$x\in\Om$で$\qty{u_m(x)}_m$は$\Rset$のCauchy列である．よって，$\qty{u_m}_m$はある$u\colon \Om\to \Rset$に各点収束する．
+
+    $u_m\to u\ \text{uniformly in $\Om$}$であることを示そう．$\varepsilon>0$とすると，$m_0\in\Nset$があり，任意の$m,l\geq m_0$に対して
+    \begin{equation}
+        \abs{u_m(x)-u_l(x)}\leq \varepsilon\quad (\forall x\in\Om)
+    \end{equation}
+    が成り立つ．$l\to\infty$として
+    \begin{equation}
+        \abs{u_m(x)-u(x)}\leq \varepsilon\quad (\forall x\in\Om )
+    \end{equation}
+    を得る．よって$u_m$は$u$に$\Om$上一様収束し，よって$u\in C(\Ombar)$も従う．
+
+    \paragraph*{\#2}$k>0,\ \alpha=0$の場合．
+
+    $\qty{u_m}_m\subset C^k(\Ombar)$をCauchy列とする．各$\abs{\gamma}\leq k$に対して$\qty{D^\gamma u_m}_{m}$は$C(\Ombar)$のCauchy列である．よって，\#1の場合より$D^\gamma u_m$はある$v_\gamma\in C(\Ombar)$に$\Om$上一様収束する．
+
+    $\abs{\gamma}\leq k-1,\ i\in\qty{1,\ldots,n}$に対して$D_iv_\gamma=v_{\gamma+e_i}$であることを示そう．今，任意の$m\in\Nset,\ x\in\Om$と十分小さな$t\in\Rset$に対して
+    \begin{equation}
+        D^\gamma u_m(x+te_i)-D^\gamma u_m(x)=\int_0^1 \frac{d}{dt}u_m(x+ste_i)\,ds=t\int_{0}^1 D_iD^\gamma u_m(x+ste_i)\,ds
+    \end{equation}
+    が成り立っており，一様収束性より$m\to\infty$とすると
+    \begin{equation}
+        \frac{v_{\gamma}(x+te_i)-v_\gamma(x)}{t}=\int_0^1 v_{\gamma+e_i}(x+ste_i)\,ds 
+    \end{equation}
+    を得る．両辺で$t\to0$とすれば$D_iv_\gamma=v_{\gamma+e_i}$が得られる．
+
+    したがって，$u\coloneq v_0$とおくと$u\in C^k(\Ombar)$であり，$D^\gamma u=v_\gamma$である．よって
+    \begin{equation}
+        \abs{u-u_m}_{k;\Om}\leq \sum_{j=0}^k\sup_{\abs{\gamma}=j}\abs{D^\gamma u_m-v_\gamma}_{0;\Om}\to0\quad (m\to\infty)
+    \end{equation}
+    を得る．
+
+    \paragraph*{\#3}$\alpha\in (0,1]$の場合．
+
+    $\qty{u_m}_m\subset C^{k,\alpha}(\Ombar)$をCauchy列とする．$\qty{u_m}_m$は$C^k(\Ombar)$のCauchy列であるから，これまでの結果からある$u\in C^k(\Ombar)$に$C^k$-収束する．
+
+    $u\in C^{k,\alpha}(\Ombar)$かつ$\abs{u-u_m}_{k,\alpha;\Om}\to0$を示そう．$\abs{\gamma}=k$に対して各点収束の意味で$D^\gamma u_m\to D^\gamma u$で，
+    \begin{equation}
+        \sup_{m}[D^\gamma u_m]_{0,\alpha;\Om}\leq \sup_{m}\abs{u}_{k,\alpha;\Om}<\infty 
+    \end{equation}
+    であるから，補題\ref{lem:holder_sn_lsc}より$[D^\gamma u]_{0,\alpha;\Om}<\infty$である．したがって$u\in C^{k,\alpha}(\Ombar)$である．
+
+    $\varepsilon>0$とする．$m_0\in\Nset$があり，任意の$m,l\geq m_0,\ x,y\in\Om$に対して
+    \begin{equation}
+        \abs{D^\gamma u_m(x)-D^\gamma u_m(y)-D^\gamma u_l(x)+D^\gamma u_l(y)}\leq \varepsilon\abs{x-y}^\alpha 
+    \end{equation}
+    となる．$l\to\infty$として$[D^\gamma u_m-D^\gamma u]_{0,\alpha;\Om}\leq \varepsilon$を得る．
+\end{proof}
+\subsection{\texorpdfstring{$C^{k,\alpha}$}{TEXT}-領域}
+$\Rset^n_+=\qty{x\in\Rset^n\mid x_n>0},\ \partial\Rset^n_+=\qty{x\in\Rset^n\mid x_n=0}$とおく．
+\begin{dfn}
+    $\Om\subset \Rset^n$を領域，$k\in\Nset_0,\ \alpha\in[0,1]$とする．
+
+    $\Omega$が$C^{k,\alpha}$-領域であるとは，任意の$\xi\in \pOm$に対して$\xi$の近傍$U=U_\xi\subset \Rset^n$と全単射$\psi\colon U\to U'\opensub \Rset^n$があり，次が成り立つことをいう．
+    \begin{itemize}
+        \item $\psi(U\cap \Om)\subset \Rset^n_+$,
+        \item $\psi(U\cap \pOm)\subset \partial\Rset^n_+$,
+        \item $\psi\in C^{k,\alpha}(U),\ \psi^{-1}\in C^{k,\alpha}(U')$.
+    \end{itemize}
+\end{dfn}
+我々はとくに有界$C^{0,1}$-領域(i.e. 有界Lipschitz領域)に興味がある．有界Lipschitz領域は次の幾何的性質を持つ．
+\begin{lem}\label{lem:lip_dom}
+    $\Om$を有界Lipschitz領域とする．このとき次が成り立つ．
+    \begin{enumerate}[(D1)]
+        \item 定数$L\geq 1$が存在して，任意の$x,y\in \Om$に対して$p=\qty{x_i}_{i=0}^N\subset \Om$が存在して次を満たす：
+        \begin{itemize}
+            \item $\forall i\in\qty{0,\ldots,N-1},\ t\in [0,1]$に対して$tx_i+(1-t)x_{i+1}\in \Om$である\footnote{このような$p$を$\Om$内の折れ線という．}．
+            \item $x_0=x,\ x_N=y$．
+            \item $l(p)\coloneq \sum_{i=0}^{N-1}\abs{x_{i+1}-x_i}\leq L\abs{x-y}$．
+        \end{itemize}
+        \item 定数$\rho_0>0$と$\mu\in(0,1)$があり，任意の$x\in \Om$と$\rho\in(0,\rho_0]$に対して$y\in\Om$が存在して$\abs{x-y}\leq \rho$かつ$B_{\mu\rho}(y)\subset \Om$となる．
+    \end{enumerate}
+\end{lem}
+\begin{proof}
+    \textcolor{red}{加筆予定．}
+\end{proof}
+\begin{eg}\label{non-lip_dom}
+    \begin{align}
+        \Om_1&\coloneq \qty{(x_1,x_2)\in\Rset^2\mid \abs{x_1}<1,\ \abs{x_2}<1,\ x_2<\abs{x_1}^{1/2}}, \\
+        \Om_2&\coloneq \qty{(x_1,x_2)\in\Rset^2\mid 0<x_1<1,\ -2<x_2<\sin(1/x_1)}
+    \end{align}
+    とおく．これらはLipschitz領域ではない．$\Om_1$は(D1)を，$\Om_2$は(D2)を満たさない．
+\end{eg}
+\subsection{\texorpdfstring{$C^{k,\alpha}(\Ombar)$}{TEXT}の包含関係}
+\begin{lem}[$C^{0,\alpha}$の包含関係]\label{lem:holder_inclusion}
+    $\Om$を有界領域，$0\leq \beta\leq \alpha\leq 1$とする．このとき$C^{0,\alpha}(\Ombar)\subset C^{0,\beta}(\Ombar)$であり，
+    \begin{equation}
+        [u]_{0,\beta;\Om}'\leq [u]_{0,\alpha;\Om}'\quad (u\in C^{0,\alpha}(\Ombar))
+    \end{equation}
+    が成り立つ．
+\end{lem}
+\begin{proof}
+    $\beta=0$の場合は明らかなので，$\beta>0$とする．$u\in C^{0,\alpha}(\Ombar)$とする．$x,y\in\Om$に対して
+    \begin{align}
+        \abs{u(x)-u(y)}&\leq [u]_{0,\alpha;\Om}\abs{x-y}^\alpha\\
+        &\leq [u]_{0,\alpha;\Om}(\diam \Om)^{\alpha-\beta}\abs{x-y}^\beta
+    \end{align}
+    なので，
+    \begin{equation}
+        [u]_{0,\beta;\Om}\leq R^{\alpha-\beta} [u]_{0,\alpha;\Om}
+    \end{equation}
+    を得る．
+\end{proof}
+\begin{lem}[$C^{1}$と$C^{0,1}$の包含関係]\label{lem:C1v.s.C01}
+    $\Om$を(D1)を満たす領域とする(c.f. 補題\ref{lem:lip_dom}．そこに出てくる定数$L\geq1$を固定する)．このとき$C^{1}(\Ombar)\subset C^{0,1}(\Ombar)$であり，
+    \begin{equation}
+        [u]_{0,1;\Om}\leq L[u]_{1;\Om} \quad(u\in C^1(\Ombar))
+    \end{equation}
+    である．
+\end{lem}
+\begin{proof}
+    $x,y\in\Om$とする．(D1)の折れ線$\qty{x_i}_{i=0}^N$を取ると，
+    \begin{align}
+        \abs{u(x)-u(y)}&\leq \sum_{i=0}^{N-1}\abs{u(x_{i+1})-u(x_i)}\\
+        &\leq \sum_{i=0}^{N-1}\int_{0}^{1}\abs{\frac{d}{dt}u((1-t)x_{i}+tx_{i+1})\,dt}\\
+        &\leq \sum_{i=0}^{N-1}[u]_{1;\Om}\abs{x_{i+1}-x_i}\\
+        &\leq L[u]_{1;\Om}\abs{x-y}
+    \end{align}
+    となることから従う．
+\end{proof}
+\begin{thm}
+    $\Om$を(D1)を満たす領域とする．$k,j\in\Nset_0,\ \alpha,\beta\in[0,1],\ j\leq k,\ j+\beta\leq k+\alpha$とする．このとき$C^{k,\alpha}(\Ombar)\subset C^{j,\beta}(\Ombar)$であり，
+    \begin{equation}
+        \abs{u}_{j,\beta;\Om}'\leq C_{n,k,j,\alpha,\beta,L}\abs{u}_{k,\alpha,\Om}'\quad (u\in C^{k,\alpha}(\Ombar))
+    \end{equation}
+    が成り立つ．
+\end{thm}
+\begin{proof}
+    $k=j=0$の場合と，$(k,j,\alpha,\beta)=(1,0,0,1)$の場合はすでに示されている．$k=j\geq 1$の場合は補題\ref{lem:holder_inclusion}よりすぐ従う．最後に$k>j$の場合を考えるが，このとき$j+1\leq k$なので$C^k\subset C^{j+1}$であり，補題\ref{lem:C1v.s.C01}より$C^{j+1}\subset C^{j,1}$である．さらに$k=j$の場合より$C^{j,1}\subset C^{j,\beta}$なので結局
+    \begin{equation}
+        C^{k,\alpha}\subset C^{k}\subset C^{j+1} \subset C^{j,\beta}
+    \end{equation}
+    より示された．
+\end{proof}
+\subsection{補間不等式}
+\begin{prop}\label{prop:holder_interpolation}
+    $0<\beta<\alpha\leq 1$とするとき，
+    \begin{equation}
+        [u]_{0,\beta;\Om}\leq C_{\alpha,\beta}\abs{u}_{0;\Om}^{1-\frac{\beta}{\alpha}}[u]_{0,\alpha;\Om}^{\frac{\beta}{\alpha}}\quad (u\in C^{0,\alpha}(\Ombar)).
+    \end{equation}
+\end{prop}
+\begin{proof}
+    $u\in C^{0,\alpha}(\Ombar)$とするとき，$x,y\in\Om$に対して
+    \begin{align}
+        \abs{u(x)-u(y)}&\leq (\abs{u(x)}+\abs{u(y)})^{1-\frac{\beta}{\alpha}}\abs{u(x)-u(y)}^{\frac{\alpha}{\beta}}\\
+        &\leq (2\abs{u}_{0;\Om})^{1-\frac{\beta}{\alpha}}\qty([u]_{0,\alpha;\Om}\abs{x-y}^{\alpha})^{\frac{\beta}{\alpha}}\\
+        &\leq 2^{1-\frac{\beta}{\alpha}}\abs{u}_{0;\Om}^{1-\frac{\beta}{\alpha}}[u]_{0,\alpha;\Om}^{\frac{\beta}{\alpha}}\abs{x-y}^{\beta}
+    \end{align}
+    となることから従う．
+\end{proof}
+\begin{lem}\label{lem:of_interpolation}
+    $a,b\geq0,\ 0\leq \beta\leq \alpha\leq 1,\ \alpha\neq0$に対して 
+    \begin{equation}
+        a^{1-\beta}b^{1-\beta}\leq \qty(1-\frac{\beta}{\alpha})a+\frac{\beta}{\alpha}a^{1-\alpha}b^{\alpha}.
+    \end{equation}
+\end{lem}
+\begin{proof}
+    Youngの不等式より
+    \begin{equation}
+        a^{1-\beta}b^{\beta}\leq a^{1-\frac{\beta}{\alpha}}(a^{1-\alpha}b^{1-\alpha})^{\frac{\beta}{\alpha}}\leq \qty(1-\frac{\beta}{\alpha})a+\frac{\beta}{\alpha}a^{1-\alpha}b^{\alpha}.
+    \end{equation}
+\end{proof}
+\begin{thm}[Hölderセミノルムの補間不等式]\label{thm:holder_interpolation}
+    $\Om$は(D1)を満たす有界領域とし，$R=\diam \Om$とおく．$k,j\in\Nset_0,\ \alpha,\beta\in[0,1],\ j+\beta<k+\alpha$とする．このとき，
+    \begin{equation}
+        [u]_{j,\beta;\Om}'\leq C_{k,j,\alpha,\beta,L,\lambda}(\abs{u}_{0;\Om}+\abs{u}_{0,\Om}^{1-\tau}([u]_{k,\alpha;\Om}')^{\tau})\quad (u\in C^{k,\alpha}(\Ombar))
+    \end{equation}
+    が成り立つ．ここで
+    \begin{equation}
+        \tau\coloneq \frac{j+\beta}{k+\alpha},\quad \lambda\coloneq \frac{\rho_0}{R}
+    \end{equation}
+    である．とくに，任意の$\varepsilon>0$に対して
+    \begin{equation}
+        \abs{u}_{j,\beta;\Om}'\leq C_{k,j,\alpha,\beta,L,\lambda,\varepsilon}\abs{u}_{0;\Om}+\varepsilon[u]_{k,\alpha;\Om}'.
+    \end{equation}
+\end{thm}
+\begin{proof}
+    $k=j=0$の場合はすでに示されている(命題\ref{prop:holder_interpolation})．
+    \paragraph*{\#1}$k=j\geq1,\ \alpha\in(0,1],\ \beta=0$の場合を，$k$に関する帰納法で示す．
+
+    $k=1$の場合，$x\in \Om$を固定し，$\rho\in (0,\lambda R]$を任意に取る．(D2)の$y\in\Om$を取る($\abs{x-y}\leq\rho,\ B_{\mu\rho}(y)\subset \Om$)．$i=1,\ldots,n$に対して
+    \begin{align}
+        \mu\rho\abs{D_iu(y)}&=\abs{\int_{0}^{\mu\rho}D_iu(y+se_i)\,ds-\int_0^{\mu\rho}(D_iu(y+se_i)-D_iu(y))\,ds}\\
+        &\leq \abs{u(y+\mu\rho e_i)-u(y)}+\int_{0}^{\mu\rho}[u]_{1,\alpha;\Om}s^\alpha\,ds\\
+        &\leq 2\abs{u}_{0;\Om}+\frac{(\mu\rho)^{1+\alpha}}{1+\alpha}[u]_{1,\alpha;\Om}
+    \end{align}
+    である．よって
+    \begin{align}
+        \abs{D_iu(x)}&\leq \abs{D_iu(x)-D_iu(y)}+\abs{D_iu(y)}\\
+        &\leq [u]_{1,\alpha;\Om}\rho^{\alpha}+\frac{1}{\mu\rho}\qty(2\abs{u}_{0;\Om}+\frac{(\mu\rho)^{1+\alpha}}{1+\alpha}[u]_{1,\alpha;\Om})\\
+        &=\frac{2}{\mu\rho}\abs{u}_{0;\Om}+\qty(1+\frac{\mu^\alpha}{1+\alpha})\rho^\alpha [u]_{1,\alpha;\Om}
+    \end{align}
+    したがって
+    \begin{equation}
+        [u]_{1;\Om}\leq \frac{2}{\mu\rho}\abs{u}_{0;\Om}+\qty(1+\frac{\mu^\alpha}{1+\alpha})\rho^\alpha [u]_{1,\alpha;\Om}\quad (\forall \rho\in (0,\lambda R])\label{eq:interpolation_ineq_1}
+    \end{equation}
+    が成り立つ．ここで，もし$0<\abs{u}_{0;\Om}<(\lambda R)^{1+\alpha}[u]_{1,\alpha;\Om}$ならば，\eqref{eq:interpolation_ineq_1}式で$\rho=\qty(\frac{\abs{u}_{0;\Om}}{[u]_{1,\alpha:\Om}})^{\frac{1}{1+\alpha}}$として
+    \begin{equation}
+        [u]_{1;\Om}\leq\qty(\frac{2}{\mu}+1+\frac{\mu^\alpha}{1+\alpha})\abs{u}_{0;\Om}^{\frac{\alpha}{1+\alpha}}[u]_{0,\alpha;\Om}^{\frac{1}{1+\alpha}} 
+    \end{equation}
+    を得る．一方でもし$(\lambda R)^{1+\alpha}[u]_{1,\alpha;\Om}\leq \abs{u}_{0;\Om}$ならば，$\rho=\lambda R$として
+    \begin{align}
+        [u]_{1;\Om}&\leq \frac{2}{\mu\lambda R}\abs{u}_{0;\Om}+\qty(1+\frac{\mu^\alpha}{1+\alpha})\frac{\abs{u}_{0;\Om}}{\lambda R}\\
+        &\leq \frac{1}{\lambda R}\qty(\frac{2}{\mu}+1+\frac{\mu^\alpha}{1+\alpha})\abs{u}_{0;\Om} 
+    \end{align}
+    となる．
+
+    結局，任意の$u\in C^{1,\alpha}(\Ombar)$に対して
+    \begin{equation}
+        R[u]_{1;\Om}\leq C\qty(\abs{u}_{0;\Om}+R\abs{u}_{0;\Om}^{\frac{\alpha}{1+\alpha}}[u]_{1,\alpha;\Om}^{\frac{1}{1+\alpha}})
+    \end{equation}
+    を得る．
+
+    ある$k\geq 1$での成立を仮定する．このとき$\alpha\in(0,1],\ \beta=0,\ u\in C^{k+1,\alpha}(\Ombar)$とする．多重指数$\gamma,\ \abs{\gamma}=k+1$に対して$\gamma=\gamma'+e_i,\ \abs{\gamma'}=k$とおく．$k=1$の場合より
+    \begin{align}
+        R^{k+1}\abs{D^\gamma u}_{0;\Om}&\leq R^{k+1}[D^{\gamma'}u]_{1;\Om}\\
+        &\leq CR^{k}\qty(\abs{D^{\gamma'}u}_{0;\Om}+R\abs{D^{\gamma'}u}_{0;\Om}^{\frac{\alpha}{1+\alpha}}[D^{\gamma'}u]_{1,\alpha;\Om}^{\frac{1}{1+\alpha}})\\
+        &\leq CR^k\qty([u]_{k;\Om}+R[u]_{k;\Om}^{\frac{\alpha}{1+\alpha}}[u]_{k+1,\alpha;\Om}^{\frac{1}{1+\alpha}})\\
+        &=C\qty(R^k\snorm{u}_{k;\Om}+R^{\frac{k+1+\alpha}{1+\alpha}}(R^k[u]_{k;\Om})^{\frac{\alpha}{1+\alpha}}[u]_{k+1,\alpha;\Om}^{\frac{1}{1+\alpha}})
+    \end{align}
+    ここで帰納法の仮定から
+    \begin{align}
+        R^k[u]_{k;\Om}&\leq C\qty(\abs{u}_{0;\Om}+R^k\abs{u}_{0;\Om}^{\frac{1}{k+1}}[u]_{k,1;\Om}^{\frac{k}{k+1}})\\
+        &\lesssim C\qty(\abs{u}_{0;\Om}+R^k\abs{u}_{0;\Om}^{\frac{1}{k+1}}[u]_{k+1;\Om}^{\frac{k}{k+1}})
+    \end{align}
+    なので，
+    \begin{align}
+        &\quad R^{k+1}[u]_{k+1;\Om}\\
+        &\lesssim C\qty(\qty(\abs{u}_{0;\Om}+R^k\abs{u}_{0;\Om}^{\frac{1}{k+1}}[u]_{k+1;\Om}^{\frac{k}{k+1}})+R^{\frac{k+1+\alpha}{1+\alpha}}\qty(\abs{u}_{0;\Om}+R^k\abs{u}_{0;\Om}^{\frac{1}{k+1}}[u]_{k+1;\Om}^{\frac{k}{k+1}})^{\frac{\alpha}{1+\alpha}}[u]_{k+1,\alpha;\Om}^\frac{1}{1+\alpha})\\
+        &\lesssim C\qty(\abs{u}_{0;\Om}+R^k\abs{u}_{0;\Om}^{\frac{1}{k+1}}[u]_{k+1;\Om}^{\frac{k}{k+1}}+R^{\frac{k+1+\alpha}{1+\alpha}}\qty(\abs{u}_{0;\Om}^{\frac{\alpha}{1+\alpha}}+R^{\frac{k\alpha}{1+\alpha}}\abs{u}_{0;\Om}^{\frac{\alpha}{(k+1)(1+\alpha)}}[u]_{k+1;\Om}^{\frac{k\alpha}{(k+1)(1+\alpha)}})[u]_{k+1,\alpha;\Om}^{\frac{1}{1+\alpha}})\\
+        &= C\qty(\begin{multlined}
+            \abs{u}_{0;\Om}+\abs{u}_{0;\Om}^{\frac{1}{k+1}}\qty(R^{k+1}[u]_{k+1;\Om})^{\frac{k}{k+1}}+\abs{u}_{0;\Om}^{\frac{\alpha}{1+\alpha}}\qty(R^{k+1+\alpha}[u]_{k+1,\alpha;\Om})^{\frac{1}{1+\alpha}}\\
+            +R^{k+1}\qty(\abs{u}_{0;\Om}^{\frac{\alpha}{k+1+\alpha}}[u]_{k+1,\alpha;\Om}^{\frac{k+1}{k+1+\alpha}})^{\frac{k+1+\alpha}{(k+1)(1+\alpha)}}[u]_{k+1;\Om}^{\frac{k\alpha}{(k+1)(1+\alpha)}}
+        \end{multlined})\\
+        &\lesssim C\qty(\begin{multlined}
+            \abs{u}_{0;\Om}+\qty(C_\varepsilon\abs{u}_{0;\Om}+\varepsilon R^{k+1}[u]_{k+1;\Om})+\qty(\abs{u}_{0;\Om}+\abs{u}_{0;\Om}^{\frac{\alpha}{k+1+\alpha}}\qty(R^{k+1+\alpha}[u]_{k+1,\alpha;\Om})^{\frac{k+1}{k+1+\alpha}})\\
+            +R^{k+1}\qty(C_\varepsilon\abs{u}_{0;\Om}^{\frac{\alpha}{k+1+\alpha}}[u]_{k+1,\alpha;\Om}^{\frac{k+1}{k+1+\alpha}}+\varepsilon[u]_{k+1;\Om})
+        \end{multlined})\\
+        &\lesssim C_\varepsilon\qty(\abs{u}_{0;\Om}+R^{k+1}\abs{u}_{0;\Om}^{\frac{\alpha}{k+1+\alpha}}[u]_{k+1,\alpha;\Om}^{\frac{k+1}{k+1+\alpha}})+C\varepsilon R^{k+1}[u]_{k+1;\Om}.
+    \end{align}
+    ここでYoungの不等式と補題\ref{lem:of_interpolation}を用いた．この不等式で$\varepsilon=1/2C$とおくと結論が得られる．
+
+    \paragraph*{\#2}$k=j\geq1,\ 0<\beta<\alpha<1$の場合．
+
+    $\abs{\gamma}=k$に対して，命題\ref{prop:holder_interpolation}より
+    \begin{equation}
+        [D^\gamma u]_{0,\beta;\Om}\leq C\abs{D^\gamma u}_{0;\Om}^{1-\frac{\beta}{\alpha}}[D^\gamma u]_{0,\alpha;\Om}^{\frac{\beta}{\alpha}}\leq C[u]_{k;\Om}^{1-\frac{\beta}{\alpha}}[u]_{k,\alpha;\Om}^{\frac{\beta}{\alpha}} 
+    \end{equation}
+    したがって
+    \begin{align}
+        R^{k+\beta}[u]_{k,\beta;\Om}
+        &\leq CR^{k+\beta}[u]_{k;\Om}^{1-\frac{\beta}{\alpha}}[u]_{k,\alpha;\Om}^{\frac{\beta}{\alpha}}\\
+        &=CR^{\beta+\frac{k\beta}{\alpha}}\qty(R^k[u]_{k;\Om})^{1-\frac{\beta}{\alpha}}[u]_{k,\alpha;\Om}^{\frac{\beta}{\alpha}}\\
+        &\lesssim CR^{\beta+\frac{k\beta}{\alpha}}\qty(\abs{u}_{0;\Om}+R^k\abs{u}_{0;\Om}^{\frac{\alpha}{k+\alpha}}[u]_{k,\alpha;\Om}^{\frac{k}{k+\alpha}})^{1-\frac{\beta}{\alpha}}[u]_{k,\alpha;\Om}^{\frac{\beta}{\alpha}}\\
+        &\lesssim CR^{\beta+\frac{k\beta}{\alpha}}\qty(\abs{u}_{0;\Om}^{1-\frac{\beta}{\alpha}}+R^{k\qty(1-\frac{\beta}{\alpha})}\abs{u}_{0;\Om}^{\frac{\alpha-\beta}{k+\alpha}}[u]_{k,\alpha;\Om}^{\frac{k}{k+\alpha}\qty(1-\frac{\beta}{\alpha})})[u]_{k,\alpha;\beta}^{\frac{\beta}{\alpha}}\\
+        &=C\qty(\abs{u}_{0;\Om}^{1-\frac{\beta}{\alpha}}\qty(R^{k+\alpha}[u]_{k,\alpha;\Om})^{\frac{\beta}{\alpha}}+R^{k+\beta}\abs{u}_{0;\Om}^{\frac{\alpha-\beta}{k+\alpha}}[u]_{k,\alpha;\Om}^{\frac{k+\beta}{k+\alpha}})\\
+        &\lesssim C\qty(\abs{u}_{0;\Om}+\abs{u}_{0;\Om}^{\frac{\alpha-\beta}{k+\alpha}}\qty(R^{k+\alpha}[u]_{k,\alpha;\Om})^{\frac{k+\beta}{k+\alpha}}+R^{k+\beta}\abs{u}_{0;\Om}^{\frac{\alpha-\beta}{k+\alpha}}[u]_{k,\alpha;\Om}^{\frac{k+\beta}{k+\alpha}})\\
+        &\lesssim C\qty(\abs{u}_{0;\Om}+R^{k+\beta}\abs{u}_{0;\Om}^{\frac{\alpha-\beta}{k+\alpha}}[u]_{k,\alpha;\Om}^{\frac{k+\beta}{k+\alpha}})
+    \end{align}
+    となる．
+
+    \paragraph*{\#3}一般の場合：$j$を固定して$k$に関する帰納法で示す．
+
+    $\beta=1$の場合は，補題\ref{lem:C1v.s.C01}より
+    \begin{equation}
+        [u]_{j,1;\Om}\leq C[u]_{j+1;\Om} 
+    \end{equation}
+    なので，$\beta=0$の場合に帰着する．よって$\beta\in [0,1)$としてよい．
+
+    $k=j$での成立はすでに示されている．以下ある$k\geq j$での成立を仮定する．$u\in C^{k+1,\alpha}(\Ombar)$とする．$\beta\neq1$より$j+\beta<k+1$である．よって$\alpha=1$としたときの帰納法の仮定が使えて，
+    \begin{align}
+        R^{j+\beta}[u]_{j,\beta;\Om}&\leq C\qty(\abs{u}_{0;\Om}+R^{j+\beta}\abs{u}_{0;\Om}^{1-\frac{j+\beta}{k+\alpha}}[u]_{k,1;\Om}^{\frac{j+\beta}{k+\alpha}})\\
+        &\lesssim C\qty(\abs{u}_{0;\Om}+R^{j+\beta}\abs{u}_{0;\Om}^{1-\frac{j+\beta}{k+\alpha}}[u]_{k+1;\Om}^{\frac{j+\beta}{k+\alpha}}) 
+    \end{align}
+    $\alpha=0$の場合はこれで示された．
+    
+    $\alpha\in(0,1]$の場合は，
+    \begin{align}
+        R^{j+\beta}[u]_{l,\beta;\Om}&\leq C\qty(\abs{u}_{0;\Om}+\abs{u}_{0;\Om}^{1-\frac{j+\beta}{k+1}}\qty(R^{k+1}[u]_{k+1;\Om})^{\frac{j+\beta}{k+1}})\\
+        &\lesssim C\qty(\abs{u}_{0;\Om}+\abs{u}_{0;\Om}^{1-\frac{j+\beta}{k+1}}\qty(\abs{u}_{0;\Om}+R^{k+1}\abs{u}_{0;\Om}^{1-\frac{k+1}{k+1+\alpha}}[u]_{k+1,\alpha;\Om}^{\frac{k+1}{k+1+\alpha}})^{\frac{j+\beta}{k+\alpha}})\\
+        &\lesssim C\qty(\abs{u}_{0;\Om}+\abs{u}_{0;\Om}^{1-\frac{j+\beta}{k+1}}\qty(\abs{u}_{0;\Om}^{\frac{j+\beta}{k+1}}+R^{j+\beta}\abs{u}_{0;\Om}^{1-\frac{\alpha(j+\beta)}{(k+1+\alpha)(k+1)}}[u]_{k+1,\alpha;\Om}^{\frac{j+\beta}{k+1+\alpha}}))\\
+        &\lesssim C\qty(\abs{u}_{0;\Om}+R^{j+\beta}\abs{u}_{0;\Om}^{1-\frac{j+\beta}{k+1+\alpha}}[u]_{k+1,\alpha;\Om}^{\frac{j+\beta}{k+1+\alpha}})
+    \end{align}
+    となり，示された．
+\end{proof}
+\subsection{コンパクト埋め込み}
+\begin{thm}\label{thm:holder_cpt_emb}
+    $\Om$を(D1)を満たす有界領域\footnote{$k=j=0$の場合は有界だけでよい．}，$k,j\in\Nset_0,\ \alpha,\beta\in[0,1],\ j+\beta<k+\alpha$とする．このとき，包含写像$C^{k,\alpha}(\Ombar)\subset C^{j,\beta}(\Ombar)$はコンパクト作用素である．
+\end{thm}
+\begin{proof}
+    \paragraph*{\#1}$k=j=0,\ 0\leq \beta<\alpha\leq 1$の場合．
+
+    $\qty{u_m}_{m}\subset C^{0,\alpha}(\Ombar)$を有界列とし，$M\coloneq \sup_{m}\abs{u_m}_{0,\alpha;\Om}<\infty$とする．$m\in\Nset,\ x,y\in\Om$に対して
+    \begin{equation}
+        \abs{u_m(x)-u_m(y)}\leq M\abs{x-y}^\alpha 
+    \end{equation}
+    なので，$\qty{u_m}_{m}$は同程度一様連続である．Ascoli--Arzelàの定理より，ある部分列$\qty{u_{m_l}}_l$は$u\in C(\Ombar)$に$\Ombar$上一様収束する．これで$\beta=0$の場合は示された．$\beta>0$の場合はHölderセミノルムの下半連続性(補題\ref{lem:holder_sn_lsc})より$[u]_{0,\alpha;\Om}\leq M$．よって$u\in C^{0,\alpha}(\Ombar)$であり，命題\ref{prop:holder_interpolation}より
+    \begin{align}
+        \abs{u-u_{m_l}}_{0,\beta;\Om}&\leq \abs{u-u_{m_l}}_{0;\Om}+C\abs{u-u_{m_l}}_{0;\Om}^{1-\frac{\beta}{\alpha}}[u-u_m]_{0,\alpha;\Om}^{\frac{\beta}{\alpha}}\\
+        &\leq \abs{u-u_{m_l}}_{0;\Om}+C(2M)^{\frac{\beta}{\alpha}}\abs{u-u_{m_l}}_{0;\Om}^{1-\frac{\beta}{\alpha}}\to 0\quad (D\to 0)
+    \end{align}
+    となる．
+
+    \paragraph*{\#2}$\alpha\neq0,\ \beta\neq1$の場合．
+
+    $\qty{u_m}_{m}\subset C^{k,\alpha}(\Ombar)$を有界列とする．$\abs{\gamma}\leq j-1$に対して補題\ref{lem:C1v.s.C01}より
+    \begin{equation}
+        \sup_{m}\abs{D^\gamma u_m}_{0,1;\Om}\leq C\sup_{m}\abs{D^\gamma u_m}_{1,0;\Om}<\infty 
+    \end{equation}
+    である．また，$\abs{\gamma}=j$に対しては
+    \begin{equation}
+        \sup_{m}\abs{D^\gamma u_m}_{0,\alpha';\Om}<\infty,\quad \text{where }\alpha'\coloneq \begin{cases}
+            1 & (\text{if }j\leq k-1)\\
+            \alpha & (\text{if }j=k)
+        \end{cases}
+    \end{equation}
+    である．いずれの場合も$\beta<\alpha'$なので，\#1の結果から，部分列$\qty{u_{m_l}}_l$があり，
+    \begin{quote}
+        $\abs{\gamma}\leq j-1$ならば$D^\gamma u_{m_l}$は$C(\Ombar)$で収束し，
+        $\abs{\gamma}= j$ならば$D^\gamma u_{m_l}$は$C^\beta(\Ombar)$で収束する．
+    \end{quote}
+    よって
+    \begin{equation}
+        \abs{u_{m_{l_1}}-u_{m_{l_2}}}_{j,\beta;\Om}=\sum_{i=0}^{j}[u_{m_{l_1}}-u_{m_{l_2}}]_{i;\Om}+[u_{m_{l_1}}-u_{m_{l_2}}]_{j,\beta;\Om}\to 0\quad (D_1,l_2\to \infty)
+    \end{equation}
+    であるから，$C^{j,\beta}$の完備性より$\qty{u_{m_l}}_l$は$C^{j,\beta}$で収束する．
+
+    \paragraph*{\#3}$\beta=1$の場合は，$C^{k,\alpha}\subset C^{j+1}\subset C^{j,1}$がコンパクト作用素と連続作用素の合成としてコンパクトである．
+
+    \paragraph*{\#4}$\alpha=0$の場合は，$C^k\subset C^{k-1,1}\subset C^{j,\beta}$が連続作用素とコンパクト作用素の合成としてコンパクトである．
+\end{proof}
+\begin{cor}\label{cor:h8}(c.f. \cite[(H8)]{fr})．
+    $\Om$を(D1)を満たす有界領域とする．$k\in\Nset_0,\ \alpha\in (0,1]$とする．$\qty{u_m}_m\subset C^{k,\alpha}(\Ombar)$が有界列で，ある関数$u$に$\Ombar$上一様収束しているとする．このとき$u\in C^{k,\alpha}(\Om)$である．
+\end{cor}
+\begin{proof}
+    \paragraph*{\#1}$k=0$の場合は，Hölderセミノルムの下半連続性(補題\ref{lem:holder_sn_lsc})より$u\in C^{0,\alpha}(\Ombar)$がわかる．
+
+    \paragraph*{\#2}$k\geq1$の場合，コンパクト埋め込み$C^{k,\alpha}\subset C^k$より$\qty{u_m}_m$は$C^k(\Ombar)$で収束するが，今仮定よりその収束先が$u$である．再び補題\ref{lem:holder_sn_lsc}より$u\in C^{k,\alpha}(\Ombar)$がわかる．
+\end{proof}
+\section{Laplacian：古典解理論}
+Poisson方程式とは
+\begin{equation}
+    -\Delta u=f \inn \Om
+\end{equation}
+の形の偏微分方程式のことをいう．$f=0$の場合，つまり
+\begin{equation}
+    -\Delta u = 0 \inn \Om
+\end{equation}
+をLaplace方程式という．
+\begin{dfn}\label{dfn:sub/super_sol}
+    $f\in C(\Omega)$とする．$-\Delta u\leq (\geq)f$を満たす$u\in C^2(\Om)$のことをPoisson方程式の劣(優)解という．Laplace方程式の劣(優)解を劣(優)調和関数という．
+\end{dfn}
+\subsection{平均値の定理，最大値原理}
+\begin{thm}[平均値の定理]\label{thm:meanvalue}
+    $\Omega\subset \Rset^n$を開集合，$u\in C^2(\Omega)$，$-\Delta u\leq (\geq)0$とする．このとき任意の球$B=B_R(x_0)\ssubset \Omega$に対して
+    \begin{align}
+        u(x_0)&\leq (\geq)\,\frac{1}{n\omega_nR^{n-1}}\int_{\partial B}u\,d\sigma,\\
+        u(x_0)&\leq (\geq)\,\frac{1}{\omega_nR^{n}}\int_{B}u\,dx
+    \end{align}
+    が成り立つ($d\sigma$は面積要素を表す)．
+\end{thm}
+\begin{proof}
+    優調和の場合は$-u$を考えれば劣調和の場合に帰着するので，劣調和の場合だけ示す(以降も同様である)．
+    $r\in (0,R)$に対して
+    \begin{equation}
+        \varphi(r)\coloneq \frac{1}{n\omega_n r^{n-1}}\int_{\partial B_r(x_0)}u\,d\sigma(x)=\frac{1}{n\omega_n}\int_{\abs{y}=1}u(x_0+ry)\,d\sigma(y)
+    \end{equation}
+    とおく．$\nu$で$\partial B_r(x_0)$の単位法ベクトル場を表すものとして，
+    \begin{align}
+        \varphi'(r)&=\frac{1}{n\omega_n}\int_{\abs{y}=1}y\cdot Du(x_0+ry)\,d\sigma(y)\\
+        &=\frac{1}{n\omega_nr^{n-1}}\int_{\partial B_r(x_0)}\nu\cdot Du(x)\,d\sigma(x)\\
+        &=\frac{1}{n\omega_n r^{n-1}}\int_{B_r(x_0)}\Delta u\,dx\\
+        &\geq0 
+    \end{align}
+    なので，$\varphi$は単調減少である．ここで，$\lim_{r\to +0}\varphi(r)=u(x_0)$であることを示そう．
+    \begin{equation}
+        \abs{u(x_0)-\varphi(r)}=\abs{u(x_0)-\frac{1}{n\omega_n r^{n-1}}\int_{\partial B_r(x_0)}u(x)\,dx}\leq \frac{1}{n\omega_n r^{n-1}}\int_{\partial B_r(x_0)}\abs{u(x_0)-u(x)}\,d\sigma(x)
+    \end{equation}
+    である．今，$u$は$x_0$で連続であるから，任意の$\varepsilon>0$に対して$\delta>0$があり，任意の$x\in \Omega$に対して 
+    \begin{equation}
+        \abs{x_0-x}\leq\delta\Longrightarrow \abs{u(x_0)-u(x)}\leq \varepsilon
+    \end{equation}
+    となる．よって，$r\leq \delta$ならば$\abs{u(x_0)-\varphi(r)}\leq\varepsilon$を得る．これで$\lim_{r\to+0}\varphi(r)=u(x_0)$が示されたが，これと$\varphi$が単調増加であることから
+    \begin{equation}
+        u(x_0)\leq \varphi(R)=\frac{1}{n\omega_nR^{n-1}}\int_{\partial B}u\,d\sigma
+    \end{equation}
+    を得る．
+
+    後半の不等式は，$n\omega_n r^{n-1}u(x_0)\leq \int_{\partial B_r(x_0)}u\,d\sigma$の両辺を$[0,R]$で積分して得られる．
+\end{proof}
+\begin{thm}[強最大値原理]
+    $\Omega\subset\Rset^n$を領域，$u\in C^2(\Omega),\ -\Delta u\leq(\geq) 0$とする．もし，$x_0\in \Omega$があり，$u(x_0)=\sup_\Omega u\ \qty(\inf_{\Omega} u)$となるならば，$u$は定数である．
+\end{thm}
+\begin{proof}
+    $M\coloneq \sup_\Om u,\ \Om'\coloneq \qty{x\in\Om\mid u(x)=M}$とおくと，$\Om'$は$\Om$の相対閉集合であり，仮定より$\Omega'\neq\emptyset$である．$\Om'\subset\Om$が開集合であることを示そう．
+    
+    $x_0\in\Om'$とする．$B=B_R(x_0)\ssubset \Om$を取ると，定理\ref{thm:meanvalue}より
+    \begin{equation}
+        M=u(x_0)\leq \frac{1}{\omega_n R^n}\int_{B}u\,dx\leq \frac{1}{\omega_nR^n}\int_BM\,dx=M 
+    \end{equation}
+    である．よって上の不等号は全部等号で，そのためには$u=M\inn B$となるしかない．よって$B\subset\Om'$である．
+
+    したがって$\Om'$は$\Om$の開かつ閉集合であり，$\Om$の連結性と$\Om\neq\emptyset$より$\Om'=\Om$を得る．
+\end{proof}
+\begin{cor}[弱最大値原理]
+    $\Omega\subset\Rset^n$を有界領域とする．$u\in C^2(\Omega)\cap C(\Ombar),\ -\Delta u\geq(\leq)0$ならば
+    \begin{equation}
+        \sup_{\Om}u=\sup_{\partial\Om}\quad \qty(\inf_{\Om}u=\inf_{\pOm} u)
+    \end{equation}
+    が成り立つ．
+\end{cor}
+\begin{cor}[比較原理]\label{cor:comparison}
+    $\Om\subset \Rset^n$を有界領域とし，$u,v\in C^2(\Om)\cap C(\Ombar)$が
+    \begin{equation}
+        -\Delta u\leq -\Delta v\inn \Omega,\quad u\leq v\on \pOm 
+    \end{equation}
+    を満たすならば，$u\leq v \in \Om$である．
+
+    とくに$f\in C(\Omega),\ g\in C(\pOm)$に対してPoisson方程式のDirichlet問題
+\begin{align}
+        -\Delta u&=f \inn \Omega\\
+        u&=g \on \pOm
+\end{align}
+の解$u\in C^2(\Om)\cap C(\Ombar)$は，あれば一意である．
+\end{cor}
+
+\begin{cor}\label{cor:l_infty_estimate}(c.f. \cite[Lemma 1.14]{fr})．
+    $\Om\subset\Rset^n$を有界領域，$u\in C^2(\Om)\cap C(\Ombar)$とする．このとき
+    \begin{equation}
+        \abs{u}_{0;\Om}\leq C_{\diam\Om}(\abs{\Delta u}_{0;\Om}+\abs{u}_{0;\pOm})
+    \end{equation}
+    である．
+\end{cor}
+\begin{proof}
+    比較原理を用いる．$R=\diam\Om$とおき，$x_0=(x^{(0)}_1,\ldots,x^{(0)}_n)\in\Om$を任意に取る．
+    \begin{equation}
+        w(x)\coloneq (\abs{\Delta u}_{0;\Om}+\abs{u}_{0;\pOm})\qty(\frac{R^2-(x_1-x_1^{(0)})^2}{2}+1)\quad (x\in\Om)
+    \end{equation}
+    とおくと，$\Delta w=-(\abs{\Delta u}_{0;\Om}+\abs{u}_{0;\pOm})\leq \Delta u\inn\Omega,\quad w\geq \abs{\Delta u}_{0;\Om}+\abs{u}_{0;\pOm}\geq u\on \pOm$である．よって，系\ref{cor:comparison}より
+    \begin{equation}
+        u\leq w\leq (\abs{\Delta u}_{0;\Om}+\abs{u}_{0;\pOm})\qty(\frac{R^2}{2}+1)
+    \end{equation}
+    を得る．$-u$について同様に議論して$\abs{u}\leq (R^2/2+1)(\abs{\Delta u}_{0;\Om}+\abs{u}_{0;\pOm})$を得る．
+\end{proof}
+\subsection{Greenの表現公式，Poissonの積分公式}
+
+Poisson方程式のDirichlet問題の解の一意性(系\ref{cor:comparison})より，$u\in C^2(\Omega)\cap C(\Ombar)$の$\Om$での値を，$\Delta u$の$\Om$での値と$u$の$\pOm$での値を用いて表示する公式の存在が期待される．そのような公式はGreenの表現公式などと呼ばれる．
+\subsubsection{Laplace方程式の基本解とGreenの表現公式}
+Laplace方程式の基本解とは，
+\begin{equation}
+    \Phi(x)\coloneq \begin{cases}
+        \frac{1}{2\pi}\log\abs{x} & (n=2)\\
+        -\frac{1}{n(n-2)\omega_n}\abs{x}^{-n+2} & (n\geq 3)
+    \end{cases}\quad (x\in \Rset^n\setminus\qty{0})
+\end{equation}
+のことである．直接計算により
+\begin{align}
+    D_i\Phi(x)&=\frac{1}{n\omega_n}\abs{x}^{-n}x_i,\\
+    D_{ij}\Phi(x)&=\frac{1}{n\omega_n}(\delta_{ij}\abs{x}^2-nx_ix_j)
+\end{align}
+より$\Delta \Phi=0\inn\Rset^n\setminus\qty{0}$がわかる．また多重添字$\gamma$に対して
+\begin{equation}
+    \abs{D^\gamma \Phi(x)}\leq C_{n,\gamma}\abs{x}^{2-n-\abs{\gamma}}
+\end{equation}
+が成り立つことがわかる．
+
+さて，$\Om$をGaussの発散定理が成り立つ有界領域とし，$u\in C^2(\Ombar)$とする．$x\in\Omega$を固定する．
+
+Greenの第2公式
+\begin{equation}
+    \int_{\Om}(v\Delta u-u\Delta v)\,dx=\int_{\pOm}\qty(v\frac{\partial u}{\partial \nu}-u\frac{\partial v}{\partial \nu})\,d\sigma\quad (u,v\in C^2(\Om)\cap C^1(\Ombar))
+\end{equation}
+を思い出す．$v(y)=\Phi(x-y)$は$y=x$で特異性を持つのでそのままこの公式を適用することはできないが，領域を$\Omega\setminus \overline{B_r(x)}\ (B_r(x)\ssubset \Om)$とすると使える：
+\begin{equation}
+    \int_{\Omega\setminus \overline{B_r(x)}}\Phi(x-y)\Delta u(y)\,dy=\int_{\partial(\Omega\setminus \overline{B_r(x)})}\qty(\Phi(x-y)\pvert{u}(y)-u(y)\pvert{\Phi}(x-y))\,d\sigma(y)\label{eq:green_1}
+\end{equation}
+\eqref{eq:green_1}式で$r\to+0$とすることを考えよう．
+\begin{align}
+    \abs{\int_{B_r(x)}\Phi(x-y)\Delta u(y)\,dy}&\leq \abs{\Delta u}_{0;\Om}\int_{B_r(x)}\abs{x-y}^{-n+2}\,dy\\
+    &=O(r^2)\to0\quad (r\to0),
+\end{align}
+\begin{align}
+    \abs{\int_{\partial B_r(x)}\Phi(x-y)\pvert{u}(y)\,d\sigma(y)}\leq \abs{Du}_{0;\Omega}r\to 0\quad (r\to0)
+\end{align}
+\begin{align}
+    \int_{\partial B_r(x)}u(y)\pvert{\Phi}(x-y)\,d\sigma(y)&=\int_{\partial B_r(x)}u(y)\frac{\abs{x-y}^{-n}}{n\omega_n}(y-x)\cdot\frac{y-x}{r}\,d\sigma(y)\\
+    &=\frac{1}{n\omega_nr^{n-1}}\int_{\partial B_r(x)}u(y)\,d\sigma(y)\to u(x)\quad (r\to0)
+\end{align}
+であるから，\eqref{eq:green_1}式で$r\to0$とすると次を得る：
+\begin{equation}
+    \int_{\Om}\Phi\Delta u\,dy=\int_{\pOm}\qty(\Phi\pvert{u}-u\pvert{\Phi})\,d\sigma+u(x)
+\end{equation}
+すなわち
+\begin{equation}
+    u(x)=\int_{\pOm}\qty(u\pvert{\Phi}-\Phi\pvert{u})\,d\sigma+\int_{\Om}\Phi\Delta u\,dy\label{eq:green_2}
+\end{equation}
+ここで$\Phi$の引数は$x-y$であり，$u$の引数は$y$などとして省略している．
+
+そこで，もし$h_x\in C^2(\Om)\cap C^1(\Ombar)$で
+\begin{equation}
+    \Delta h_x=0\inn \Om,\quad h_x(y)=-\Phi(x-y)\on \pOm 
+\end{equation}
+となるものがあれば(そのような$h_x$は一意)，再びGreenの第2公式より
+\begin{equation}
+    \int_{\Om}h_x\,dy=\int_{\pOm}\qty(-\Phi\pvert{u}-u\pvert{h_x})\,d\sigma 
+\end{equation}
+である．これと\eqref{eq:green_2}式をあわせて次を得る：
+\begin{equation}
+    u(x)=\int_{\pOm}u\pvert{G}\,d\sigma+\int_{\Om}G\Delta u\,dy \label{eq:green_rep}
+\end{equation}
+ここで
+\begin{equation}
+    G(x,y)=\Phi(x-y)+h_x(y) 
+\end{equation}
+を$\Om$に関するGreen関数という．\eqref{eq:green_rep}式をGreenの表現公式と呼ぶ．
+\subsubsection{球上のGreen関数の導出，Poisson積分}
+以下，$B=B_R(0)$とし，$x\in B\setminus\qty{0}$に対して 
+\begin{equation}
+    \overline{x}\coloneq \frac{R^2}{\abs{x}^2}x \in R^n\setminus\overline{B} 
+\end{equation}
+とおく．
+
+$B$におけるGreenの関数$G$は次の表示を持つ：
+\begin{equation}
+    G(x,y)=\begin{cases}
+        \Phi(x-y)-\Phi\qty(\frac{\abs{x}}{R}(\overline{x}-y)) & (\text{if $x\neq0$})\\
+        \Phi(x-y)-\Phi(R) & (\text{if $x=0$})
+    \end{cases}
+\end{equation}
+そして，直接計算により
+\begin{equation}
+    \pvert{G}(x,y)=\frac{R^2-\abs{x}^2}{n\omega_nR}\abs{x-y}^{-n}
+\end{equation}
+となる．
+
+したがって，Greenの表現公式より次を得る(Poissonの積分公式)．
+\begin{thm}
+    $u\in C^2(\overline{B})$が調和関数ならば，
+    \begin{equation}
+        u(x)=\frac{R^2-\abs{x}^2}{n\omega_nR}\int_{\partial B}\frac{u(y)}{\abs{x-y}^n}\,d\sigma(y)\quad (x\in B)
+    \end{equation}
+    である．
+\end{thm}
+逆に，次が成り立つ．
+\begin{thm}\label{thm:poisson_integral}
+    $B=B_R(0)\subset\Rset^n$とする．$\varphi\in C(\partial B)$に対して
+    \begin{equation}
+        u(x)\coloneq\begin{cases}
+            \frac{R^2-\abs{x}^2}{n\omega_nR}\int_{\partial B}\frac{\varphi(y)}{\abs{x-y}^n}\,d\sigma(y) & (x\in B)\\
+            \varphi(x) & (x\in \partial B)
+        \end{cases}
+    \end{equation}
+    とおくと$u\in C^2(B)\cap C(\overline{B})$であり$-\Delta u=0\inn B$である．
+\end{thm}
+\begin{proof}
+    $u\in C^2(\Om),\ \Delta u=0$であることは$u$の表示から明らか．$u\in C(\overline{B})$かが問題である．
+
+    $1$という定数関数に対してGreenの表現公式を適用することで，
+    \begin{equation}
+        1=\int_{\partial B}K(x,y)\,d\sigma(y),\quad (x\in B)
+    \end{equation}
+    が従う．ここで 
+    \begin{equation}
+        K(x,y)=\frac{R^2-\abs{x}^2}{n\omega_nR\abs{x-y}^n}
+    \end{equation}
+    をPoisson核という．
+
+    $x_0\in \partial B,\ \varepsilon>0$とする．$\varphi$の連続性より，$\delta>0$があり，任意の$y\in \partial B$に対して
+    \begin{equation}
+        \abs{x_0-y}\leq \delta\Longrightarrow \abs{\varphi(x_0)-\varphi(y)}\leq\varepsilon
+    \end{equation}
+    となる．そこで，$x\in B,\ \abs{x-x_0}\leq \delta/2$ならば
+    \begin{align}
+        \abs{u(x_0)-u(x)}&\leq \int_{\partial B}K(x,y)\abs{\varphi(x_0)-\varphi(y)}\,d\sigma(y)\\
+        &\leq \int_{\abs{y}=R,\ \abs{x_0-y}\leq \delta}K(x,y)\varepsilon\,d\sigma(y)+2\abs{\varphi}_{0;\partial B}\int_{\abs{y}=R,\ \abs{x_0-y}\geq\delta}K(x,y)\,d\sigma(y)\\
+        &\leq \varepsilon+2\abs{\varphi}_{0;\partial B}\frac{R^2-\abs{x}^2}{n\omega_nR(\delta/2)^n}\cdot n\omega_nR^{n-1}
+    \end{align}
+    が成り立つ．さらに$\abs{x-x_0}$を小さく取れば$\abs{x}$は$R$に十分近くなり
+    \begin{equation}
+        \abs{u(x_0)-u(x)}\leq 2\varepsilon  
+    \end{equation}
+    とできる．
+\end{proof}
+\subsubsection{応用編}
+\begin{cor}[微分の内部評価]\label{cor:int_est_der}
+    $u\in C^2(\Om),\ -\Delta u=0\inn \Om$とする．このとき$u\in C^\infty(\Om)$であり，任意の$\Om'\ssubset \Om,\ k\in\Nset$に対して
+    \begin{equation}
+        [u]_{k;\Om'}\leq C_{n,k}d^{-k} \abs{u}_{0;\Om} 
+    \end{equation}
+    が成り立つ．ここで$d=\dist(\Om',\pOm)$．
+\end{cor}
+\begin{proof}
+    任意の球$B=B_R(x_0)\ssubset \Om$に対してPoissonの積分公式
+    \begin{equation}
+        u(x)=\frac{R^2-\abs{x-x_0}^2}{n\omega_n R}\int_{\partial B}\frac{u(y)}{\abs{x-y}^n}\,d\sigma(y),\quad (x\in B)  
+    \end{equation}
+    が成り立っている．このことから$u$は$C^\infty$級である．
+
+    ここで，$i=1,\ldots,n$に対して$D_i u$も調和となることに注意すると平均値の定理および部分積分より
+    \begin{equation}
+        D_iu(x_0)=\frac{1}{\omega_n R^n}\int_{B}D_i u\,dy=\frac{1}{\omega_nR^n}\int_{\partial B}u\nu_i\,d\sigma(y),\quad (\forall B=B_R(x_0)\ssubset \Om)
+    \end{equation}
+    よって
+    \begin{equation}
+        \abs{D_iu(x_0)}\leq \frac{n}{R}\abs{u}_{0;\Om}
+    \end{equation}
+    という評価を得る．$R\to d_{x_0}=\dist(x_0,\pOm)$として
+    \begin{equation}
+        \abs{D_iu(x_0)}\leq \frac{n}{d_{x_0}}\abs{u}_{0;\Om}\label{eq:int_estm_der}
+    \end{equation}
+    となるので，$x_0\in \Om'$について上限を取って
+    \begin{equation}
+        [u]_{1;\Om'}\leq \frac{n}{d}\abs{u}_{0;\Om} 
+    \end{equation}
+    を得る．
+
+    さて，一般に多重指数$\gamma=\gamma'+e_i,\ \abs{\gamma'}=k-1$について，$x_0\in \Om'$を固定したとき
+    \begin{equation}
+        B_i\coloneq B_{di/k}(x_0)\quad (i=1,\ldots,k)
+    \end{equation}
+    とおく．\eqref{eq:int_estm_der}式の評価を用いれば
+    \begin{equation}
+        \abs{D^\gamma u(x_0)}\leq \frac{nk}{d}\abs{D^{\gamma'} u}_{0;B_{1}}
+    \end{equation}
+    となるが，$B_i\ssubset B_{i+1}$に対して\eqref{eq:int_estm_der}の評価を繰り返し適用すれば
+    \begin{equation}
+        \abs{D^\gamma u(x_0)}\leq \qty(\frac{nk}{d})^{k}\abs{u}_{0;\Om}
+    \end{equation}
+    が得られる．よって
+    \begin{equation}
+        [u]_{k;\Om'}\leq \qty(\frac{nk}{d})^k\abs{u}_{0;\Om} 
+    \end{equation}
+    を得る．
+\end{proof}
+\begin{cor}\label{cor:normal_family}
+    $\Om$上の調和関数全体は正規族をなす．すなわち，一様有界な調和関数列$\qty{u_m}_m$は，調和関数に広義一様収束する部分列を持つ．
+\end{cor}
+\begin{proof}
+    Ascoli--Arzelàの定理より$\qty{u_m}_{m}$が同程度連続であることを示せばよい．$M=\sup_{m} \abs{u_m}_{0;\Om}<\infty$とおく．$x_0\in\Om$とする．開球$B=B_R(x_0)\ssubset \Om$について，系\ref{cor:int_est_der}より$[u_m]_{1;B}\leq C\abs{u_m}_{0;\Om}\leq CM$であるから，$x\in B$に対して
+    \begin{equation}
+        \abs{u_m(x_0)-u_m(x)}=\abs{\int_{0}^{1}(x_0-x)\cdot Du_m(tx_0+(1-t)x)\,dt}\leq [u_m]_{1;\Om}\abs{x_0-x}\leq CM\abs{x_0-x}
+    \end{equation}
+    となる．よって$\qty{u_m}_m$は$x_0$で同程度連続である．
+
+    同様の評価により，$u_m$はコンパクト集合上$C^2$収束することがわかるので，$u$が調和であることもわかる．
+\end{proof}
+\subsection{寄り道：Perronの方法}
+やや本筋\footnote{そもそも本筋などというものが存在したのだろうか．}からは逸れるが，Peronnの方法によるLaplace方程式のDirichlet問題の解法について述べる．重要となるのが，最大値原理(および比較原理)と球上のDirichlet問題の解の存在性である．
+
+\subsubsection{劣/優調和関数}
+定義\ref{dfn:sub/super_sol}における劣(優)調和関数の定義を以下のように拡張する．
+\begin{dfn}
+    $\Om\subset \Rset^n$を領域，$u\in C(\Om)$とする．$u$が劣(優)調和であるとは，任意の球$B=B_R(x_0)\ssubset \Om$と$B$上の調和関数$h\in C^2(B)\cap C(\overline{B})$で$u\leq h\ (u\geq h)\on \partial B$を満たすものに対して，
+    \begin{equation}
+        u\leq h\ (u\geq h)\inn B 
+    \end{equation}
+    が成り立つことをいう．
+\end{dfn}
+比較原理(系\ref{cor:comparison})よりこの定義が定義\ref{dfn:sub/super_sol}の拡張になっていることに注意せよ．また，この(弱い意味での)劣(優)調和関数について次が成り立つ．
+\begin{lem}[強最大値原理]\label{lem:perron_1}
+    $\Om\subset \Rset^n$を領域とする．$u\in C(\Om)$が劣調和で，ある$x_0\in\Om$に対して$u(x_0)=\sup_{\Om}u$となるならば，$u$は定数である．
+\end{lem}
+\begin{proof}
+    $M\coloneq \sup_\Om u$，
+    \begin{equation}
+        \Om'\coloneq \qty{x\in\Om\mid u(x)=M}
+    \end{equation}
+    とおき$\Om'$が$\Om$の開かつ閉集合であることが示されれば，仮定より$\Om'\neq\emptyset$から$\Om'=\Om$となる主張が従う．開なことだけが非自明である．$x_0\in\Om'$とせよ．球$B=B_R(x_0)\ssubset \Om$を任意に取る．$h\in C^2(B)\cap C(\overline{B})$を
+    \begin{align}
+        \Delta h&=0\inn B,\\
+        h&=u\on \partial B 
+    \end{align}
+    の解とする(定理\ref{thm:poisson_integral}を参照)．$u$の劣調和性より$B$上$u\leq h$となるので，とくに
+    \begin{equation}
+        M=u(x_0)\leq h(x_0)\leq \sup_{\partial B}h=\sup_{\partial B}u\leq M
+    \end{equation}
+    となる(調和関数に対する弱最大値原理を用いた)．よって全部等号で 
+    \begin{equation}
+        h(x_0)=M=\sup_{\partial B}h=\sup_{B}h 
+    \end{equation}
+    となるから，調和関数に対する強最大値原理より$h=M\inn B$を得る．とくに$u=M\on \partial B$だが，$B=B_R(x_0)\ssubset \Om$は任意なので$u=M\inn B$である．つまり$B\subset \Om'$．
+\end{proof}
+\begin{lem}\label{lem:perron_2}
+    $\Om$を有界領域，$u,v\in C(\Ombar)$をそれぞれ劣，優調和関数で$u\leq v\on\pOm$を満たすものとする．このとき，$u<v\quad\text{throughout}\ \Om$であるか，$u\equiv v$であるかのどちらかである．
+\end{lem}
+\begin{proof}
+    背理法で示す．結論の否定を仮定すると，ある$x_0$について
+    \begin{equation}
+        (u-v)(x_0)=\sup_{\Om}(u-v)\eqcolon M\geq0 
+    \end{equation}
+    となる．このとき，ある球$B=B_R(x_0)\ssubset \Om$について，$u-v\not\equiv M\on \partial B$であるとしてよい\footnote{$\Om'\coloneq\qty{x\in \Om\mid (u-v)(x)=M}\neq\emptyset$である．$\Om'=\Om$の場合は明らか．そうでない場合，$\Om'$は$\Om$の開集合ではなく，ある$x_0\in \Om'$とある$B=B_R(x_0)$について$u-v\neq M\inn B$となる．}．そこで，$\overline{u},\overline{v}\in C^2(B)\cap C(\overline{B})$を
+    \begin{equation}
+        \begin{cases}
+            \Delta\overline{u}=0 & \text{in $B$}\\
+            \overline{u} = u & \text{on $\partial B $} 
+        \end{cases},\quad \begin{cases}
+            \Delta\overline{v}=0 & \text{in $B$}\\
+            \overline{v} = v & \text{on $\partial B $} 
+        \end{cases}
+    \end{equation}
+    で定める．調和関数$\overline{u}-\overline{v}$に対して最大値原理を用いて
+    \begin{equation}
+        M\geq \sup_{\partial B}(\overline{u}-\overline{v})\geq (\overline{u}-\overline{v})(x_0)\geq (u-v)(x_0)=M 
+    \end{equation}
+    となるので，再び調和関数に対する強最大値原理より$\overline{u}-\overline{v}=M\inn B$を得る．これは$B$の取り方に矛盾する．
+\end{proof}
+\begin{lem}\label{lem:perron_3}
+    $u\in C(\Om)$を領域$\Om$上の劣調和関数とする．球$B\ssubset \Om$に対して$B$上の調和関数$\overline{u}$で$\overline{u}=u\on \partial B$となるものを取り，
+    \begin{equation}
+        U(x)\coloneq \begin{cases}
+            \overline{u}(x)& (x\in B)\\
+            u(x) & (x\in\Om\setminus  B)
+        \end{cases}
+    \end{equation}
+    とおく．このとき$U$は$\Om$で劣調和である．この$U$を$u$の$B$におけるharmonic liftingという．
+\end{lem}
+\begin{proof}
+    貼り合わせの補題より$U\in C(\Om)$である．$B'\ssubset \Om$を球，$h\in C^2(B')\cap C(\overline{B'})$を$B'$上の調和関数で$U\leq h\on \partial B'$を満たすものとする．
+
+    定義より$\Om$上$u\leq U$であるから，とくに$\partial B'$上$u\leq U\leq h$である．よって$B'$上$u\leq h$なので，$B'\setminus B$上$U\leq h$である．
+
+    また，$B$上$U$は調和であり$U\leq h\on \partial(B\cap B')$である(直前に示した)から$U\leq h\inn B'\cap B$となる．
+
+    以上より$U\leq h\inn B'$が示された．
+\end{proof}
+\begin{lem}\label{lem:perron_4}
+    $u_1,\ldots,u_N$を$\Om$上の劣調和関数とする．このとき$u=\max\qty{u_1,\ldots,u_N}$も$\Om$上の劣調和関数である．
+\end{lem}
+\begin{proof}
+    定義より明らか．
+\end{proof}
+以上では劣調和関数だけについて述べたが，優調和関数にも対応する性質がある．$-u$を考えよ．
+
+\subsubsection{Perron solution}
+さて，以下$\Om$を有界領域，$\varphi\colon \pOm\to \Rset$を有界関数とする．Dirichlet問題
+\begin{equation}
+    \begin{cases}
+        \Delta u=0&\inn \Om,\\
+        u=\varphi&\on \pOm
+    \end{cases}\label{eq:dirichlet_prob}
+\end{equation}
+を考える．
+\begin{dfn}
+    $u\in C(\Ombar)$が$\varphi$に対するsubfunction (superfunction)であるとは，$u$が劣(優)調和であり，$u\leq(\geq) \varphi\on \pOm$が成り立つことをいう．
+\end{dfn}
+\begin{rmk}
+    \begin{enumerate}
+        \item $u,v$がそれぞれ$\varphi$に対するsubfunction, superfunctionならば，$\Om$上$u\leq v$となる．これは補題\ref{lem:perron_2}による．
+        \item 定数関数$\leq \inf_{\pOm}\varphi\ (\geq \sup_{\pOm}\varphi)$はsubfunction (superfunction)である．
+    \end{enumerate}
+\end{rmk}
+次の定理がPerronの方法にとってcrucialである．
+\begin{thm}\label{thm:perron_sol}
+    $\mathcal{S}_\varphi$で$\varphi$に対するsubfunction全体の集合を表す．このとき
+    \begin{equation}
+        u(x)\coloneq \sup_{v\in \mathcal{S}_{\varphi}}v(x)\quad (x\in\Om)
+    \end{equation}
+    で定まる$u$は$\Om$上の調和関数である．この方法で構成された$u$をDirichlet問題\eqref{eq:dirichlet_prob}のPerron solutionという．
+\end{thm}
+\begin{proof}
+    $v\in\mathcal{S}_{\varphi}$に対して，最大値原理より$v\leq \sup_{\pOm}\varphi<\infty$であるから$u$はwell-definedである．
+
+    $y\in \Om$を固定する．$u$の定義より，$\qty{v_m}_{m}\subset \mathcal{S}_{\varphi}$があり$v_m(y)\to u(y)$となる．このとき$\max\qty{v_m(y),\inf_{\pOm}\varphi}\to u(y)$であるから，必要ならば$v_m$を$\max\qty{v_m,\inf_{\pOm}\varphi}\in \mathcal{S}_{\varphi}$で置き換えて$\qty{v_m}_m$は一様有界であるとしてよい(補題\ref{lem:perron_4}を参照)．
+
+    $B=B_R(y)\ssubset \Om$を任意の球とし，$V_m$を$v_m$の$B$におけるharmonic liftingとする(補題\ref{lem:perron_3})．すると$V_m\in \mathcal{S}_{\varphi}$であり，$V_m(y)\to u(y)$である($v_m\leq V_m\leq u\inn \Om$に注意せよ)．
+
+    関数列$\qty{V_m}_m$の$B$への制限は，$B$内の調和関数の一様有界列である．系\ref{cor:normal_family}より，ある部分列$\qty{V_{m_k}}_{k}$は$B$内の調和関数$v$に広義一様収束する．$v\leq u\inn B,\ v(y)=u(y)$であることを注意しておく．
+
+    \paragraph*{claim:}$v\equiv u\inn B$である．
+
+    背理法で示す．ある$z\in B$で$v(z)<u(z)$だと仮定する．このとき$\overline{u}\in \mathcal{S}_{\varphi}$があり，$v(z)<\overline{u}(z)$となる．$w_{k}\coloneq\max\qty{\overline{u},V_{m_k}}\in \mathcal{S}_{\varphi}$とおき，$W_{k}\in \mathcal{S}_{\varphi}$を$w_{k}$の$B$におけるharmonic liftingとする．
+    \begin{equation}
+        V_{m_k}\leq w_k\leq W_{k}\leq u\label{eq:perron_sol_1}    
+    \end{equation}
+    に注意せよ．$\qty{W_{k}}_{k}\subset \mathcal{S}_{\varphi}$の$B$への制限は一様有界な調和関数列である．よって再び補題\ref{cor:normal_family}より，$\qty{W}_{k}$のある部分列は$B$内の調和関数$w$に$B$上広義一様収束する．今，\eqref{eq:perron_sol_1}式で$k\to\infty$として$v\leq w\leq u\inn\Om$を得る．一方$y$での値を考えると$v(y)=u(y)$より$v(y)=w(y)$である．調和関数$v-w$に関する最大値原理より，$w-v=0\inn B$を得る．$z$での値を考えると
+    \begin{equation}
+        \overline{u}(z)>v(z)=w(z)\geq \overline{u}(z)
+    \end{equation}
+    となり矛盾．よって$u\equiv v\inn B$を得る．よって$u$は$B$で調和．
+\end{proof}
+\subsubsection{Perron solutionとDirichlet問題}
+Dirichlet問題\eqref{eq:dirichlet_prob}が解$w\in C^2(\Om)\cap C(\Ombar)$を持てば，それは定理\ref{thm:perron_sol}で構成したPerron solution $u$と一致する(最大値原理による)．したがって，Perron solutionの境界での振る舞いが問題となる．
+
+以下，引き続き$\Om$を有界領域とする．
+\begin{dfn}
+    $\xi\in\pOm$とする．
+    \begin{enumerate}
+        \item 関数$w=w_{\xi}\in C(\Ombar)$が$\xi\in\pOm$におけるbarrierであるとは，
+        \begin{enumerate}[(i)]
+            \item $w$は$\Om$における優調和関数である．
+            \item $w>0\inn \Ombar\setminus\qty{\xi};\quad w(\xi)=0$．
+        \end{enumerate}
+        が成り立つことをいう．
+        \item $w$が$\xi$のlocal barrierであるとは，$\xi$の近傍$N$があり，$w\in C(\overline{\Om\cap N})$で
+        \begin{enumerate}[(i)]
+            \item $w$は$\Om\cap N$における優調和関数である．
+            \item $w>0\inn \overline{\Om\cap N}\setminus\qty{\xi};\quad w(\xi)=0$．
+        \end{enumerate}
+        となることをいう．
+    \end{enumerate}
+\end{dfn}
+\begin{rmk}
+    barrierとlocal barrierは，次の意味で実質同じ概念である：$w$を$\xi$におけるlocal barrierとし，$B\ssubset N$を開球で$\xi\in B,\ m\coloneq\inf_{N\setminus B}w>0$を満たすものとする．このとき
+    \begin{equation}
+        \overline{w}(x)\coloneq\begin{cases}
+            \min\qty{m,w(x)} & x\in\Ombar\cap B\\
+            m & x\in \Ombar\setminus B 
+        \end{cases}
+    \end{equation}
+    とおくと$\overline{w}$は$\xi$におけるbarrierである\footnote{$w\in C(\Ombar)$であり，$\overline{w}$が(i)を満たすことは補題\ref{lem:perron_3}の証明と同様である(補題\ref{lem:perron_4}に注意せよ)．(ii)は明らか．}．
+\end{rmk}
+\begin{dfn}
+    $\xi\in\pOm$がLaplacianに関してregularであるとは，$\xi$におけるbarrierが存在することをいう．
+\end{dfn}
+\begin{lem}
+    $u$を定理\ref{thm:perron_sol}で構成したPerron solutionとする．$\xi\in\pOm$がregularで，$\varphi$が$\xi$で連続ならば，$u(x)\to \varphi(\xi)\ (x\to\xi)$である．
+\end{lem}
+\begin{proof}
+    $\varepsilon>0$とせよ．$M\coloneq\sup_{\pOm}\abs{\varphi}$とおく．$w$を$\xi$におけるbarrierとする．
+
+    $\varphi$の$\xi$における連続性から，$\delta>0$と$k>0$があり，
+    \begin{align}
+        \abs{\varphi(x)-\varphi(\xi)}\leq \varepsilon &\quad (\text{if $\abs{x-\xi}\leq\delta$}),\\
+        kw(x) \geq 2M &\quad (\text{if $\abs{x-\xi}\geq\delta$})
+    \end{align}
+    となる．ここで，$\varphi(\xi)+\varepsilon+kw,\ \varphi(\xi)-\varepsilon-kw$という関数はそれぞれ$\varphi$に対するsuperfunction, subfunctionとなる．したがって，$u$の定義および補題\ref{lem:perron_2}より
+    \begin{equation}
+        \varphi(\xi)-\varepsilon-kw\leq u\leq \varphi(\xi)+\varepsilon+kw\inn \Om 
+    \end{equation}
+    つまり
+    \begin{equation}
+        \abs{u(x)-\varphi(\xi)}\leq \varepsilon+kw(x) \inn\Om 
+    \end{equation}
+    を得る．$w\to0\ (x\to \xi)$より$\abs{u(x)-\varphi(\xi)}\to0\ (x\to \xi)$を得る．
+\end{proof}
+次の定理がこの節の目的であった：
+\begin{thm}[Perronの方法：結論]\label{thm:perron_concluded}
+    有界領域$\Om$に対して，次は同値である：
+    \begin{enumerate}[(a)]
+        \item Dirichlet問題\eqref{eq:dirichlet_prob}は，任意の連続な境界条件$\varphi\in C(\pOm)$に対して解$u\in C^2(\Om)\cap C(\Ombar)$を持つ．
+        \item $\pOm$のすべての点はregularである．
+    \end{enumerate}
+\end{thm}
+\begin{proof}
+    (b)$\Longrightarrow$(a)は先の補題と定理\ref{thm:perron_sol}ですでに示されている．
+
+    (a)$\Longrightarrow$(b)：$\xi\in\pOm$に対して$\varphi(x)=\abs{x-\xi}$を境界値に持つ調和関数を$u$とすれば，$u$が$\xi$におけるbarrierを与える．
+\end{proof}
+\subsubsection{境界のregularityについて}
+定理\ref{thm:perron_concluded}より，Dirichlet問題\eqref{eq:dirichlet_prob}が任意の連続な境界条件に対して解を持つ条件を，領域の言葉で記述することができた．しかし条件(b)は些か技術的であるので，ここでもう少し簡明な十分条件を与えておく．\textcolor{red}{加筆予定．}
+\section{Laplacian：弱解理論}
+本節では，Sobolev空間を用いたLaplace方程式およびPoisson方程式の弱解理論を解説する．
+\subsection{弱解の定義，存在性}
+\begin{dfn}
+    弱い意味でのLaplacianとは，有界線形写像
+    \begin{equation}
+        \Delta\colon H^1(\Om)\to H^{-1}(\Om),\quad \Delta u(v)=-\int_{\Om}Du\cdot Dv\,dx\quad (u\in H^1(\Om),\ v\in H^{-1}(\Om))
+    \end{equation}
+    のことをいう．
+\end{dfn}
+\begin{dfn}
+    $u\in H^1(\Om)$が弱い意味で劣(優)調和であるとは，
+    \begin{equation}
+        \Delta u(v)\leq(\geq) 0\quad (\forall v\in H^1_0(\Om),\ v\geq0 )\label{eq:weakly_subharmonic}
+    \end{equation}
+    となることをいう．このとき$-\Delta u\leq(\geq)0$ weakly in $\Om$と書く．
+
+    $u$が$-\Delta u=f\inn \Om$の弱解であるとは，
+    \begin{equation}
+        -\Delta u(v)=\int_{\Om}fv\,dx\quad (\forall v\in H^1_0(\Om)) \label{eq:weak_poisson}
+    \end{equation}
+    であることをいう．
+\end{dfn}
+\begin{rmk}
+    \begin{itemize}
+        \item $u\in C^2(\Om)\cap H^1(\Om)$が$-\Delta u=f$の弱解ならば，古典解でもある(部分積分による)．
+        \item $\Delta\colon H^1(\Om)\to H^{-1}(\Om)$は有界線形写像であるから，弱解の定義\eqref{eq:weakly_subharmonic}，\eqref{eq:weak_poisson}のtest functionとしては$v\in C^\infty_c(\Om)$で十分である．
+    \end{itemize}
+\end{rmk}
+以下，弱解の存在性を示す．次の関数解析からの補題が重要である．
+\begin{lem}
+    $E$を反射的Banach空間，$A\subset E$を空でない凸かつ閉集合とする．$\varphi\colon A\to \Rset$は下半連続な凸関数で，
+    \begin{equation}
+        \lim_{x\in A,\ \norm{x}\to\infty}\varphi(x)=\infty 
+    \end{equation}
+    であると仮定する．このとき，$x_0\in A$があり$\varphi(x_0)=\min_{A}\varphi$となる．
+\end{lem}
+\begin{proof}
+    \cite[Corollary 3.23]{bre}を見よ．
+\end{proof}
+\begin{thm}
+    $\Om$を有界Lipschitz領域，$\varphi\in H^1(\Om)$とする．このとき，Dirichlet問題
+    \begin{equation}
+        \left\{
+            \begin{array}{rl}
+                -\Delta u = 0 & \text{in $\Om$}\\
+                u=\varphi & \text{on $\pOm$}
+            \end{array}
+        \right.\label{eq:weak_dirichlet_prob}
+    \end{equation}
+    は弱解$u\in H^1(\Om)$を持つ．
+\end{thm}
+\begin{proof}
+    \paragraph*{\#1}$K=\qty{w\in H^1(\Om)\mid w-\varphi\in H^1_0(\Om)},$
+    \begin{equation}
+        \mathscr{E}\colon H^1(\Om)\to \Rset,\quad \mathscr{E}(w)=\frac{1}{2}\int_{\Om}\abs{Dw}^2\,dx
+    \end{equation}
+    とおく．$H^1(\Om)$はHilbert空間なのでとくに反射的Banach空間，$K$はその空でない凸閉集合である．$\mathscr{E}$は$K$上下半連続かつ凸であり，Poincar\'eの不等式より$\lim_{w\in K,\ \norm{w}_{H^1(\Om)}\to \infty}\mathscr{E}(w)=\infty$である．したがって補題の仮定が成り立っており，$\mathscr{E}$は最小化元$u\in K$を持つ．
+
+    \paragraph*{\#2}\#1で構成した最小化元$u$が解であることを示す．任意の$\varepsilon\in\Rset$と$v\in H^1_0(\Om)$に対して$u+\varepsilon v\in K$である．よって最小性から
+    \begin{align}
+        \mathscr{E}(u)&\leq \mathscr{E}(u+\varepsilon v)\\
+        &=\frac{1}{2}\int_{\Om}\abs{D(u+\varepsilon v)}^2\,dx=\frac{1}{2}\int_{\Om}\qty(\abs{Du}^2+2\varepsilon Du\cdot Dv+\varepsilon^2\abs{Dv}^2)\,dx\\
+        &=\mathscr{E}(u)+\varepsilon\qty(\int_{\Om}Du\cdot Dv\,dx+\frac{\varepsilon}{2}\int_{\Om}\abs{Dv}^2\,dx)
+    \end{align}
+    したがって
+    \begin{equation}
+        \varepsilon\qty(\int_{\Om}Du\cdot Dv\,dx+\frac{\varepsilon}{2}\int_{\Om}\abs{Dv}^2\,dx)\geq0\quad (\forall \varepsilon\in\Rset )
+    \end{equation}
+    となる．よって
+    \begin{equation}
+        \int_{\Om}Du\cdot Dv\,dx=0\quad (\forall v\in H^1_0(\Om))
+    \end{equation}
+    でなければならない．これは$-\Delta u=0$であることを示している．
+\end{proof}
+次に解の一意性を議論するが，これは古典解の場合と同様で，比較原理からの帰結する．
+\begin{prop}[比較原理]
+    $\Om$を有界領域とする．$u\in H^1(\Om)$が$-\Delta u\geq0\inn \Om,\ u\geq0\on \pOm$を満たすならば$u\geq0\inn\Om$である．    
+\end{prop}
+\begin{proof}
+    $u=u^{+}-u^{-}$とプラスパートとマイナスパートにわける．$u^{\pm}\in H^1(\Om),\ u^{\pm}\geq0$である\footnote{非自明．さらに$Du^{\pm}(x)=\begin{cases}
+        Du & (\pm u\geq0)\\
+        0 & (\pm u\leq 0)
+    \end{cases}$である．}．test functionとして$v=u^{-}$を取ると，
+    \begin{equation}
+        \int_{\Om}Du\cdot Du^{-}\geq0 
+    \end{equation}
+    だが，$Du\cdot Du^{-}=(Du^{+}-Du^{-})\cdot Du^{-}=-\abs{Du}^2$なので
+    \begin{equation}
+        -\int_{\Om}\abs{Du^{-}}^2\,dx\geq0 
+    \end{equation}
+    となる．したがって$Du^{-}=0\inn\Om$である．一方仮定より$u^{-}=0\on\pOm$であるから，$u^{-}=0\inn\Om$である．これは$u\geq0\inn\Om$であることを示している．
+\end{proof}
+\begin{cor}
+    $\Om$を有界領域，$\varphi\in H^1(\Om)$とする．このときDirichlet問題\eqref{eq:weak_dirichlet_prob}の解$u\in H^1(\Om)$はただひとつである．
+\end{cor}
+\begin{cor}\label{cor:weak_l_infty_estimate}
+    $u\in H^1(\Om),\ f\in L^\infty(\Om)$で$-\Delta u=f\inn \Om$ならば，
+    \begin{equation}
+        \norm{u}_{L^\infty(\Om)}\leq C_{\Om}(\norm{f}_{L^\infty(\Om)}+\norm{u|_{\pOm}}_{L^{\infty}(\pOm)})
+    \end{equation}
+\end{cor}
+\begin{proof}
+    系\ref{cor:l_infty_estimate}の証明と同様である．
+\end{proof}
+\subsection{正則性}
+\subsubsection{difference quotient}
+\begin{dfn}
+    関数$u\colon \Om\to \Rset$に対して，difference quotientを
+    \begin{equation}
+        \Delta^h_{i}u(x)\coloneq \frac{u(x+he_i)-u(x)}{h},\quad (x,x+he_i\in \Om,\ h\neq0)
+    \end{equation}
+    と定義する．
+\end{dfn}
+\begin{lem}\label{lem:diff_quot_1}
+    $u\in W^{1,p}(\Om),\ 1\leq p<\infty$とする．このとき任意の$\Om'\ssubset \Om$と$0<\abs{h}<\dist(\Om',\pOm)$に対して$\Delta^h_iu\in L^p(\Om')$であり，
+    \begin{equation}
+        \norm{\Delta^h_iu}_{L^p(\Om')}\leq \norm{D_iu}_{L^p(\Om)}
+    \end{equation}
+    である．
+\end{lem}
+\begin{proof}
+    density argumentにより$u\in W^{1,p}(\Om)\cap C^1(\Om)$の場合に帰着する．
+    \begin{equation}
+        \Delta^h_iu(x)=\frac{u(x+he_i)-u(x)}{h}=\frac{1}{h}\int_{0}^{h}D_iu(x+\xi e_i)\,d\xi
+    \end{equation}
+    である．Hölderの不等式より
+    \begin{align}
+        \abs{\Delta^h_iu(x)}^p&=\frac{1}{\abs{h}^p}\abs{\int_{0}^{h}D_iu(x+\xi e_i)\,d\xi}^p\\
+        &\leq \frac{1}{\abs{h}^p}\qty(\qty(\int_{0}^{h}\abs{D_iu(x+\xi e_i)}^p\,d\xi)^{1/p}\cdot \abs{h}^{1-1/p})^p\\
+        &=\frac{1}{\abs{h}}\int_{0}^{h}\abs{D_iu(x+\xi e_i)}^p\,d\xi 
+    \end{align}
+    を得る．したがって
+    \begin{equation}
+        \int_{\Om'}\abs{\Delta^h_i u}^p\,dx\leq \frac{1}{\abs{h}}\int_{\Om'}\,dx\int_{0}^{h}\abs{D_iu(x+\xi e_i)}^p\,d\xi\leq \frac{1}{\abs{h}}\int_{0}^{h}\,d\xi \int_{\Om'+\xi e_i}\abs{D_iu}^p\,dx\leq\int_{\Om}\abs{D_iu}^p\,dx
+    \end{equation}
+    となり結論を得る．
+\end{proof}
+\begin{lem}\label{lem:diff_quot_2}
+    $u\in L^p(\Om),\ 1<p<\infty$は次を満たすとする：定数$K>0$があり，任意の$\Om'\ssubset \Om,\ 0<h<\dist(\Om',\pOm)$に対して
+    \begin{equation}
+        \Delta^h_iu\in L^p(\Om')\quad\text{かつ}\quad \norm{\Delta^h_iu}_{L^p(\Om')}\leq K.
+    \end{equation}
+    このとき$D_iu\in L^{p}(\Om)$であり，$\norm{D_iu}_{L^p(\Om)}\leq K$である．
+\end{lem}
+\begin{proof}
+    $\qty{\Delta^h_iu}_{h>0}\subset L^p(\Om)$は$L^p$-有界であるから，$L^p(\Om)$の反射性より弱収束部分列を持つ：$\qty{h_m}_{m},\ v\in L^p(\Om)$があり，$h_m\searrow 0$かつ
+    \begin{equation}
+        \Delta^{h_m}_{i}u\rightharpoonup v\quad \text{weakly in $L^p(\Om)$}
+    \end{equation}
+    となる．$\norm{v}_{L^p(\Om)}\leq K$である．$\varphi\in C^1_0(\Om)$とすると，十分大きな任意の$m$に対して$h_m<\dist(\supp\varphi,\pOm)$であり，
+    \begin{equation}
+        \int_{\Om}\varphi\,\Delta^{h_m}_{i}u\,dx=-\int_{\Om}u\,\Delta^{-h_m}_{i}\varphi\,dx
+    \end{equation}
+    $m\to\infty$として
+    \begin{equation}
+        \int_{\Om}\varphi v\,dx=-\int_{\Om}u\,D_i\varphi\,dx 
+    \end{equation}
+    を得る．
+\end{proof}
+\subsubsection{内部正則性評価}
+\begin{thm}
+    $u\in H^1(\Om),\ f\in L^2(\Om),\ -\Delta u=f$ weakly in $\Om$であると仮定する．このとき$u\in H^2_{\loc}(\Om)$であり，任意の$\Om'\ssubset \Om$に対して
+    \begin{equation}
+        \norm{u}_{H^2(\Om')}\leq C_{n,\Om,\Om'}(\norm{u}_{H^1(\Om)}+\norm{f}_{L^2(\Om)})
+    \end{equation}
+    が成り立つ．
+\end{thm}
+\begin{proof}
+    $v\in H^1_0(\Om)$は$\Om$内にコンパクト台を持つとする．このとき，$0<\abs{2h}<\dist(\supp v,\pOm)$に対して
+    \begin{equation}
+        \Delta^{-h}_{i}v(x)=\frac{v(x-he_i)-v(x)}{-h}
+    \end{equation}
+    とおくと$\Delta^{-h}_{i}v\in H^1_0(\Om)$である\footnote{$\supp v\cup (he_i+\supp v)$では$\Delta^{-h}_iv$はwell-defined．その外では値を0として拡張せよ．}．弱解の定義より
+    \begin{equation}
+        \int_{\Om}Du\cdot D(\Delta^{-h}_iv)\,dx=\int_{\Om}f\,\Delta^{-h}_iv\,dx
+    \end{equation}
+    左辺を変形すると
+    \begin{equation}
+        \int_{\Om}D(\Delta^h_iu)\cdot Dv\,dx=-\int_{\Om}f\,\Delta_{i}^{-h}v\,dx 
+    \end{equation}
+    を得るので，補題\ref{lem:diff_quot_1}より
+    \begin{equation}
+        \int_{\Om}D(\Delta^h_iu)\cdot Dv\,dx\leq \norm{f}_{2}\norm{\Delta^h_iv}_{2}\leq \norm{f}_2\norm{D_iv}_{2}
+    \end{equation}
+    を得る．
+    
+    $0\leq \eta\leq 1$を満たす$\eta\in C^1_0(\Om)$を取り，test functionとして$v=\eta^2\Delta^h_i u$を取る．すると
+    \begin{equation}
+        \int_{\Om}D(\Delta^h_iu)\cdot D(\eta^2\Delta^h_iu)\,dx\leq \norm{f}_2\norm{D_i(\eta^2 \Delta^h_i u)}_{2}
+    \end{equation}
+    ここで$D(\eta^2\Delta^h_iu)=2\eta (D\eta)\Delta^h_i u+\eta^2D(\Delta^h_iu)$より 
+    \begin{align}
+        &\quad\int_{\Om}\abs{\eta D(\Delta^h_iu)}^2\,dx\\
+        &\leq \norm{f}_2\qty(2\norm{\eta(D_i\eta)\Delta^h_iu}_2+\norm{\eta^2 D_i(\Delta^h_iu)}_2)-2\int_{\Om}\eta\,\Delta^h_iu\,(D\eta)\cdot (D(\Delta^h_iu))\,dx\\
+        &\leq \norm{f}_2\qty(2\norm{\eta(D_i\eta)\Delta^h_iu}_2+\norm{\eta^2 D_i(\Delta^h_iu)}_2)+\qty(\varepsilon\norm{\eta D(\Delta^h_i u)}_2^2+\frac{\norm{(\Delta^h_iu)D\eta}_2^2}{\varepsilon})\\
+        &\leq \norm{D_i\eta}_\infty(\norm{f}_2^2+\norm{\Delta^h_iu}_2^2)+\frac{\norm{f}_2^2}{\varepsilon}+\varepsilon\norm{\eta D_i(\Delta^h_iu)}_2^2+\varepsilon\norm{\eta D(\Delta^h_iu)}_2^2+\frac{\norm{D\eta}_\infty^2\norm{\Delta^h_i u}_2^2}{\varepsilon}\\
+        &\leq \norm{D_i\eta}_\infty(\norm{f}_2^2+\norm{D_iu}_2^2)+\frac{\norm{f}_2^2}{\varepsilon}+2\varepsilon\norm{\eta D(\Delta^h_iu)}_2^2+\frac{\norm{D\eta}_\infty^2\norm{D_i u}_2^2}{\varepsilon}
+    \end{align}
+    なお，最後の不等式で再び補題\ref{lem:diff_quot_1}を用いた．とくに$\varepsilon=1/4$と取れば，
+    \begin{equation}
+        \norm{\eta D(\Delta^h_iu)}_{L^2(\Om)}\leq C(1+\norm{D\eta}_{L^\infty(\Om)})(\norm{f}_{L^2(\Om)}+\norm{u}_{H^1(\Om)})
+    \end{equation}
+    が得られる．ここで，$\eta$を，$\eta\equiv1\on \Om',\ \abs{D\eta}\leq 2/d'\ (d'=\dist(\Om',\pOm))$となるように取れば
+    \begin{equation}
+        \norm{D(\Delta^h_iu)}_{L^2(\Om')}\leq C(1+2/d')(\norm{f}_{L^2(\Om)}+\norm{u}_{H^1(\Om)})
+    \end{equation}
+    となる．$D(\Delta^h_iu)=\Delta^h_i(Du)$であるので，補題\ref{lem:diff_quot_2}より
+    \begin{equation}
+        Du\in H^1(\Om'),\quad \norm{D^2u}_{L(\Om')}\leq C(1+2/d')(\norm{f}_{L^2(\Om)}+\norm{u}_{H^1(\Om)})
+    \end{equation}
+    が従う．
+\end{proof}
+\begin{cor}\label{cor:laplacian_regularity}
+    $u\in H^1(\Om),\ f\in H^k(\Om),\ k\geq1$が$-\Delta u=f$ weakly in $\Om$を満たしていると仮定する．このとき$u\in H^{k+1}_{\loc}(\Om)$であり，任意の$\Om'\ssubset \Om$に対して 
+    \begin{equation}
+        \norm{u}_{H^{k+2}(\Om')}\leq C_{n,\Om,\Om',k}(\norm{u}_{H^1}+\norm{f}_{H^k(\Om)})
+    \end{equation}
+    が成り立つ．
+\end{cor}
+\begin{proof}
+    $k=1$の場合を示す．任意の$v\in C^2_0(\Om)$に対して
+    \begin{equation}
+        \int_{\Om}Du\cdot D(D_kv)\,dx=\int_{\Om}f\,D_kv\,dx 
+    \end{equation}
+    が成り立っている．$u\in H^2_{\loc}(\Om)$かつ$f\in H^1(\Om)$より
+    \begin{equation}
+        \int_{\Om}D(D_ku)\cdot Dv = \int_{\Om}(D_kf)v\,dx
+    \end{equation}
+    となるが，これは$-\Delta(D_ku)=D_kf$ weakly in $\Om$であることを示している．$D_kf\in L^2(\Om)$より前の定理から$D_ku\in H^2_{\loc}(\Om),\ $したがって$u\in H^3_{\loc}(\Om)$が従う．$k\geq2$でも帰納法で示せる．
+\end{proof}
+\begin{cor}
+    $u\in H^1(\Om),\ f\in C^\infty(\Om),\ -\Delta u=f$ weakly in $\Om$とする．このとき$u\in C^\infty(\Om)$である．
+\end{cor}
+\begin{proof}
+    Sobolevの不等式
+    \begin{equation}
+        W^{k,p}(\Om)\subset C^m_B(\Om)=\qty{u\in C^m(\Om)\mid D^\alpha u\in L^\infty(\Om)\ (\abs{\alpha}\leq m)},\ (0\leq m< k-n/p)
+    \end{equation}
+    より従う(c.f. \cite[Corollary 7.11]{gt})．
+\end{proof}
+とくにLaplace方程式$-\Delta u=0$の弱解$u$は$C^\infty$級である．
+\subsection{Harnackの不等式}
+本節ではLaplacianに関するHarnackの不等式を導出し，さらにそれを用いてoscillation decay, 解のHölder連続性といった命題を示す．一般の楕円型方程式においてもHarnackの不等式がこれらの種類の評価を導出するという流れは共通しており，Laplacian特有ではないということに注意しておく(c.f. \cite[Chapter 8]{gt})．
+\subsubsection{Laplace方程式の場合}
+\begin{thm}[Harnackの不等式]\label{thm:harnack_laplace}
+    $u\in H^1(\Om)$は$-\Delta u=0$ weakly in $\Om$で，$u\geq0\inn\Om$を満たすと仮定する．このとき，任意の$\Om'\ssubset \Om$に対して 
+    \begin{equation}
+        \sup_{\Om'}u\leq C_{n,\Om,\Om'}\inf_{\Om'}u
+    \end{equation}
+    が成り立つ．
+\end{thm}
+\begin{proof}
+    \paragraph{\#1 claim:}任意の$B_R=B_R(x_0)\ssubset \Om$に対して$\sup_{B_{R/2}}u\leq C_{n,R}\inf_{B_{R/2}}u$である．
+
+    $u\in C^\infty(\Om)$より，$B_R\ssubset \Om$ではPoisson integral formulaが成り立つ：
+    \begin{equation}
+        u(x)=\frac{R^2-\abs{x-x_0}^2}{n\omega_nR}\int_{\partial B_R}\frac{u(y)}{\abs{x-y}^n}\,d\sigma(y)\quad (x\in B_R) 
+    \end{equation}
+    任意の$x\in B_{R/2},\ y\in\partial B_R$に対して$R/2\leq \abs{x-y}\leq 3R/2,\ 3R^2/4\leq R^2-\abs{x-x_0}^2\leq R^2$であることに注意すると，定数$C=C_{n,R}$があり
+    \begin{equation}
+        \frac{1}{C}\int_{\partial B_R}u\,d\sigma\leq u(x)\leq C\int_{\partial B_R}u\,d\sigma \quad (x\in B_{R/2})
+    \end{equation}
+    となる．したがって，任意の$x_1,x_2\in B_{R/2}$に対して$u(x_1)\leq C^2u(x_2)$である．
+
+    \paragraph{\#2}$\Om'\ssubset \Om$とせよ．$x_1,x_2\in \overline{\Om'}$で$u(x_1)=\sup_{\Om'}u,\ u(x_2)=\inf_{\Om'}u$となるものを取る．$\overline{\Om'}$はpath-connectedより$\Gamma\colon [0,1]\to \overline{\Om'}$があり，$\Gamma(0)=x_1,\ \Gamma(1)=x_2$となる．$d'=\dist(\Gamma,\pOm),\ R=d'/2$とすると，有限個の$0\leq t_1\leq \cdots\leq t_N\leq 1$があり，$z_i\coloneq \Gamma(t_i)$とすると
+    \begin{equation}
+        \Gamma([0,1])\subset \bigcup_{i=1}^N B_{R/2}(z_i),\quad B_R(z_i)\ssubset \Om 
+    \end{equation}
+    となる．各$i$で$\sup_{B_{R/2}(z_i)}u\leq C_{n,R}\inf_{B_{R/2}(z_i)}u$であるから，$u(x_1)\leq C_{n,R}^N u(x_2)$となる．
+\end{proof}
+Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as@l\'eIS@n/}．}と呼ばれる結果が従う．上または下に有界な$u\colon \Om\to \Rset$に対して
+\begin{equation}
+    \osc_{\Om}u\coloneq \sup_{\Om}u-\inf_{\Om}u 
+\end{equation}
+とおく．
+\begin{cor}[oscillation decay]
+    $u\in H^1(\Om)\cap L^\infty(\Om)$を弱調和関数とする．このとき，任意の$\Om'\ssubset \Om$に対して
+    \begin{equation}
+        \osc_{\Om'}u\leq (1-\theta)\osc_{\Om}u,\quad \theta=\theta_{n,\Om,\Om'}\in(0,1)
+    \end{equation}
+    となる．
+\end{cor}
+\begin{proof}
+    $w=u-\inf_{\Om}u$は非負調和であるから，Harnackの不等式より$\sup_{\Om'}w\leq C\inf_{\Om'}w$である．
+    \begin{align}
+        \osc_{\Om'}u&=\osc_{\Om'}w\\
+        &=\sup_{\Om'}w-\inf_{\Om'}w\leq \qty(1-\frac{1}{C})\sup_{\Om}w=\qty(1-\frac{1}{C})\osc_{\Om}u 
+    \end{align}
+    である．
+\end{proof}
+\begin{rmk}\label{rmk:scale_invariance_of_const}
+    Harnackの不等式およびoscillation decayの定数は，スケール不変である．すなわち$C_{n,\lambda\Om,\lambda\Om'}=C_{n,\Om,\Om'}\ (\forall \lambda>0)$．これはLaplace方程式がスケール不変であることによる．
+\end{rmk}
+\begin{cor}[Hölder連続性]
+    $u\in H^1(\Om)\cap L^\infty(\Om)$を弱調和関数とする．このとき，ある$\alpha=\alpha_n\in (0,1)$に対して$u\in C^{0,\alpha}(\Om)$であり，任意の$\Om'\ssubset \Om$に対して
+    \begin{equation}
+        \abs{u}_{0,\alpha;\Om'}\leq C_{n,\alpha}d^{-\alpha}\norm{u}_{L^\infty(\Om)},\quad d=\dist(\Om',\pOm)
+    \end{equation}
+    である．
+\end{cor}
+\begin{proof}
+    $x,y\in \Om'$に対して
+    \begin{equation}
+        \abs{u(x)-u(y)}\leq Cd^{-\alpha}\norm{u}_{L^\infty(\Om)}\abs{x-y}^\alpha 
+    \end{equation}
+    を示せばよい．記述を簡単にするため，平行移動により$y=0$としてよい．
+    $B_d\ssubset \Om$である．$x\in \Om'$が，$\abs{x}<d$を満たすならば，$2^{-k-1}d\leq \abs{x}<2^{-k}d$を満たす$k\in \Nset_{0}$を取る．oscillation decayの定数$\theta=\theta_n\coloneq\theta_{n,B_1,B_{1/2}}$を取る．注意\ref{rmk:scale_invariance_of_const}より
+    \begin{align}
+        \abs{u(x)-u(0)}&\leq \osc_{B_{2^{-k}d}}u\leq (1-\theta)\osc_{B_{2^{-k+1}d}}u\leq\cdots\leq (1-\theta)^k\osc_{B_d}u\\
+        &\leq 2^{-k\alpha}\cdot 2\norm{u}_{L^\infty(\Om)}
+    \end{align}
+    となる．ここで$\alpha=-\log_2(1-\theta)$とおいた．よって
+    \begin{equation}
+        \abs{u(x)-u(0)}\leq (2^{-k})^\alpha\cdot 2\norm{u}_{L^\infty(\Om)}\leq \qty(\frac{2\abs{x}}{d})^\alpha\cdot 2\norm{u}_{L^\infty(\Om)}=\frac{2^{1+\alpha}}{d^\alpha}\norm{u}_{L^\infty(\Om)}\abs{x}^\alpha
+    \end{equation}
+    を得る．
+
+    一方，$x\in \Om',\ \abs{x}\geq d$ならば，
+    \begin{equation}
+        \abs{u(x)-u(0)}\leq 2\norm{u}_{L^\infty(\Om)}\leq \frac{2}{d^\alpha}\norm{u}_{L^\infty(\Om)}\abs{x}^\alpha 
+    \end{equation}
+    である．
+\end{proof}
+\subsubsection{Poisson方程式の場合}
+\begin{thm}[Harnackの不等式]
+    $u\in H^1(\Om),\ f\in L^\infty(\Om)$は$-\Delta u=f$ weakly, $u\geq0\inn\Om$を満たすとする．このとき任意の$\Om'\ssubset\Om$に対して
+    \begin{equation}
+        \sup_{\Om'}u\leq C_{n,\Om,\Om'}\qty(\inf_{\Om'}u+\norm{f}_{L^\infty(\Om)})
+    \end{equation}
+    が成り立つ．
+\end{thm}
+\begin{proof}
+    $v\in H^1(\Om)$を，
+    \begin{equation}
+        \left\{
+            \begin{array}{rl}
+                -\Delta v = 0 & \text{weakly in $\Om$}\\
+                v=u & \text{on $\pOm$}
+            \end{array}
+        \right.
+    \end{equation}
+    の解とし，$w\coloneq u-v\in H^1(\Om)$とすると$-\Delta w=f\inn \Om,\ w=0\on \pOm$である．
+
+    Laplace方程式に対するHarnackの不等式(定理\ref{thm:harnack_laplace})より，
+    \begin{equation}
+        \sup_{\Om'}v\leq C_{n,\Om,\Om'}\inf_{\Om'}v 
+    \end{equation}
+    である．また系\ref{cor:weak_l_infty_estimate}より
+    \begin{equation}
+        \sup_{\Om}w\leq C_{\Om}\norm{f}_{\infty}
+    \end{equation}
+    なので結論を得る．
+\end{proof}
+\begin{cor}[oscillation decay]
+    $u\in H^1(\Om)\cap L^\infty(\Om),\ f\in L^\infty(\Om)$は$-\Delta u=f$ weakly in $\Om$を満たすとする．このとき任意の$\Om'\ssubset\Om$に対して
+    \begin{equation}
+        \osc_{\Om'}u\leq (1-\theta)\osc_{\Om}u+\norm{f}_{L^\infty(\Om)},\quad \theta=\theta_{n,\Om,\Om'}
+    \end{equation}
+    が成り立つ．
+\end{cor}
+\begin{proof}
+    Laplace方程式($f=0$)の場合と同様である．$w=u-\inf_{\Om}u$とおくと$-\Delta w=f,\ w\geq0$であるから$w$にHarnackの不等式を適用して
+    \begin{align}
+        \osc_{\Om'}u&=\osc_{\Om'}w=\sup_{\Om'}w-\inf_{\Om'}\\
+        &\leq \sup_{\Om'}w-\qty(\frac{1}{C}\sup_{\Om'}w-\norm{f}_{L^\infty(\Om)})\\
+        &\leq \qty(1-\frac{1}{C})\sup_{\Om}w+\norm{f}_{L^\infty(\Om)}\\
+        &=\qty(1-\frac{1}{C})\osc_{\Om}u+\norm{f}_{L^\infty(\Om)}
+    \end{align}
+    を得る．
+\end{proof}
+\begin{rmk}\label{rmk:scale_dependence_of_const}
+    Harnackの不等式，oscillation decayの定数は一般にはスケール不変ではないが，次が成り立つ．$-\Delta u=f\inn \lambda \Om$とする．このとき$\widetilde{u}(x)=u(\lambda x)$とおくと$-\Delta u(x)=\lambda^2f(\lambda x)$．よって
+    \begin{equation}
+        \sup_{\lambda \Om'}u=\sup_{\Om'}\widetilde{u}\leq C_{n,\Om,\Om'}\qty(\sup_{\Om'}\widetilde{u}+r^2\norm{f}_{L^\infty(r\Om)})=C_{n,\Om,\Om'}\qty(\sup_{\lambda\Om'}u+\lambda^2\norm{f}_{L^\infty(\lambda\Om)})
+    \end{equation}
+    同様に
+    \begin{equation}
+        \osc_{\lambda\Om'}\leq (1-\theta_{n,\Om,\Om'})\qty(\osc_{\lambda\Om}u+\lambda^2\norm{f}_{L^\infty(\lambda \Om)})
+    \end{equation}
+    である．
+\end{rmk}
+\begin{cor}[Hölder連続性]\label{cor:holder_continuity}
+    $u\in H^1(\Om)\cap L^\infty(\Om),\ f\in L^\infty(\Om)$は$-\Delta u=f$ weakly in $\Om$を満たすとする．このとき，ある$\alpha=\alpha_n\in(0,1)$に対して$u\in C^{0,\alpha}(\Om)$であり，任意の$\Om'\ssubset \Om$に対して
+    \begin{equation}
+        \abs{u}_{0,\alpha;\Om'}\leq C_{n,\alpha}d^{-\alpha}\qty(\norm{u}_{L^\infty(\Om)}+d^{2}\norm{f}_{L^\infty(\Om)}),\quad d=\dist(\Om',\pOm)
+    \end{equation}
+    が成り立つ．
+\end{cor}
+\begin{proof}
+    $x,y\in\Om'$に対して 
+    \begin{equation}
+        \abs{u(x)-u(y)}\leq Cd^{-\alpha}(\norm{u}_{\infty}+d^2\norm{f}_{\infty})\abs{x-y}^\alpha 
+    \end{equation}
+    を示す．平行移動により$y=0$としてよい．$d=\dist(\Om',\pOm)$とおくと$B_d\ssubset \Om$である．
+    \paragraph{claim:}$\alpha=\alpha_n\in(0,1),\ k_0=k_0(n)\in\Nset$があり，
+    \begin{equation}
+        \osc_{B_{2^{-k}d}}u\leq C\qty(\norm{u}_{\infty}+d^2\norm{f}_{\infty})\cdot 2^{-\alpha k}\quad (k\geq k_0).
+    \end{equation}
+    \begin{proof}[Proof of the claim.]
+        oscillation decayの定数$\theta=\theta_n\coloneq\theta_{n,B_1,B_{1/2}}$を取ると，注意\ref{rmk:scale_dependence_of_const}より
+        \begin{equation}
+            \osc_{B_{2^{-k}R}}u\leq (1-\theta)\osc_{B_{2^{-k+1}R}}u+2^{-2k+2}d^2\norm{f}_{\infty}
+        \end{equation}
+        となる．そこで$k_0$を，$2^{-2k_0+2}\leq \theta$となるくらい大きく取れば，任意の$k\geq k_0$に対して
+        \begin{equation}
+            \osc_{B_{2^{-k}d}}u\leq (1-\theta)\osc_{B_{2^{-k+1}}d}u+\theta\cdot 4^{k_0-k}d^2\norm{f}_{\infty}\label{eq:osc_decay_step}
+        \end{equation}
+        そこで，$\alpha=-\log_2(1-\theta/2)$に対して
+        \begin{equation}
+            \osc_{B_{2^{-k+1}d}}u\leq 2\cdot 2^{\alpha(k_0-k)}\qty(\norm{u}_{\infty}+d^2\norm{f}_{\infty})\quad (\forall k\geq k_0)
+        \end{equation}
+        となることが帰納法から従う：$k=k_0$の場合は明らか．$k$の場合の成立を仮定すると\eqref{eq:osc_decay_step}式より
+        \begin{align}
+            \osc_{B_{2^{-k}d}}u&\leq \osc_{B_{2^{-k+1}d}}u+\theta\cdot 4^{k_0-k}d^2\norm{f}_{\infty}\\
+            &\leq (1-\theta)\cdot 2\cdot 2^{\alpha(k_0-k)}\qty(\norm{u}_{\infty}+d^2\norm{f}_{\infty})+\theta\cdot 4^{k_0-k}d^2\norm{f}_{\infty}\\
+            &\leq 2\cdot 2^{\alpha(k_0-k)}\qty(1-\frac{\theta}{2})\qty(\norm{u}_{\infty}+d^2\norm{f}_{\infty})\\
+            &\leq 2\cdot 2^{\alpha(k_0-k-1)}\qty(\norm{u}_{\infty}+d^2\norm{f}_{\infty}) 
+        \end{align}
+        となる．これでclaimの証明が完了した．
+    \end{proof}
+    さて，$x\in \Om',\abs{x}<2^{-k_0}d$ならば，$2^{-k-1}d\leq \abs{x}<2^{-k}d$となる$k\geq k_0$を取ると，claimより
+    \begin{equation}
+        \abs{u(x)-u(0)}\leq \osc_{B_{2^{-k}d}}u\leq 2\cdot2^{\alpha(k_0-k)}\qty(\norm{u}_{\infty}+d^2\norm{f}_{\infty})\leq \frac{2^{1+\alpha(1+k_0)}}{d^\alpha}\qty(\norm{u}_{\infty}+d^2\norm{f}_{\infty})\abs{x}^\alpha 
+    \end{equation}
+    となる．$x\in \Om',\ \abs{x}\geq 2^{-k_0}d$ならば，
+    \begin{equation}
+        \abs{u(x)-u(0)}\leq 2\norm{u}_{\infty}\leq \frac{2^{1+\alpha k_0}}{d^\alpha}\norm{u}_{\infty}\abs{x}^\alpha 
+    \end{equation}
+    となり，結論が得られた．
+\end{proof}
+\subsection{Schauder評価}
+系\ref{cor:laplacian_regularity}で見たように，2階楕円型方程式における正則性評価は，典型的には「$-\Delta u=f$ならば$u$は$f$より2回多く微分できる」と主張する．本節で取り扱うSchauder評価は，Hölder正則性に関するそのような評価の一つである．そこで重要となるのは解のノルムに関するアプリオリ評価である．
+\subsubsection{アプリオリ評価}
+\begin{thm}\label{thm:schauder_laplacian_apriori}
+    $u\in C^{2}(\Om)\cap L^\infty(\Om),\ f\in C^{0,\alpha}(\Ombar),\ \alpha\in(0,1)$が$-\Delta u=f\inn\Om$を満たすとする．このとき$u\in C^{2,\alpha}(\Om)$であり，任意の$\Om'\ssubset \Om$に対して
+    \begin{equation}
+        [u]_{2,\alpha;\Om'}\leq C_{n,\alpha}d^{-2-\alpha}(\abs{u}_{0;\Om}+d^{2+\alpha}[f]_{0,\alpha;\Om}),\quad (d=\dist(\Om',\pOm))
+    \end{equation}
+    が成り立つ．
+\end{thm}
+\begin{proof}
+    $y,z\in\Om'$に対して
+    \begin{equation}
+        \abs{D^2u(z)-D^2u(y)}\leq C d^{-2-\alpha}(\abs{u}_{0;\Om}+d^{2+\alpha}[f]_{0,\alpha;\Om})\abs{y-z}^{\alpha} 
+    \end{equation}
+    を示す．まず$\abs{y-z}\leq 2^{-4}d$の場合を考える．平行移動により$y=0$としてよい．系\ref{cor:int_est_der}より
+    \begin{align}
+        -\Delta w=0\inn B_{\rho}&\Longrightarrow [w]_{\kappa;B_{\rho/2}}\leq C_{n,\kappa} \rho^{-\kappa}\abs{w}_{0;B_{\rho}}\quad (\kappa\geq0)\label{eq:harmonic_int_estimate}\\
+        -\Delta w=\lambda\ \text{(const.)}\inn B_{\rho}&\Longrightarrow [w]_{2;B_{\rho/2}}\leq C_n \qty(\rho^{-2}\abs{w}_{0;B_{\rho}}+\abs{\lambda })\label{eq:const_poisson_int_estimate}
+    \end{align}
+    に注意する．なお\eqref{eq:const_poisson_int_estimate}は調和関数$w-\lambda\abs{x}^2/2n$に\eqref{eq:harmonic_int_estimate}を適用すると得られる．
+
+    \paragraph*{\#1}$k=0,1,2,\ldots,$に対して，$u_k$を
+    \begin{equation}
+        \left\{
+            \begin{array}{rl}
+                -\Delta u_k = f(0) & \text{in $B_{2^{-k}d}$}\\
+                u_k=u\quad\  & \text{on $\partial B_{2^{-k}d}$}
+            \end{array}
+        \right.
+    \end{equation}
+    の解とする．$u_k-u$と$\pm(2n)^{-1}\abs{f(0)-f}_{0;B_{2^{-k}d}}\qty(\abs{x}^2-(2^{-k}d)^2)$に比較原理を適用して($-\Delta(u_k-u)=f-f(0)$に注意して)
+    \begin{equation}
+        \begin{split}
+            \abs{u_k-u}_{0;B_{2^{-k}d}}&\leq C(2^{-k}d)^2\abs{f-f(0)}_{0;B_{2^{-k}d}}\leq C(2^{-k}d)^2 [f]_{0,\alpha;\Om}(2^{-k}d)^{\alpha}\\
+        &\leq Cd^{2+\alpha}[f]_{0,\alpha;\Om}2^{-k(2+\alpha)}
+        \end{split}\label{eq:laplacian_schauder_1}
+    \end{equation}
+    したがって三角不等式より
+    \begin{equation}
+        \abs{u_{k+1}-u_k}_{0;B_{2^{-k-1}d}}\leq Cd^{2+\alpha}[f]_{0,\alpha;\Om}2^{-k(2+\alpha)}\quad (k\geq0 )\label{eq:laplacian_schauder_2}
+    \end{equation}
+    を得る．また$u_{k+1}-u_k$は調和なので\eqref{eq:harmonic_int_estimate}，\eqref{eq:laplacian_schauder_2}式より
+    \begin{equation}
+        \abs{u_{k+1}-u_k}_{2;B_{2^{-k-2}d}}\leq C(2^{-k-2}d)^{-2}\abs{u_{k+1}-u_k}_{0;B_{2^{-k-1}d}}\leq Cd^{\alpha}[f]_{0,\alpha;\Om}2^{-k\alpha} \label{eq:laplacian_schauder_3}
+    \end{equation}
+    が成り立つ．
+    
+    \paragraph*{\#2}次を示す：
+    \begin{equation}
+        D^2u(0)=\lim_{k\to\infty}D^2 u_k(0)\label{eq:laplacian_schauder_4}
+    \end{equation}
+    $\widetilde{}{u}(x)\coloneq u(0)+x\cdot Du(0)x+\frac{1}{2}x\cdot D^2u(0)x$を$0$まわりの2次までのTaylor展開とする．$u\in C^2(\Om)$より$u(x)-\widetilde{u}(x)=o(\abs{x}^2)\ (x\to0)$である．また$u_k-\widetilde{u}$は調和なので，\eqref{eq:harmonic_int_estimate}などより
+    \begin{align}
+        \abs{D^2u_k(0)-D^2u(0)}&=\abs{D^2u_k(0)-D^2\widetilde{u}(0)}\\
+        &\leq \abs{u_k-\widetilde{u}}_{2;B_{2^{-k-1}d}}\\
+        &\leq C(2^{-k}d)^{-2}\abs{u_k-\widetilde{u}}_{0;B_{2^{-k}d}}\\
+        &=C(2^{-k}d)^{-2}\norm{u-\widetilde{u}}_{L^\infty(\partial B_{2^{-k}d})}\to 0\quad (\text{as $k\to\infty$})
+    \end{align}
+    よって\eqref{eq:laplacian_schauder_4}が示された．
+
+    \paragraph*{\#3}さて，$z\in \Om',\ \abs{z}<2^{-4}d$とする．$k\in\Nset$で$2^{-k-4}d\leq \abs{z}<2^{-k-3}d$となるものを取る．
+    \begin{equation}
+        \abs{D^2u(z)-D^2u(0)}\leq \abs{D^2 u(0)-D^2u_k(0)}+\abs{D^2u_k(z)-D^2u(z)}+\abs{D^2u_k(0)-D^2u_k(z)}\label{eq:laplacian_schauder_5}
+    \end{equation}
+    と分けて各項を評価する：
+
+    \paragraph*{\#4}まず第1項を評価する．\eqref{eq:laplacian_schauder_3}，\eqref{eq:laplacian_schauder_4}より
+    \begin{equation}
+        \abs{D^2u(0)-D^2u_k(0)}\leq \sum_{j=k}^\infty\abs{D^2u_j(0)-D^2u_{j+1}(0)}\leq Cd^\alpha [f]_{0,\alpha;\Om}\sum_{j=k}^\infty 2^{-j\alpha}\leq Cd^\alpha [f]_{0,\alpha;\Om}2^{-k\alpha }
+    \end{equation}
+    \paragraph*{\#5}第2項の評価．ほぼ第1項のときと同じである．$v_j$を
+    \begin{equation}
+        \left\{
+            \begin{array}{rl}
+                -\Delta v_j = f(z) & \text{in $B_{2^{-j}d}(z)$}\\
+                v_j=u\quad\  & \text{on $\partial B_{2^{-j}d}(z)$}
+            \end{array}
+        \right.
+    \end{equation}
+    の解とする($j=0,1,2,\ldots$)．
+    \begin{equation}
+        \abs{D^2u_k(z)-D^2u(z)}\leq \abs{D^2u_k(z)-D^2v_k(z)}+\abs{D^2v_k(z)-D^2u(z)}
+    \end{equation}
+    と分ける．第2項は先ほどと同様に
+    \begin{equation}
+        \abs{D^2v_k(z)-D^2u(z)}\leq Cd^{\alpha}[f]_{0,\alpha;\Om}2^{-k\alpha} 
+    \end{equation}
+    と評価される．第1項について，$\abs{z}<2^{-k-3}d$より$B_{2^{-k}d}\cap B_{2^{-k}d}(z)\supset B_{2^{-k-1}}(z)$であることに注意して
+    \begin{align}
+        \abs{D^2u_k(z)-D^2v_k(z)}&\leq \abs{u_k-v_k}_{2;B_{2^{-k-2}d}(z)}\\
+        &\leq C\qty((2^{-k}d)^{-2}\abs{u_k-v_k}_{0;B_{2^{-k-1}d}(z)}+\abs{f(0)-f(z)})\\
+        &\leq C\qty((2^{-k}d)^{-2}\abs{u_k-v_k}_{0;B_{2^{-k-1}d}(z)}+[f]_{0,\alpha;\Om}(2^{-k}d)^{\alpha})
+    \end{align}
+    さらに\eqref{eq:laplacian_schauder_1}式より
+    \begin{align}
+        \abs{u_k-v_k}_{0;B_{2^{-k-1}d}(z)}&\leq \abs{u_k-u}_{0;B_{2^{-k-1}d}(z)}+\abs{u-v_k}_{0;B_{2^{-k-1}d}(z)}\\
+        &\leq \abs{u_k-u}_{B_{2^{-k}d}}+\abs{u-v_k}_{0;B_{2^{-k-1}d}(z)}\\
+        &\leq Cd^{2+\alpha}[f]_{0,\alpha;\Om}2^{-k(2+\alpha)} 
+    \end{align}
+    以上より，
+    \begin{equation}
+        \abs{D^2u_k(z)-D^2v_k(z)}\leq Cd^{\alpha}[f]_{0,\alpha;\Om}2^{-k\alpha}
+    \end{equation}
+    を得る．
+
+    \paragraph{\#6}最後に\eqref{eq:laplacian_schauder_5}の第3項を評価する．$j=1,2,\ldots$に対して$h_j\coloneq u_j-u_{j-1}$は$B_{2^{-j}d}$で調和である．\eqref{eq:harmonic_int_estimate}で$\kappa=3$とした場合より
+    \begin{align}
+        \abs{\frac{D^2h_j(z)-D^2h_j(0)}{\abs{z}}}&\leq \abs{h_{j}}_{3;B_{2^{-k-3}d}}\\
+        &\leq C(2^{-j}d)^{-3}\abs{h_j}_{0;B_{2^{-j}d}}\\
+        &\leq C(2^{-j}d)^{-3}\cdot d^{2+\alpha}[f]_{0,\alpha;\Om}2^{-j(2+\alpha)}\quad (\text{\eqref{eq:laplacian_schauder_2}を用いた})\\
+        &\leq Cd^{-1+\alpha}[f]_{0,\alpha;\Om}2^{j(1-\alpha)}
+    \end{align}
+    となる．したがって
+    \begin{align}
+        \abs{D^2u_k(z)-D^2u_k(0)}&\leq \abs{D^2u_0(z)-D^2u_0(0)}+\sum_{j=1}^k\abs{D^2h_j(z)-D^2h_j(0)}\\
+        &\leq \abs{D^2u_0(z)-D^2u_0(0)}+Cd^{-1+\alpha}[f]_{0,\alpha;\Om}\abs{z}\sum_{j=1}^k2^{j(1-\alpha)}\\
+        &\leq\abs{D^2u_0(z)-D^2u_0(0)}+Cd^{-1+\alpha}[f]_{0,\alpha;\Om}\abs{z}2^{k(1-\alpha)}
+    \end{align}
+    また，$w=u_0-(2n)^{-1}f(0)(\abs{x}^2-d^2)$とおくと$-\Delta w=0\inn B_d,\ w=u_0\on \partial B_d$かつ$D^3u_0=D^3w$である．よって
+    \begin{equation}
+        \abs{\frac{D^2u_0(z)-D^2u_0(0)}{\abs{z}}}\leq \abs{u_0}_{3;B_{d/2}}\leq \abs{w}_{3;B_{d/2}}\leq Cd^{-3}\abs{w}_{0;B_d}\leq Cd^{-3}\abs{w}_{0;\partial B_d}\leq Cd^{-3}\abs{u_0}_{0;B_d}
+    \end{equation}
+    であり，\eqref{eq:laplacian_schauder_1}より$\abs{u_0}_{0;B_{d}}\leq Cd^{2+\alpha}[f]_{0,\alpha;\Om}+\abs{u}_{0;\Om}$なので
+    \begin{equation}
+        \abs{D^2u_0(z)-D^2u_0(0)}\leq Cd^{-3}\abs{z}\qty(d^{2+\alpha}[f]_{0,\alpha;\Om}+\abs{u}_{0;\Om})
+    \end{equation}
+    $\abs{z}\leq 2^{-k-3}d$に注意すると
+    \begin{align}
+        \abs{D^2u_k(z)-D^2u_k(0)}&\leq C\qty(d^{-2}\abs{u}_{0,\Om}+d^{\alpha}[f]_{0,\alpha;\Om})2^{-k\alpha} 
+    \end{align}
+    を得る．
+
+    \#4，\#5，\#6より\eqref{eq:laplacian_schauder_5}の右辺が
+    \begin{align}
+        \abs{D^2u(z)-D^2u(0)}&\leq C\qty(d^{-2}\abs{u}_{0,\Om}+d^{\alpha}[f]_{0,\alpha;\Om})2^{-k\alpha}\\
+        &\leq Cd^{-2-\alpha}\qty(\abs{u}_{0,\Om}+d^{2+\alpha}[f]_{0,\alpha;\Om})\abs{z}^\alpha\quad (\forall z\in B_{2^{-4}d}) 
+    \end{align}
+    と評価されることが示された．これで$\abs{y-z}<2^{-4}d$の場合に証明できた．
+
+    \paragraph*{\#7}以上で示されたのは，任意の$y\in\Om'$に対して$u\in C^{2,\alpha}(\overline{\Om'\cap B_{2^{-5}d}(y)})$かつ
+    \begin{equation}
+        [u]_{2,\alpha;\Om'\cap B_{2^{-5}d}(y)}\leq Cd^{-2-\alpha}\qty(\abs{u}_{0;\Om}+d^{2+\alpha}[f]_{0,\alpha;\Om})
+    \end{equation}
+    だということである．Hölderセミノルムに関する補間不等式(定理\ref{thm:holder_interpolation})より
+    \begin{equation}
+        d^2[u]_{2;\Om'\cap B_{2^{-5}d}(y)}\leq C\qty(\abs{u}_{0;\Om}+d^{2+\alpha}[f]_{0,\alpha;\Om}) 
+    \end{equation}
+    が成り立つ．
+
+    さて，$y,z\in \Om',\ \abs{y-z}\geq 2^{-4}d$ならば
+    \begin{align}
+        \abs{D^2u(y)-D^2u(z)}&\leq [u]_{2;\Om'\cap B_{2^{-5}d}(y)}+[u]_{2;\Om'\cap B_{2^{-5}d}(z)}\\
+        &\leq 2Cd^{-2}\qty(\abs{u}_{0;\Om}+d^{2+\alpha}[f]_{0,\alpha;\Om})\qty(\frac{16\abs{y-z}}{d})^{\alpha}\\
+        &\leq Cd^{-2-\alpha}\qty(\abs{u}_{0;\Om}+d^{2+\alpha}[f]_{0,\alpha;\Om})\abs{y-z}^\alpha 
+    \end{align}
+    である．以上で証明が終了した．
+\end{proof}
+\subsubsection{アプリオリ評価からの帰結}
+\begin{cor}
+    $u\in H^1(\Om)\cap L^\infty(\Om),\ f\in C^{0,\alpha}(\Ombar),\ \alpha\in (0,1)$は$-\Delta u=f$ weakly in $\Om$を満たすとする．このとき$u\in C^{2,\alpha}(\Om)$であり，定理\ref{thm:schauder_laplacian_apriori}の評価が成り立つ．
+\end{cor}
+\begin{proof}
+    $\qty{\eta_\varepsilon}_{\varepsilon>0}$をmollifierの列とする．つまり$\eta\in C_c^\infty(B_1),\ \eta\geq0,\ \int_{B_1}\eta\,dx=1$を取り$\eta_\varepsilon(x)=\eta^{-n}\eta(x/\varepsilon)$とおく．すると$\eta_\varepsilon\in C_c^\infty(B_\varepsilon)$かつ$\int_{B_\varepsilon}\eta\,dx=1$である．
+    \begin{equation}
+        u_\varepsilon\coloneq u\ast \eta_\varepsilon\inn \Om_\varepsilon=\qty{x\in \Om\mid\dist(x,\pOm)>\varepsilon}
+    \end{equation}
+    とおく．つまり
+    \begin{equation}
+        u_{\varepsilon}(x)=\int_{B_{\varepsilon}}u(x-y)\eta_{\varepsilon}(y)\,dy\quad (x\in \Om_{\varepsilon})
+    \end{equation}
+    である．すると$u_\varepsilon\in C^\infty(\Om_\varepsilon)$であり
+    \begin{equation}
+        -\Delta u_{\varepsilon}=f\ast \eta_{\varepsilon}\eqcolon f_{\varepsilon}\inn \Om_{\varepsilon}
+    \end{equation}
+    である(弱微分とconvolutionは交換し，$u_{\varepsilon}$は滑らかなので弱微分と強微分は一致する)．よって定理\ref{thm:schauder_laplacian_apriori}より
+    \begin{equation}
+        \abs{u_{\varepsilon}}_{2,\alpha;\Om'}\leq C_{n,\alpha}\qty((d-\varepsilon)^{-2-\alpha}\abs{u_{\varepsilon}}_{0;\Om_{\varepsilon}}+[f_{\varepsilon}]_{0,\alpha;\Om_{\varepsilon}})\label{eq:laplacian_schauder_cor}
+    \end{equation}
+    である．今，任意の$x,y\in \Om_{\varepsilon}$に対して
+    \begin{align}
+        \abs{u_{\varepsilon}(x)}&\leq \int_{B_{\varepsilon}}\abs{u(x-z)}\eta_{\varepsilon}(z)\,dz\leq \norm{u}_{L^\infty(\Om)},\\
+        \abs{f_\varepsilon(x)-f_{\varepsilon}(y)}&\leq \int_{B_{\varepsilon}}\abs{f(x-z)-f(y-z)}\eta_{\varepsilon}(z)\,dz \leq [f]_{0,\alpha;\Om}\abs{x-y}^{\alpha}
+    \end{align}
+    が成り立つ．つまり
+    \begin{equation}
+        [u_{\varepsilon}]_{0;\Om_{\varepsilon}}\leq \norm{u}_{L^\infty(\Om)},\quad \abs{f_{\varepsilon}}_{0,\alpha;\Om_\varepsilon}\leq \abs{f}_{0,\alpha;\Om} 
+    \end{equation}
+    である．したがって$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$C^{2,\alpha}(\overline{\Om'})$の有界列である．定理\ref{thm:holder_cpt_emb}のコンパクト埋め込み$C^{k,\alpha}\subset C^{k}$より$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$\overline{\Om'}$上$C^k$-収束する部分列を持つが，補題\ref{lem:holder_sn_lsc}より$u\in C^{2,\alpha}(\overline{\Om'})$を得る．
+\end{proof}
+\section{楕円型線形微分作用素}
+
+
+\section{非線形方程式：Hilbertの第19問題}
+\end{document}
