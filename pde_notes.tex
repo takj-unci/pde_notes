@@ -1528,7 +1528,7 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \begin{equation}
         D^2u(0)=\lim_{k\to\infty}D^2 u_k(0)\label{eq:laplacian_schauder_4}
     \end{equation}
-    $\widetilde{}{u}(x)\coloneq u(0)+x\cdot Du(0)x+\frac{1}{2}x\cdot D^2u(0)x$を$0$まわりの2次までのTaylor展開とする．$u\in C^2(\Om)$より$u(x)-\widetilde{u}(x)=o(\abs{x}^2)\ (x\to0)$である．また$u_k-\widetilde{u}$は調和なので，\eqref{eq:harmonic_int_estimate}などより
+    $\widetilde{u}(x)\coloneq u(0)+x\cdot Du(0)x+\frac{1}{2}x\cdot D^2u(0)x$を$0$まわりの2次までのTaylor展開とする．$u\in C^2(\Om)$より$u(x)-\widetilde{u}(x)=o(\abs{x}^2)\ (x\to0)$である．また$u_k-\widetilde{u}$は調和なので，\eqref{eq:harmonic_int_estimate}などより
     \begin{align}
         \abs{D^2u_k(0)-D^2u(0)}&=\abs{D^2u_k(0)-D^2\widetilde{u}(0)}\\
         &\leq \abs{u_k-\widetilde{u}}_{2;B_{2^{-k-1}d}}\\
@@ -1537,63 +1537,63 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \end{align}
     よって\eqref{eq:laplacian_schauder_4}が示された．
 
-    \paragraph*{\#3}さて，$z\in \Om',\ \abs{z}<2^{-4}d$とする．$k\in\Nset$で$2^{-k-4}d\leq \abs{z}<2^{-k-3}d$となるものを取る．
+    \paragraph*{\#3}さて，$z\in \Om',\ \abs{z}<2^{-4}d$とする．$k_0\in\Nset$で$2^{-k_0-4}d\leq \abs{z}<2^{-k_0-3}d$となるものを取る．
     \begin{equation}
-        \abs{D^2u(z)-D^2u(0)}\leq \abs{D^2 u(0)-D^2u_k(0)}+\abs{D^2u_k(z)-D^2u(z)}+\abs{D^2u_k(0)-D^2u_k(z)}\label{eq:laplacian_schauder_5}
+        \abs{D^2u(z)-D^2u(0)}\leq \abs{D^2 u(0)-D^2u_{k_0}(0)}+\abs{D^2u_{k_0}(z)-D^2u(z)}+\abs{D^2u_{k_0}(0)-D^2u_{k_0}(z)}\label{eq:laplacian_schauder_5}
     \end{equation}
     と分けて各項を評価する：
 
     \paragraph*{\#4}まず第1項を評価する．\eqref{eq:laplacian_schauder_3}，\eqref{eq:laplacian_schauder_4}より
     \begin{equation}
-        \abs{D^2u(0)-D^2u_k(0)}\leq \sum_{j=k}^\infty\abs{D^2u_j(0)-D^2u_{j+1}(0)}\leq Cd^\alpha [f]_{0,\alpha;\Om}\sum_{j=k}^\infty 2^{-j\alpha}\leq Cd^\alpha [f]_{0,\alpha;\Om}2^{-k\alpha }
+        \abs{D^2u(0)-D^2u_{k_0}(0)}\leq \sum_{k=k_0}^\infty\abs{D^2u_k(0)-D^2u_{k+1}(0)}\leq Cd^\alpha [f]_{0,\alpha;\Om}\sum_{k=k_{0}}^\infty 2^{-k\alpha}\leq Cd^\alpha [f]_{0,\alpha;\Om}2^{-k_0\alpha }
     \end{equation}
-    \paragraph*{\#5}第2項の評価．ほぼ第1項のときと同じである．$v_j$を
+    \paragraph*{\#5}第2項の評価．ほぼ第1項のときと同じである．$v_k$を
     \begin{equation}
         \left\{
             \begin{array}{rl}
-                -\Delta v_j = f(z) & \text{in $B_{2^{-j}d}(z)$}\\
-                v_j=u\quad\  & \text{on $\partial B_{2^{-j}d}(z)$}
+                -\Delta v_k = f(z) & \text{in $B_{2^{-k}d}(z)$}\\
+                v_k=u\quad\  & \text{on $\partial B_{2^{-k}d}(z)$}
             \end{array}
         \right.
     \end{equation}
-    の解とする($j=0,1,2,\ldots$)．
+    の解とする($k=0,1,2,\ldots$)．
     \begin{equation}
-        \abs{D^2u_k(z)-D^2u(z)}\leq \abs{D^2u_k(z)-D^2v_k(z)}+\abs{D^2v_k(z)-D^2u(z)}
+        \abs{D^2u_{k_0}(z)-D^2u(z)}\leq \abs{D^2u_{k_0}(z)-D^2v_{k_0}(z)}+\abs{D^2v_{k_0}(z)-D^2u(z)}
     \end{equation}
     と分ける．第2項は先ほどと同様に
     \begin{equation}
-        \abs{D^2v_k(z)-D^2u(z)}\leq Cd^{\alpha}[f]_{0,\alpha;\Om}2^{-k\alpha} 
+        \abs{D^2v_{k_0}(z)-D^2u(z)}\leq Cd^{\alpha}[f]_{0,\alpha;\Om}2^{-k_0\alpha} 
     \end{equation}
-    と評価される．第1項について，$\abs{z}<2^{-k-3}d$より$B_{2^{-k}d}\cap B_{2^{-k}d}(z)\supset B_{2^{-k-1}}(z)$であることに注意して
+    と評価される．第1項について，$\abs{z}<2^{-k_0-3}d$より$B_{2^{-k_0}d}\cap B_{2^{-k_0}d}(z)\supset B_{2^{-k_0-1}d}(z)$であることに注意して
     \begin{align}
-        \abs{D^2u_k(z)-D^2v_k(z)}&\leq \abs{u_k-v_k}_{2;B_{2^{-k-2}d}(z)}\\
-        &\leq C\qty((2^{-k}d)^{-2}\abs{u_k-v_k}_{0;B_{2^{-k-1}d}(z)}+\abs{f(0)-f(z)})\\
-        &\leq C\qty((2^{-k}d)^{-2}\abs{u_k-v_k}_{0;B_{2^{-k-1}d}(z)}+[f]_{0,\alpha;\Om}(2^{-k}d)^{\alpha})
+        \abs{D^2u_{k_0}(z)-D^2v_{k_0}(z)}&\leq \abs{u_{k_0}-v_{k_0}}_{2;B_{2^{-k_0-2}d}(z)}\\
+        &\leq C\qty((2^{-k_0}d)^{-2}\abs{u_{k_0}-v_{k_0}}_{0;B_{2^{-k_0-1}d}(z)}+\abs{f(0)-f(z)})\\
+        &\leq C\qty((2^{-k_0}d)^{-2}\abs{u_{k_0}-v_{k_0}}_{0;B_{2^{-k_0-1}d}(z)}+[f]_{0,\alpha;\Om}(2^{-k_0}d)^{\alpha})
     \end{align}
     ここで\eqref{eq:const_poisson_int_estimate}を用いた．さらに\eqref{eq:laplacian_schauder_1}式より
     \begin{align}
-        \abs{u_k-v_k}_{0;B_{2^{-k-1}d}(z)}&\leq \abs{u_k-u}_{0;B_{2^{-k-1}d}(z)}+\abs{u-v_k}_{0;B_{2^{-k-1}d}(z)}\\
-        &\leq \abs{u_k-u}_{B_{2^{-k}d}}+\abs{u-v_k}_{0;B_{2^{-k-1}d}(z)}\\
-        &\leq Cd^{2+\alpha}[f]_{0,\alpha;\Om}2^{-k(2+\alpha)} 
+        \abs{u_{k_0}-v_{k_0}}_{0;B_{2^{-k_0-1}d}(z)}&\leq \abs{u_{k_0}-u}_{0;B_{2^{-k_0-1}d}(z)}+\abs{u-v_{k_0}}_{0;B_{2^{-k_0-1}d}(z)}\\
+        &\leq \abs{u_{k_0}-u}_{B_{2^{-k_0}d}}+\abs{u-v_{k_0}}_{0;B_{2^{-k_0-1}d}(z)}\\
+        &\leq Cd^{2+\alpha}[f]_{0,\alpha;\Om}2^{-k_0(2+\alpha)} 
     \end{align}
     以上より，
     \begin{equation}
-        \abs{D^2u_k(z)-D^2v_k(z)}\leq Cd^{\alpha}[f]_{0,\alpha;\Om}2^{-k\alpha}
+        \abs{D^2u_{k_0}(z)-D^2v_{k_0}(z)}\leq Cd^{\alpha}[f]_{0,\alpha;\Om}2^{-k_0\alpha}
     \end{equation}
     を得る．
 
-    \paragraph{\#6}最後に\eqref{eq:laplacian_schauder_5}の第3項を評価する．$j=1,2,\ldots,k$に対して$h_j\coloneq u_j-u_{j-1}$は$B_{2^{-j}d}$で調和である．\eqref{eq:harmonic_int_estimate}で$\kappa=3$とした場合より
+    \paragraph{\#6}最後に\eqref{eq:laplacian_schauder_5}の第3項を評価する．$k=1,2,\ldots,k_0$に対して$h_k\coloneq u_k-u_{k-1}$は$B_{2^{-k}d}$で調和である．\eqref{eq:harmonic_int_estimate}で$\kappa=3$とした場合より
     \begin{align}
-        \abs{\frac{D^2h_j(z)-D^2h_j(0)}{\abs{z}}}&\leq [h_{j}]_{3;B_{2^{-k-3}d}}\\
-        &\leq C(2^{-j}d)^{-3}\abs{h_j}_{0;B_{2^{-j}d}}\\
-        &\leq C(2^{-j}d)^{-3}\cdot d^{2+\alpha}[f]_{0,\alpha;\Om}2^{-j(2+\alpha)}\quad (\text{\eqref{eq:laplacian_schauder_2}を用いた})\\
-        &\leq Cd^{-1+\alpha}[f]_{0,\alpha;\Om}2^{j(1-\alpha)}
+        \abs{\frac{D^2h_k(z)-D^2h_k(0)}{\abs{z}}}&\leq [h_{k}]_{3;B_{2^{-k_0-3}d}}\\
+        &\leq C(2^{-k}d)^{-3}\abs{h_k}_{0;B_{2^{-k}d}}\\
+        &\leq C(2^{-k}d)^{-3}\cdot d^{2+\alpha}[f]_{0,\alpha;\Om}2^{-k(2+\alpha)}\quad (\text{\eqref{eq:laplacian_schauder_2}を用いた})\\
+        &\leq Cd^{-1+\alpha}[f]_{0,\alpha;\Om}2^{k(1-\alpha)}
     \end{align}
     となる．したがって
     \begin{align}
-        \abs{D^2u_k(z)-D^2u_k(0)}&\leq \abs{D^2u_0(z)-D^2u_0(0)}+\sum_{j=1}^k\abs{D^2h_j(z)-D^2h_j(0)}\\
-        &\leq \abs{D^2u_0(z)-D^2u_0(0)}+Cd^{-1+\alpha}[f]_{0,\alpha;\Om}\abs{z}\sum_{j=1}^k2^{j(1-\alpha)}\\
-        &\leq\abs{D^2u_0(z)-D^2u_0(0)}+Cd^{-1+\alpha}[f]_{0,\alpha;\Om}\abs{z}2^{k(1-\alpha)}
+        \abs{D^2u_{k_0}(z)-D^2u_{k_0}(0)}&\leq \abs{D^2u_0(z)-D^2u_0(0)}+\sum_{k=1}^{k_0}\abs{D^2h_k(z)-D^2h_k(0)}\\
+        &\leq \abs{D^2u_0(z)-D^2u_0(0)}+Cd^{-1+\alpha}[f]_{0,\alpha;\Om}\abs{z}\sum_{k=1}^{k_0}2^{k(1-\alpha)}\\
+        &\leq\abs{D^2u_0(z)-D^2u_0(0)}+Cd^{-1+\alpha}[f]_{0,\alpha;\Om}\abs{z}2^{k_0(1-\alpha)}
     \end{align}
     また，$w=u_0-(2n)^{-1}f(0)(\abs{x}^2-d^2)$とおくと$-\Delta w=0\inn B_d,\ w=u_0\on \partial B_d$かつ$D^3u_0=D^3w$である．よって
     \begin{equation}
@@ -1605,13 +1605,13 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \end{equation}
     $\abs{z}\leq 2^{-k-3}d$に注意すると
     \begin{align}
-        \abs{D^2u_k(z)-D^2u_k(0)}&\leq C\qty(d^{-2}\abs{u}_{0,\Om}+d^{\alpha}[f]_{0,\alpha;\Om})2^{-k\alpha} 
+        \abs{D^2u_{k_0}(z)-D^2u_{k_0}(0)}&\leq C\qty(d^{-2}\abs{u}_{0,\Om}+d^{\alpha}[f]_{0,\alpha;\Om})2^{-k_0\alpha} 
     \end{align}
     を得る．
 
     \#4，\#5，\#6より\eqref{eq:laplacian_schauder_5}の右辺が
     \begin{align}
-        \abs{D^2u(z)-D^2u(0)}&\leq C\qty(d^{-2}\abs{u}_{0,\Om}+d^{\alpha}[f]_{0,\alpha;\Om})2^{-k\alpha}\\
+        \abs{D^2u(z)-D^2u(0)}&\leq C\qty(d^{-2}\abs{u}_{0,\Om}+d^{\alpha}[f]_{0,\alpha;\Om})2^{-k_0\alpha}\\
         &\leq Cd^{-2-\alpha}\qty(\abs{u}_{0,\Om}+d^{2+\alpha}[f]_{0,\alpha;\Om})\abs{z}^\alpha\quad (\forall z\in B_{2^{-4}d}) 
     \end{align}
     と評価されることが示された．これで$\abs{y-z}<2^{-4}d$の場合に証明できた．
@@ -1664,7 +1664,7 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \begin{equation}
         [u_{\varepsilon}]_{0;\Om_{\varepsilon}}\leq \norm{u}_{L^\infty(\Om)},\quad \abs{f_{\varepsilon}}_{0,\alpha;\Om_\varepsilon}\leq \abs{f}_{0,\alpha;\Om} 
     \end{equation}
-    である．したがって$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$C^{2,\alpha}(\overline{\Om'})$の有界列である．定理\ref{thm:holder_cpt_emb}のコンパクト埋め込み$C^{k,\alpha}\subset C^{k}$より$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$\overline{\Om'}$上$C^k$-収束する部分列を持つが，補題\ref{lem:holder_sn_lsc}より$u\in C^{2,\alpha}(\overline{\Om'})$を得る．
+    である．したがって$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$C^{2,\alpha}(\overline{\Om'})$の有界列である．定理\ref{thm:holder_cpt_emb}のコンパクト埋め込み$C^{2,\alpha}\ssubset C^{2}$より$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$\overline{\Om'}$上$C^2$-収束する部分列を持つが，補題\ref{lem:holder_sn_lsc}より$u\in C^{2,\alpha}(\overline{\Om'})$を得る．
 \end{proof}
 \section{楕円型線形微分作用素}
 
