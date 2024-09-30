@@ -13,6 +13,7 @@
 \usepackage{mathrsfs}
 \usepackage{tikz}
 \usepackage{tipa}
+\usepackage{physics}
 \usetikzlibrary{cd}
 \setcounter{tocdepth}{2}
 \newcommand{\Rset}{\mathbb{R}}
@@ -21,7 +22,7 @@
 \newcommand{\Qset}{\mathbb{Q}}
 \newcommand{\Cset}{\mathbb{C}}
 \newcommand{\opensub}{\underset{\text{open}}{\subset}}
-\newcommand{\closedsub}{\underset{\text{closed}}{\subset}}
+\newcommand{\closedsub}{\underset{\t\DeclareMathOperator*{\div}{\mathrm{div}}ext{closed}}{\subset}}
 \newcommand{\transpose}[1]{\prescript{t}{}{#1}}
 \newcommand{\Om}{\Omega}
 \newcommand{\pOm}{\partial\Omega}
@@ -38,9 +39,10 @@
 \DeclareMathOperator{\dist}{\mathrm{dist}}
 \DeclareMathOperator{\supp}{\mathrm{supp}}
 \DeclareMathOperator*{\osc}{\mathrm{osc}}
+\let\div\relax
+\DeclareMathOperator{\div}{\mathrm{div}}
 \mathtoolsset{showonlyrefs=true}
 \numberwithin{equation}{section}
-\usepackage{physics}
 % 画像
 \usepackage{graphicx}
 
@@ -1685,7 +1687,7 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \end{equation}
     である．したがって$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$C^{2,\alpha}(\overline{\Om'})$の有界列である．定理\ref{thm:holder_cpt_emb}のコンパクト埋め込み$C^{2,\alpha}\ssubset C^{2}$より$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$\overline{\Om'}$上$C^2$-収束する部分列を持つが，補題\ref{lem:holder_sn_lsc}より$u\in C^{2,\alpha}(\overline{\Om'})$を得る．
 \end{proof}
-\section{楕円形線形微分作用素に対するSchauder評価}
+\section{楕円型線形微分作用素に対するSchauder評価}
 \subsection{非発散型作用素の場合}
 次の微分作用素を考える：
 \begin{equation}
@@ -1757,7 +1759,7 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \end{align}
     より矛盾．
 
-    \paragraph*{\#2}結論を示す．$R>0$を十分大きく取って$\Om\subset \qty{x\in\Rset^n \abs{x_1}< R}$となるようにする．任意の$\varepsilon>0$に対して
+    \paragraph*{\#2}結論を示す．$R>0$を十分大きく取って$\Om\subset \qty{x\in\Rset^n\mid \abs{x_1}< R}$となるようにする．任意の$\varepsilon>0$に対して
     \begin{equation}
         u_{\varepsilon}(x)\coloneq u(x)+\varepsilon e^{x_1}
     \end{equation}
@@ -1969,6 +1971,237 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
      \end{equation}
      を得る．
 \end{proof}
+\begin{cor}[Higher order regularity]
+    $a^{ij}\in C^{k,\alpha}(\Ombar),\ 0<\alpha<1,\ k\in\Zset_{\geq0}$とする．$u\in C^{k+2,\alpha}(\Ombar),\ f\in C^{k,\alpha}(\Ombar)$が
+    \begin{equation}
+        -Lu=f\inn \Om  
+    \end{equation}
+    を満たすならば，任意の$\Om'\ssubset \Om$に対して
+    \begin{equation}
+        \abs{u}_{k+2,\alpha;\Om'}\leq C(\abs{u}_{0;\Om}+\abs{f}_{k,\alpha;\Om})
+    \end{equation}
+    が成り立つ．ここで
+    \begin{equation}
+        C=C_{n,k,\alpha,\lambda,\Lambda,K,\Om,\Om'},\quad K=\sum_{i,j}|a^{ij}|_{k,\alpha;\Om} 
+    \end{equation}
+    である．
+\end{cor}
+\begin{proof}
+    $\Om=B_1,\ \Om'=B_{1/2}$の場合に限って示す．$k=0$の場合は示されている．そこで以下$k-1\ (k\geq1)$での成立を仮定し，$a^{ij},u,f$が定理の仮定を満たすとする．$e\in\Rset^n,\ \abs{e}=1$として$-\sum_{i,j}a^{ij}D_{ij}u=f$を$e$方向に微分して
+    \begin{equation}
+        -\sum_{i,j}a^{ij}D_{ij}D_eu=D_ef+\sum_{i,j}D_ea^{ij}D_{ij}u
+    \end{equation}
+    となる．この式の左辺は$C^{k-1,\alpha}(\Ombar)$に含まれるので，帰納法より($\Om=B_{3/4},\ \Om'=B_{1/2}$に適用して)
+    \begin{equation}
+        [D_eu]_{k+1,\alpha;B_{1/2}}\leq C\qty(\abs{D_eu}_{0;B_{3/4}}+[D_ef]_{k-1,\alpha;B_{3/4}}+\sum_{i,j}\abs{D_ea^{ij}D_{ij}u}_{k-1,\alpha;B_{3/4}})
+    \end{equation}
+    となる．ここで
+    \begin{equation}
+        \abs{D_eu}_{0;B_{3/4}}\leq [u]_{1;B_{3/4}}\leq C(\abs{u}_{0;B_1}+[u]_{2,\alpha;B_{3/4}})\leq C(\abs{u}_{0;B_1}+[f]_{0,\alpha;B_1}) 
+    \end{equation}
+    であり(補間不等式と$k=0$の場合を用いた)，$[D_ef]_{k-1,\alpha;B_{3/4}}\leq [f]_{k,\alpha;B_{1}}$，および
+    \begin{equation}
+        \abs{D_{e}a^{ij}D_{ij}u}_{k-1;\alpha;B_1}\leq [a^{ij}]_{1;B_1}[u]_{k+1,\alpha;B_{3/4}}\leq CK(\abs{u}_{0;B_1}+[f]_{k-1,\alpha;B_1})
+    \end{equation}
+    などより
+    \begin{equation}
+        [D_eu]_{k+1,\alpha;B_{1/2}}\leq C(\abs{u}_{0;B_1}+\abs{f}_{k,\alpha;B_1})
+    \end{equation}
+    がわかる．微分する方向$e$は任意なので結論を得る．
+\end{proof}
 \subsection{発散型作用素の場合}
-\section{非線形方程式：Hilbertの第19問題}
+翻って次の形の作用素を考える．
+\begin{equation}
+    Lu(x)=\div (A(x)Du(x))=\sum_{i,j=1}^n D_i(a^{ij}D_ju(x))\inn\Om
+\end{equation}
+ただし$A=(a^{ij})_{i,j}$は強楕円性条件を満たし有界だとする．つまり定数$\lambda,\Lambda>0$があり
+\begin{equation}
+    \lambda \abs{\xi}^2\leq \sum_{i,j}a^{ij}(x)\xi_i\xi_j\quad (x\in \Om,\ \xi\in\Rset^n)
+\end{equation}
+および
+\begin{equation}
+    \sum_{i,j}|a^{ij}(x)|^2\leq \Lambda^2\quad (x\in\Om ) 
+\end{equation}
+を満たすとする．
+
+この形の作用素に対しては，弱解が定義できる．
+\begin{dfn}
+    $u\in H^1(\Om)$が$-Lu=f\inn \Om$の弱解であるとは，
+    \begin{equation}
+        \int_{\Om}ADu\cdot D\varphi\,dx=\int_{\Om}f\varphi\quad (\forall \varphi\in C^{\infty}_c(\Om))
+    \end{equation}
+    となることをいう．
+
+    また，$-Lu\leq u\inn\Om$であるということを，
+    \begin{equation}
+        \int_{\Om}ADu\cdot D\varphi\,dx\leq 0\quad (\forall \varphi\in C^{\infty}_{c}(\Om),\ \varphi\geq0)
+    \end{equation}
+    であることとして定義する．
+\end{dfn}
+\subsubsection{最大値原理}
+\begin{prop}[最大値原理]
+    $\Om\subset \Rset^n$を有界領域とする．$u\in H^1(\Om)$が$-Lu\leq0\inn\Om$を満たすならば
+    \begin{equation}
+        \sup_{\Om}u=\sup_{\pOm}u 
+    \end{equation}
+    である．
+\end{prop}
+\begin{proof}
+    定義より任意の$\varphi\in H^1_0(\Om),\ \varphi\geq0$に対して
+    \begin{equation}
+        \int_{\Om}ADu\cdot D\varphi\leq 0 
+    \end{equation}
+    が成り立つ．test functionとして$\varphi=\qty(u-\sup_{\pOm}u)^+\in H^1_0(\Om)$を取る(ほんとに取れる？)．楕円型条件より
+    \begin{equation}
+        0\geq \int_{\Om}ADu\cdot D\varphi=\int_{\Om}AD\varphi\cdot D\varphi\geq \lambda \int_{\Om}\abs{D\varphi}^2
+    \end{equation}
+    よって$D\varphi\equiv 0$を得る．$\varphi\in H^1_0(\Om)$より$\varphi\equiv0$を得る(Poincaréの不等式)．これは$u\leq \sup_{\pOm}u\inn\Om$であることを示している．
+\end{proof}
+\subsubsection{Schauder評価}
+\begin{thm}[Schauder評価]
+    $a^{ij}\in C^{0,\alpha}(\Ombar),\ 0<\alpha<1$と仮定する．$u\in C^{1,\alpha}(\Ombar)$は
+    \begin{equation}
+        -Lu=f\inn\Om 
+    \end{equation}
+    の弱解であるとする．ここで
+    \begin{equation}
+        f\in L^q(\Om),\quad q\geq \frac{n}{1-\alpha}
+    \end{equation}
+    ならば，任意の$\Om'\ssubset \Om$に対して
+    \begin{equation}
+        \abs{u}_{1,\alpha;\Om'}\leq C(\abs{u}_{0;\Om}+\norm{f}_{L^q(\Om)})
+    \end{equation}
+    が成り立つ．ここで
+    \begin{equation}
+        C=C_{n,\alpha,\lambda,\Lambda,K,\Om,\Om'},\quad K=\sum_{i,j}|a^{ij}|_{0,\alpha;\Om}
+    \end{equation}
+    である．
+\end{thm}
+\begin{proof}
+    証明は再びblow-up methodによる．$\Om=B_1,\ \Om'=B_{1/2}$の場合を示すが，定理\ref{thm:schauder_non_divergence}を示した流れと同様に
+    \begin{equation}
+        [u]_{1,\alpha;B_{1/2}}\leq \delta[u]_{1,\alpha;B_{1}}+C_{\delta,n,\alpha,\lambda,\Lambda,K}([u]_{1;B_1}+\norm{f}_{L^q(B_1)})\quad (\forall \delta>0)
+    \end{equation}
+    を示せばよい．これが成り立たないと仮定する．つまり$\delta_0>0$が存在して，任意の$k\in\Nset$に対して$a^{ij}_k\in C^{0,\alpha},\ u_k\in C^{1,\alpha},\ q_k\geq n/(1-\alpha),\ f_k\in L^{q_k}$が存在して
+    \begin{equation}
+        -\sum_{i,j}D_i(a^{ij}_kD_ju_k)=f_k\inn B_1,
+    \end{equation}
+    \begin{equation}
+        \lambda<A_k\coloneq =(a^{ij}_k)_{i,j},\quad \sum_{i,j}|a^{ij}_k|^2\leq \Lambda^2,\quad \sum_{i,j}|a^{ij}_{k}|_{0,\alpha;B_1}\leq K, 
+    \end{equation}
+    \begin{equation}
+        [u_k]_{1,\alpha;B_{1/2}}>\delta_0[u_k]_{1,\alpha;B_1}+k\qty([u_k]_{1;B_1}+\norm{f_k}_{L^{q_k}(B_1)})
+    \end{equation}
+    となる．
+
+    $x_k,y_k\in B_{1/2}$で
+    \begin{equation}
+        \frac{\abs{D^2u_k(x_k)-D^2u_k(y_k)}}{\abs{x_k-y_k}^\alpha}\geq \frac{1}{2}[u_k]_{1,\alpha;B_{1/2}}
+    \end{equation}
+    となるものを選んでおく．
+    \begin{equation}
+        \rho_k\coloneq \frac{\abs{x_k-y_k}}{2},\quad z_k\coloneq \frac{x_k+y_k}{2}
+    \end{equation}
+    とおく．
+
+    まず，
+    \begin{equation}
+        \frac{1}{2}[u_k]_{1,\alpha;B_{1/2}}\leq\frac{\abs{Du_k(x_k)-Du_k(y_k)}}{(2\rho_k)^\alpha}\leq\frac{2[u_k]_{1;B_1}}{2^\alpha \rho_k^\alpha}\leq 2^{1-\alpha}\frac{[u_k]_{1,\alpha;B_{1/2}}}{k\rho_k^{\alpha}} 
+    \end{equation}
+    より
+    \begin{equation}
+        \rho_k\leq 2^{2/\alpha-1}k^{-1/\alpha}\to0 \quad (k\to\infty)
+    \end{equation}
+    である．部分列を取って$\rho_k\searrow 0$としてよい．各$k$に対して
+    \begin{equation}
+        \widetilde{u}_k(x)\coloneq\frac{u_k(z_k+\rho_kx)+u_k(z_k-\rho_kx)-2u_k(z_k)}{\rho_k^{1+\alpha}[u_k]_{1,\alpha;B_{1}}},
+    \end{equation}
+    \begin{equation}
+        \widetilde{a}^{ij}_k(x)\coloneq a^{ij}_k(z_k+\rho_kx),\quad \widetilde{A}_k(x)\coloneq (\widetilde{a}^{ij}_k)_{i,j}\quad (x\in B_{1/(2\rho_k)}),
+    \end{equation}
+    \begin{equation}
+        \xi_k\coloneq \frac{y_k-x_k}{2\rho_k}\partial B_{1}
+    \end{equation}
+    とおく．
+
+    定義に従って計算すると
+    \begin{equation}
+        \widetilde{u}_k(0)=0,\quad D\widetilde{u}_k(0)=0,
+    \end{equation}
+    \begin{equation}
+        \abs{\widetilde{u}_k(x)}\leq C_{n,\alpha}\abs{x}^{1+\alpha},\quad [\widetilde{u}_k]_{1,\alpha;B_{1/(2\rho_k)}}\leq 2^{\alpha},
+    \end{equation}
+    \begin{equation}
+        \abs{D\widetilde{u}_k(\xi_k)}\geq \frac{\delta_0}{2}
+    \end{equation}
+    がわかる．コンパクト埋め込み$C^{1,\alpha}\subset C^{1}$より，$\widetilde{u}_k$のある部分列はある$\widetilde{u}\in C^1(\Rset^n)$にコンパクト集合上$C^1$-収束する．
+
+    再び部分列を取って$\xi_k\to\xi$としてよい．すると
+    \begin{equation}
+        \widetilde{u}(0)=0,\quad D\widetilde{u}(0)=0,
+    \end{equation}
+    \begin{equation}
+        |\widetilde{u}(x)|\leq C_{n,\alpha}\abs{x}^{1+\alpha},
+    \end{equation}
+    \begin{equation}
+        \abs{D\widetilde{u}(\xi)}\geq \frac{\delta_0}{2}
+    \end{equation}
+    が成り立つ．
+
+    また
+    \begin{equation}
+        |\widetilde{a}^{ij}_k|_{0;B_{1/(2\rho_k)}}\leq K,\quad [\widetilde{a}^{ij}_k]_{0,\alpha;B_{1/(2\rho_k)}}\leq [a^{ij}_k]_{0,\alpha;B_1}\rho_k^\alpha\leq K\rho_k^\alpha\to0\quad (k\to\infty) 
+    \end{equation}
+    より，$\widetilde{a}^{ij}_k$のある部分列は定数$\widetilde{a}^{ij}$にコンパクト集合上一様収束する．
+
+    $\widetilde{a}^{ij}_k,\ \widetilde{u}_k$たちの満たす方程式を求めよう．$\varphi\in C_c^{\infty}(\Rset^n)$を固定する．十分大きな$k$に対して$\supp\varphi\subset B_{1/(2\rho_k)}$である．そのような$k$に対して
+    \begin{equation}
+        \int_{\Rset^n}D\varphi\cdot \widetilde{A}_kD\widetilde{u}_k\,dx=\int D\varphi(x)\cdot A_k(z_k+\rho_kx)\frac{Du_k(z_k+\rho_kx)-Du_k(z_k-\rho_kx)}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\,dx\eqcolon \mathrm{I}-\mathrm{I\!I}\label{eq:blowup_div_eqn}
+    \end{equation}
+    と分ける．ここで
+    \begin{align}
+        \mathrm{I}&\coloneq \frac{1}{\rho_k^\alpha [u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot A_k(z_k+\rho_kx)Du_k(z_k+\rho_kx)\,dx\\
+        &=\frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D_y \varphi(\rho_k^{-1}(y-z_k))\cdot A_k(y)Du_k(y)\,\rho_k^{-n+1}\,dy\\
+        &=\frac{\rho_k^{-n+1-\alpha}}{[u_k]_{1,\alpha;B_1}}\int \varphi(\rho_k^{-1}(y-z_k))f_k(y)\,dy \\
+        &=\frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\int \varphi(x)f_k(z_k+\rho_kx)\,dx ,
+    \end{align}
+    \begin{equation}
+        \mathrm{I\! I}\coloneq \frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot A_k(z_k+\rho_kx)Du_k(z_k-\rho_kx)\,dx\eqcolon \mathrm{I\! I}_1+\mathrm{I\! I}_2,
+    \end{equation}
+    と$\mathrm{I\! I}$を更に分け，
+    \begin{align}
+        \mathrm{I\! I}_1&\coloneq \frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot \qty(A_k(z_k+\rho_kx)-A_k(z_k-\rho_kx))Du_k(z_k-\rho_kx)\,dx,\\
+        \mathrm{I\!I}_2&\coloneq \frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot A_k(z_k-\rho_kx)Du_k(z_k-\rho_kx)\,dx\\
+        &=\frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\int \varphi(x)f_k(z_k-\rho_kx)\,dx 
+    \end{align}
+    とおく($\mathrm{I\! I}_2$の計算は$\mathrm{I}$のそれと同様)．
+
+    以下，$\mathrm{I},\ \mathrm{I\!I}_1,\ \mathrm{I\!I}_2$の各項が$k\to\infty$で0に収束することを示す(したがって\eqref{eq:blowup_div_eqn}の左辺は0に収束する)．
+
+    まずHölderの不等式などより($q_k^{-1}+q_k'^{-1}=1$として)
+    \begin{align}
+        \abs{\mathrm{I}}&\leq \frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\abs{\int \varphi(x)f_k(z_k+\rho_kx)\,dx}\\
+        &\leq \frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\norm{\varphi}_{q_k'}\qty(\int\abs{ f_k(z_k+\rho_kx)}^{q_k}\,dx)^{1/q_k}\\
+        &\leq \frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\Lm^n(\supp\varphi)^{1/q_k'}\norm{\varphi}_\infty \norm{f}_{q_k}\rho_k^{-n/q_k}\\
+        &\leq \max\qty{\Lm^n(\supp\varphi),\Lm^n(\supp\varphi)^{1-(1-\alpha)/n}}\cdot\norm{\varphi}_{\infty}\frac{\norm{f}_{q_k}}{[u_k]_{1,\alpha;B_1}}\rho_k^{1-\alpha-n/q_k}\\
+        &\leq C(\varphi)\frac{\rho_k^{1-\alpha-n/q_k}}{k}\to0\quad (k\to\infty)  
+    \end{align}
+    である．なお仮定より$1-\alpha-n/q_k\geq0$である．同様に$\mathrm{I\!I}_2\to0$がわかる．
+    \begin{align}
+        \abs{\mathrm{I\!I}_1}&\leq \frac{1}{\rho_k^{\alpha}[u_k]_{1,\alpha;B_1}}\sum_{i,j}\abs{\int (a^{ij}(z_k+\rho_kx)-a^{ij}(z_k-\rho_kx))D_i\varphi(x)D_ju_k(z_k-\rho_kx)\,dx}\\
+        &\leq \frac{1}{\rho_k^\alpha [u_k]_{1,\alpha;B_1}}\sum_{i,j}\int[a^{ij}]_{0,\alpha;B_1}(2\rho_k\abs{x})^\alpha \abs{D_i\varphi(x)}[u]_{1;B_1}\,dx\\
+        &\leq C(\varphi)K\frac{[u_k]_{1;B_1}}{[u_k]_{1,\alpha;B_1}}\\
+        &\leq C(\varphi)K\frac{1}{k}\to0\quad (k\to\infty).
+    \end{align}
+    以上より\eqref{eq:blowup_div_eqn}式で$k\to\infty$とすると，
+    \begin{equation}
+        \int D\varphi\cdot \widetilde{A}D\widetilde{u}\,dx=0 
+    \end{equation}
+    を得る．つまり$\widetilde{u}$は$\Rset^n$上の定数係数楕円型方程式の解になっており，変数変換により全空間上の調和関数に移る．先に示した$\widetilde{u}$にかんするgrowth condition
+    \begin{equation}
+        \abs{\widetilde{u}(x)}\leq C\abs{x}^{1+\alpha}
+    \end{equation}
+    より$\widetilde{u}$はたかだか1次式である．一方$\widetilde{u}(0)=0,\ D\widetilde{u}(0)=0$より$\widetilde{u}\equiv0$となる．これは$\abs{D\widetilde{u}(\xi)}\geq \delta_0/2$に矛盾する．
+\end{proof}
+\section{Nash--De Giorgi--Moser評価とHilbertの第19問題}
 \end{document}
