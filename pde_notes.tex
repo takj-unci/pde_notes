@@ -85,6 +85,11 @@
     \bibitem[Mped]{mped}
     Mathpedia，「Hölder空間の基本事項」．\url{https://old.math.jp/wiki/H%C3%B6lder%E7%A9%BA%E9%96%93%E3%81%AE%E5%9F%BA%E6%9C%AC%E4%BA%8B%E9%A0%85}
 
+    \bibitem[Sim97]{sim97}
+    L. Simon, 
+    \newblock {\em Schauder estimates by scaling}, 
+    \newblock Calc. Var. Partial Differential Equations \textbf{5} (1997), 391-407.
+
     \bibitem[Wan06]{wan06}
     X.-J. Wang, 
     \newblock {\em Schauder Estimates for Elliptic and
@@ -840,6 +845,20 @@ $B$におけるGreenの関数$G$は次の表示を持つ：
     となる．よって$\qty{u_m}_m$は$x_0$で同程度連続である．
 
     同様の評価により，$u_m$はコンパクト集合上$C^2$収束することがわかるので，$u$が調和であることもわかる．
+\end{proof}
+\begin{cor}[Liouvilleの定理]\label{cor:liouville}
+    $u\in C^2(\Rset^2),\ -\Delta u=0\in \Rset^n$とする．さらに$C,\ \gamma>0$が存在して
+    \begin{equation}
+        \abs{u(x)}\leq C(1+\abs{x}^\gamma)\quad (\forall x\in\Rset^n)
+    \end{equation}
+    を満たすと仮定する．このとき$u$はたかだか$\lfloor \gamma\rfloor$次の多項式である．
+\end{cor}
+\begin{proof}
+    任意の$R>0$に対して 
+    \begin{equation}
+        [u]_{\lfloor \gamma\rfloor+1;B_{R/2}}\leq CR^{-\lfloor \gamma\rfloor-1}\abs{u}_{0;B_R}\leq CR^{-\lfloor \gamma\rfloor-1}(1+R^{\gamma})
+    \end{equation}
+    なので，$R\to\infty$として$[u]_{\lfloor \gamma\rfloor+1;\Rset^n}=0$となり結論を得る．
 \end{proof}
 \subsection{寄り道：Perronの方法}
 やや本筋\footnote{そもそも本筋などというものが存在したのだろうか．}からは逸れるが，Peronnの方法によるLaplace方程式のDirichlet問題の解法について述べる．重要となるのが，最大値原理(および比較原理)と球上のDirichlet問題の解の存在性である．
@@ -1666,8 +1685,290 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \end{equation}
     である．したがって$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$C^{2,\alpha}(\overline{\Om'})$の有界列である．定理\ref{thm:holder_cpt_emb}のコンパクト埋め込み$C^{2,\alpha}\ssubset C^{2}$より$\qty{u_{\varepsilon}}_{\varepsilon>0}$は$\overline{\Om'}$上$C^2$-収束する部分列を持つが，補題\ref{lem:holder_sn_lsc}より$u\in C^{2,\alpha}(\overline{\Om'})$を得る．
 \end{proof}
-\section{楕円型線形微分作用素}
+\section{楕円形線形微分作用素に対するSchauder評価}
+\subsection{非発散型作用素の場合}
+次の微分作用素を考える：
+\begin{equation}
+    Lu(x)=\sum_{i,j=1}^n a^{ij}(x)D_{ij}u(x)=\tr(A(x)D^2u(x))\inn \Om \label{eq:non_divergence_form}
+\end{equation}
+ただし$A=(a^{ij})_{i,j}$は対称行列，つまり
+\begin{equation}
+    a^{ij}=a^{ji}\quad (i,j=1,\ldots,n) \label{eq:symmetric_coefficients}
+\end{equation}
+だとする．
 
+作用素$L$が強楕円型であるとは，ある定数$\lambda>0$が存在して，
+\begin{equation}
+    \lambda\abs{\xi}^2\leq \sum_{i,j}a^{ij}(x)\xi_i\xi_j\quad (\forall x\in\Om,\ \xi\in\Rset^n)\label{eq:strong_ellipticity}
+\end{equation}
+が成り立つことをいう．
 
+さらに，$L$の係数$a^{ij}$は有界だとし，定数$\Lambda>0$が
+\begin{equation}
+    \sum_{i,j}\abs{a^{ij}(x)}^2\leq \Lambda^2 \quad (\forall x\in\Omega) \label{eq:bdd_coefficients} 
+\end{equation}
+を満たすとする．
+
+以下，作用素$L$は\eqref{eq:symmetric_coefficients}, \eqref{eq:strong_ellipticity}, \eqref{eq:bdd_coefficients}を満たすとする．
+\begin{rmk}[定数係数の場合]\label{rmk:const_coefficients}
+    $L$の係数$a^{ij}$たちが定数である場合を考える．$u\in C^2(\Om),\ f\in C(\Om)$が
+    \begin{equation}
+        -Lu=f\inn \Om 
+    \end{equation}
+    を満たすと仮定する．$A=(a^{ij})_{i,j}$が正定値対称行列なので，正定値な平方根$A^{1/2}$をただ一つ持つ．変数変換
+    \begin{equation}
+        z=A^{1/2}x\in\widetilde{\Om}\coloneq \qty{A^{1/2}x\mid x\in \Om }
+    \end{equation}
+    により，$\widetilde{u}(z)=u(A^{-1/2}z),\ \widetilde{f}(z)=f(A^{-1/2}z)$は
+    \begin{equation}
+        -\Delta \widetilde{u}=\widetilde{f}\inn \widetilde{\Om} 
+    \end{equation}
+    を満たす．実際，
+    \begin{equation}
+        -\sum_{i,j}a^{ij}(x)D_{ij}u(x)=\tr(A(x)D^2_xu(x))=-\tr(A^{1/2}D^2_xu A^{1/2})=-\tr(D^2_z u(z))=-\Delta_z u
+    \end{equation}
+    である．
+
+    このことから，定数係数の楕円型方程式はLaplacianの理論に帰着する．
+\end{rmk}
+\subsubsection{最大値原理}
+\begin{prop}[最大値原理]
+    $\Om\subset \Rset^n$を有界領域とし，$u\in C^2(\Om)\cap C(\Ombar)$は$-Lu\leq 0\inn \Om$をみたすと仮定する．このとき
+    \begin{equation}
+        \sup_{\Om}u=\sup_{\pOm}u 
+    \end{equation}
+    が成り立つ．
+\end{prop}
+\begin{proof}
+    \paragraph*{\#1}まず$-Lu<0\inn \Om$の場合に強最大値原理が成り立つことを示す．
+
+    $-Lu<0\inn\Om$かつ$u(x_0)=\sup_{\Om}u\ (x_0\in\Om)$と仮定する．このとき$u$は内点$x_0$で最大値を取っているので$Du(x_0)=0$かつ$D^2u(x_0)\leq O$である(つまり$D^2u(x_0)$は半負定値対称行列)．よって$P\in \mathrm{O}(n)$があり
+    \begin{equation}
+        \transpose{P}D^2u(x_0)P=\diam(\lambda_1,\ldots,\lambda_n)\eqcolon D_{x_0},
+    \end{equation}
+    となる．$D^2u(x_0)\leq O$より$\lambda_i\leq0$である．$A(x)\colon (a^{ij}(x))_{i,j}$と定義し，
+    \begin{equation}
+        A^{P}(x)\coloneq \transpose{P}A(x)P\eqcolon (a_P^{ij}(x))_{i,j}
+    \end{equation}
+    とおく．すると$A^P(x_0)$は正定値であり，とくに$a_P^{ii}(x_0)\geq 0\ (i=1,\ldots,n)$である．
+    \begin{align}
+        0<Lu(x_0)=\tr(A(x_0)D^2u(x_0))=\tr(A(x_0)PD_{x_0}\transpose{P})=\tr(\transpose{P}A(x_0)PD_{x_0})&=\tr(A^P(x_0)D_{x_0})\\
+        &=\sum_{i=1}^n a^{ii}_P(x_0)\lambda_i\leq0
+    \end{align}
+    より矛盾．
+
+    \paragraph*{\#2}結論を示す．$R>0$を十分大きく取って$\Om\subset \qty{x\in\Rset^n \abs{x_1}< R}$となるようにする．任意の$\varepsilon>0$に対して
+    \begin{equation}
+        u_{\varepsilon}(x)\coloneq u(x)+\varepsilon e^{x_1}
+    \end{equation}
+    とおく．
+    \begin{equation}
+        -Lu_{\varepsilon}=-Lu-\varepsilon a^{11}(x)e^{x_1}\leq 0-\varepsilon\lambda e^{x_1}<0 \inn\Om 
+    \end{equation}
+    なので\#1の場合から
+    \begin{equation}
+        \sup_{\Om}u\leq \sup_{\Om}u_{\varepsilon}=\sup_{\pOm}u_{\varepsilon}\leq \sup_{\pOm}u+\varepsilon e^{R}
+    \end{equation}
+    となる．$\varepsilon\to +0$として結論を得る．
+\end{proof}
+\begin{cor}
+    $\Om\subset \Rset^n$を有界領域とする．$u\in C^2(\Om)\cap C(\Ombar)$が
+    \begin{align}
+        -Lu=f & \inn\Om \\
+        u=g &\on \pOm   
+    \end{align}
+    を満たせば，
+    \begin{equation}
+        \norm{u}_{L^\infty(\Om)}\leq C_{\Om,\lambda,\Lambda}(\norm{f}_{L^\infty(\Om)}+\norm{g}_{L^\infty(\pOm)})
+    \end{equation}
+    が成り立つ．
+\end{cor}
+\subsubsection{Schauder評価}
+\begin{thm}[Schauder評価]\label{thm:schauder_non_divergence}
+    $a^{ij}\in C^{0,\alpha}(\Ombar),\ 0<\alpha<1$を仮定する．$u\in C^{2,\alpha}(\Ombar),\ f\in C^{0,\alpha}(\Ombar)$が
+    \begin{equation}
+        -Lu=f\inn \Om 
+    \end{equation}
+    を満たすならば，任意の$\Om'\ssubset \Om$に対して
+    \begin{equation}
+        \abs{u}_{2,\alpha;\Om'}\leq C(\abs{u}_{0;\Om}+[f]_{0,\alpha;\Om})
+    \end{equation}
+    が成り立つ．ここで
+    \begin{equation}
+        C=C_{n,\alpha,\lambda,\Lambda,K,\Om,\Om'},\quad K=\sum_{i,j}\abs{a^{ij}}_{0,\alpha;\Om}
+    \end{equation}
+    である．
+\end{thm}
+以下，この定理を証明するが，$\Om=B_1,\ \Om'=B_{1/2}$として示す(covering argumentよりこれで十分である)．
+
+証明にはblow-up analysisと呼ばれる手法を用いる．初出は\cite{sim97}だそうである．まずより弱い次の補題から始める．
+\begin{lem}\label{lem:blowup}
+    定理\ref{thm:schauder_non_divergence}の仮定の下で，任意の$\delta>0$に対して
+    \begin{equation}
+        [u]_{2,\alpha;B_{1/2}}\leq \delta [u]_{2,\alpha;B_1}+C_\delta (\abs{u}_{0;B_1}+[f]_{0,\alpha;B_1}) 
+    \end{equation}
+    が成り立つ．ここで
+    \begin{equation}
+        C=C_{\delta,n,\alpha,\lambda,\Lambda,K}.
+    \end{equation}
+\end{lem}
+\begin{proof}
+    補間不等式(命題\ref{prop:holder_interpolation})より次を示せばよい：
+    \begin{equation}
+        [u]_{2,\alpha;B_{1/2}}\leq \delta [u]_{2,\alpha;B_1}+C_{\delta}([u]_{2;B_1}+[f]_{0,\alpha;B_1})\quad (\forall \delta>0)
+    \end{equation}
+    背理法で示す．もしこれが成り立たないと仮定すると，ある$\delta_0>0$が存在して，任意の$k\in\Nset$に対して$a^{ij}_k,f_k\in C^{0,\alpha}(\overline{B_1}),\ u_k\in C^{2,\alpha}(\overline{B_1})$があり，
+    \begin{equation}
+        -\sum_{i,j}a^{ij}_k D_{ij}u_k=f_k\inn B_1, 
+    \end{equation}
+    \begin{equation}
+        \sum_{i,j}|a^{ij}_k|_{0,\alpha;B_1}\leq K,
+    \end{equation}
+    \begin{equation}
+        [u_k]_{2,\alpha;B_{1/2}}>\delta_0[u_k]_{2,\alpha;B_1}+k([u_k]_{2;B_1}+[f_k]_{0,\alpha;B_1})
+    \end{equation}
+    となる．各$k$に対して
+    \begin{equation}
+        \rho_k\coloneq \abs{x_k-y_k}
+    \end{equation}
+    とおき，$x_k,y_k\in B_{1/2}$で
+    \begin{equation}
+        \frac{\abs{D^2 u_k(x_k)-D^2 u_k (y_k)}}{\rho_k^\alpha}\geq \frac{1}{2}[u_k]_{2,\alpha,B_{1/2}}
+    \end{equation}
+    となるものを選んでおく．
+
+    まず，
+    \begin{equation}
+        \frac{1}{2}[u_k]_{2,\alpha;B_{1/2}}\leq \frac{\abs{D^2u_k(x_k)-D^2u_k(y_k)}}{\rho_k^\alpha}\leq \frac{2[u_k]_{2;B_{1}}}{\rho_k^\alpha}\leq \frac{2[u_k]_{2,\alpha;B_{1/2}}}{k\rho_k^\alpha}  
+    \end{equation}
+    より
+    \begin{equation}
+        \rho_k\leq 4^{1/\alpha} k^{-1/\alpha}\to 0  \quad (k\to\infty )
+    \end{equation}
+    である．部分列を取って$\rho_k\searrow 0$としてよい．
+    
+    各$k$に対して
+    \begin{align}
+        \widetilde{a}^{ij}_k (x)&\coloneq a^{ij}_k(x_k+\rho_kx),\\
+        \widetilde{u}_k(x)&\coloneq \frac{u_k(x_k+\rho_kx)-p_k(x)}{\rho_k^{2+\alpha}[u_k]_{2,\alpha;B_{1}}},\\
+        \widetilde{f}_k(x)&\coloneq \frac{f_k(x_k+\rho_kx)-f_k(x_k)}{\rho_k^{\alpha}[u_k]_{2,\alpha;B_{1}}}\quad\quad (x\in B_{1/(2\rho_k)})
+    \end{align}
+    とおく．ここで$p_k$は
+    \begin{equation}
+        p_k(z)\coloneq u_k(x_k)+\rho_k\sum_{i}D_iu_k(x_k)z_i+\frac{1}{2}\rho_k^2\sum_{i,j}D_{ij}u_k(x_k)z_iz_j 
+    \end{equation}
+    で与えられる．
+
+    まず$\widetilde{a}^{ij}_k,\ \widetilde{u}_k,\ \widetilde{f}_k$たちの満たす方程式を求める．計算により
+    \begin{align}
+        -\sum_{i,j}\widetilde{a}^{ij}_k D_{ij}\widetilde{u}_k=\widetilde{f}_k+\frac{1}{\rho_k^\alpha [u_k]_{2,\alpha;B_1}}\sum_{i,j}\qty(a^{ij}_k(x_k+\rho_kx)-a^{ij}_k(x_k))D_{ij}u_k(x_k)\label{eq:blowup_eqn}
+    \end{align}
+    がわかる．\eqref{eq:blowup_eqn}式で$k\to\infty$とすることを考える．
+
+    まず，$\widetilde{u}_k$について，定義より
+    \begin{equation}
+        \widetilde{u}_k(0)=0,\quad D\widetilde{u}_k(0)=0,\quad D^2 \widetilde{u}_k(0)=O,\label{eq:blowup_evaluation_at_0}
+    \end{equation}
+    \begin{equation}
+        |\widetilde{u}_{k}(x)|\leq C_{n,\alpha} \abs{x}^{2+\alpha},\quad [\widetilde{u}_k]_{2,\alpha;B_{1/(2\rho_k)}}\leq 1 \label{eq:blowup_bddness}
+    \end{equation}
+    である．また
+    \begin{equation}
+        \xi_k\coloneq \frac{y_k-x_k}{\rho_k}\in \partial B_1 
+    \end{equation}
+    とおくと
+    \begin{equation}
+        \abs{D^2\widetilde{u}_k(\xi_k)}\geq \frac{\delta_0}{2}\label{eq:blowup_evaluation_at_xi}
+    \end{equation}
+    である．\eqref{eq:blowup_bddness}より，$\widetilde{u}_k$はコンパクト集合上$C^{2,\alpha}$-有界である．コンパクト埋め込み$C^{2,\alpha}\subset C^2$(定理\ref{thm:holder_cpt_emb})より$\widetilde{u}_k$はある$\widetilde{u}\in C^{2}(\Rset^n)$にコンパクト集合上$C^2$-収束する．再び部分列を取って$\xi_k\to \xi\in \partial B_{1}$となるようにしておく．
+
+    \eqref{eq:blowup_evaluation_at_0}と\eqref{eq:blowup_evaluation_at_xi}式より
+    \begin{equation}
+        \widetilde{u}(0)=0,\quad D\widetilde{u}(0)=0,\quad D^2\widetilde{u}(0)=O,\label{eq:eval_at_0}
+    \end{equation}
+    \begin{equation}
+        \abs{\widetilde{u}(x)}\leq C\abs{x}^{2+\alpha},\label{eq:blowup_growth_condition}
+    \end{equation}
+    \begin{equation}
+        \abs{D^2\widetilde{u}(\xi)}\geq \frac{\delta_0}{2}\label{eq:eval_at_xi}
+    \end{equation}
+    である．
+
+    $\widetilde{a}^{ij}_k$についても
+    \begin{equation}
+        |\widetilde{a}^{ij}_k|_{0;B_{1/(2\rho_k)}}\leq K,\quad [\widetilde{a}^{ij}_k]_{0,\alpha;B_{1/(2\rho_k)}}\leq K\rho_k^\alpha\to0\quad (k\to\infty)
+    \end{equation}
+    がわかるので部分列に移って
+    \begin{equation}
+        \widetilde{a}^{ij}_{k}\to \widetilde{a}^{ij}\in C(\Rset^n),\quad \text{コンパクト集合上一様収束}
+    \end{equation}
+    となるが，$[\widetilde{a}^{ij}]_{0,\alpha;\Rset^n}=0$より$\widetilde{a}^{ij}$は定数である．
+
+    また
+    \begin{equation}
+        |\widetilde{f}_k(x)|=\frac{f_k(x_k+\rho_kx)-f_k(x_k)}{\rho_k^\alpha[u_k]_{2,\alpha;B_1}}\leq \frac{[f_k]_{0,\alpha;B_1}(\rho_k\abs{x})^{\alpha}}{\rho_k^\alpha[u_k]_{2,\alpha;B_1}}\leq \frac{\abs{x}^\alpha}{k}
+    \end{equation}
+    \begin{align}
+        \abs{\frac{1}{\rho_k^\alpha [u_k]_{2,\alpha;B_1}}\sum_{i,j}\qty(a^{ij}_k(x_k+\rho_kx)-a^{ij}_k(x_k))D_{ij}u_k(x_k)}
+        &\leq \frac{1}{\rho_k^\alpha[u_k]_{2,\alpha;B_1}}\sum_{i,j}[a_{ij}]_{0,\alpha;B_1}(\rho_k\abs{x})^\alpha [u_k]_{2;B_1}\\
+        &\leq \frac{K[u_{k}]_{2;B_1}}{[u_k]_{2,\alpha;B_{1/2}}}\abs{x}^{\alpha}\\
+        &\leq \frac{K}{k}\abs{x}^\alpha
+    \end{align}
+    より，\eqref{eq:blowup_eqn}の右辺は$\Rset^n$のコンパクト集合上一様に0に収束することがわかる．
+
+    以上より，\eqref{eq:blowup_eqn}式で$k\to\infty$とすると
+    \begin{equation}
+        -\sum_{i,j}\widetilde{a}^{ij}D_{ij}\widetilde{u}=0 
+    \end{equation}
+    となる．$\widetilde{a}^{ij}$は楕円性条件を満たす定数であるから，変数変換により$\widetilde{u}$は調和関数に移る(注意\ref{rmk:const_coefficients}を見よ)．一方で\eqref{eq:blowup_growth_condition}式とLiouvilleの定理(系\ref{cor:liouville})より$\widetilde{u}$はたかだか2次式であるが，\eqref{eq:eval_at_0}より$\widetilde{u}\equiv0$となる．しかしこれは\eqref{eq:eval_at_xi}に矛盾する．
+\end{proof}
+そこで定理\ref{thm:schauder_non_divergence}の証明に戻る．
+\begin{proof}[Proof of Theorem \ref{thm:schauder_non_divergence}]
+    Hölderセミノルムの亜種を
+    \begin{equation}
+        [u]^\ast_{2,\alpha;B_1}\coloneq \sup_{B_\rho(x_0)\subset B_1}\rho^{2+\alpha}[u]_{2,\alpha;B_{\rho/2}(x_0)}
+    \end{equation}
+    で定める．
+    \paragraph*{claim.}$[u]_{2,\alpha;B_1}^\ast\leq C\sup_{B_{\rho(x_0)}\subset B_1}\rho^{2+\alpha}[u]_{2,\alpha;B_{\rho/4}(x_0)}\quad (\forall u\in C^{2,\alpha}(B_1))$．
+
+    $B_\rho(x_0)\subset B_1$とし，$x,y\in B_{\rho/2}(x_0)$を取る．
+    \begin{equation}
+        z_j\coloneq x+\frac{j}{8}(y-x)\quad (j=0,\ldots,7)
+    \end{equation}
+    とおく．
+    \begin{align}
+        \abs{D^2u(x)-D^2u(y)}&\leq \sum_{j=0}^7 \abs{D^2u(z_{j+1})-D^2u(z_j)}\\
+        &\leq \sum_{j=0}^7 [u]_{2,\alpha;B_{\rho/8}(z_j)}\abs{x-y}^{\alpha} 
+    \end{align}
+    だが，$B_{\rho/2}(z_j)\subset B_1$より
+    \begin{equation}
+        \qty(\frac{\rho}{2})^{2+\alpha}[u]_{2,\alpha;B_{\rho/8}(z_j)}\leq \sup_{B_\rho(x_0)\subset B_1}\rho^{2+\alpha}[u]_{2,\alpha;B_{\rho/4}(x_0)}
+    \end{equation}
+    が成り立つことに注意すると
+    \begin{equation}
+        \abs{D^2u(x)-D^2u(y)}\leq 8\abs{x-y}^\alpha \qty(\frac{\rho}{2})^{-2-\alpha} \sup_{B_\rho(x_0)\subset B_1}\rho^{2+\alpha}[u]_{2,\alpha;B_{\rho/4}(x_0)}
+    \end{equation}
+    よって
+    \begin{equation}
+        \rho^{2+\alpha}[u]_{2,\alpha;B_{\rho/2}(x_0)}\leq 2^{5+\alpha}\sup_{B_{\rho(x_0)}\subset B_1}\rho^{2+\alpha}[u]_{2,\alpha;B_{\rho/4}(x_0)}
+    \end{equation}
+    を得る．$B_\rho(x_0)\subset B_1$について$\sup$を取ってclaimの証明が完了する．
+
+    さて，補題\ref{lem:blowup}を$B_{\rho/2}(x_0)\subset B_\rho(x_0)\subset B_1$に対して適用する．スケーリングで方程式がどのように変わるか注意すると
+    \begin{align}
+        \rho^{2+\alpha}[u]_{2,\alpha;B_{\rho/4}(x_0)}&\leq \delta \rho^{2+\alpha}[u]_{2,\alpha;B_{\rho/2}(x_0)}+C_\delta (\abs{u}_{0;B_1}+\rho^\alpha [f]_{0,\alpha;B_1})\\
+        &\leq \delta [u]_{2,\alpha;B_1}^\ast+C_\delta(\abs{u}_{0;B_1}+[f]_{0,\alpha;B_1})
+     \end{align}
+     となる．よってclaimより
+     \begin{equation}
+        \frac{1}{C}[u]_{2,\alpha;B_1}^\ast\leq \sup_{B_\rho(x_0)\subset B_1}\rho^{2+\alpha}[u]_{2,\alpha;B_{\rho/4}(x_0)}\leq \delta [u]_{2,\alpha;B_1}^\ast+C_\delta(\abs{u}_{0;B_1}+[f]_{0,\alpha;B_1})
+     \end{equation}
+     となる．$\delta=1/(2C)$とおくと，
+     \begin{equation}
+        [u]_{2,\alpha;B_{1/2}}\leq [u]_{2,\alpha;B_1}^\ast\leq C(\abs{u}_{0;B_1}+[f]_{0,\alpha;B_1})
+     \end{equation}
+     を得る．
+\end{proof}
+\subsection{発散型作用素の場合}
 \section{非線形方程式：Hilbertの第19問題}
 \end{document}
