@@ -102,10 +102,10 @@
 \begin{itemize}
     \item $\Nset=\qty{1,2,\ldots}$,
     \item $\Nset_{0}=\Nset\cup\qty{0}$,
-    \item $\Lm^n \colon \text{$\Rset^n$上のLebesgue測度}$,    
+    \item $\Lm^n \colon \text{$\Rset^n$上のLebesgue測度}$，しばしば$\Lm^n(E)=\abs{E}$とも記される．    
     \item $\Hm^s  \colon \text{$\Rset^n$上の$s$次元Hausdorff測度}$,
     \item $B_R(x_0)\coloneqq \qty{x\in\Rset^n\mid \abs{x-x_0}<R}$,
-    \item $\omega_n\coloneqq \Lm^n(B_1(0))=\pi^{n/2}/\varGamma(n/2)$．このとき$\Hm^{n-1}(\partial B_1(0))=n\omega_n$,
+    \item $\omega_n\coloneqq \Lm^n(B_1(0))=\pi^{n/2}/\varGamma\qty(\frac{n}{2}+1)$．このとき$\Hm^{n-1}(\partial B_1(0))=n\omega_n$,
     \item $\Omega'\ssubset\Omega \,:\Longleftrightarrow \overline{\Omega'}$がコンパクトかつ$\overline{\Omega'}\subset \Omega$,
     \item $D_i=\frac{\partial}{\partial x_i},\ D_{ij}=\frac{\partial^2}{\partial x_i\partial x_j}$  etc.,
     \item 一般に，多重添字$\gamma=(i_1,\ldots,i_n)\in \Nset_0^n$に対して$\abs{\gamma}=i_1+\cdots+i_n$を$\gamma$の長さといい，
@@ -1794,7 +1794,7 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     が成り立つ．
 \end{cor}
 \subsubsection{Schauder評価}
-\begin{thm}[Schauder評価]\label{thm:schauder_non_divergence}
+\begin{thm}[Schauderアプリオリ評価]\label{thm:schauder_non_divergence}
     $a^{ij}\in C^{0,\alpha}(\Ombar),\ 0<\alpha<1$を仮定する．$u\in C^{2,\alpha}(\Ombar),\ f\in C^{0,\alpha}(\Ombar)$が
     \begin{equation}
         -Lu=f\inn \Om 
@@ -2040,7 +2040,7 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \end{equation}
     となることをいう．
 
-    また，$-Lu\leq u\inn\Om$であるということを，
+    また，$-Lu\leq 0\inn\Om$であるということを，
     \begin{equation}
         \int_{\Om}ADu\cdot D\varphi\,dx\leq 0\quad (\forall \varphi\in C^{\infty}_{c}(\Om),\ \varphi\geq0)
     \end{equation}
@@ -2052,14 +2052,25 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \begin{equation}
         \sup_{\Om}u=\sup_{\pOm}u 
     \end{equation}
-    である．
+    である．なおここで
+    \begin{equation}
+        \sup_{\pOm }u=\inf\qty{k\in\Rset\mid (u-k)^{+}\in H^{1}_0(\Om)}.
+    \end{equation}
 \end{prop}
 \begin{proof}
     定義より任意の$\varphi\in H^1_0(\Om),\ \varphi\geq0$に対して
     \begin{equation}
         \int_{\Om}ADu\cdot D\varphi\leq 0 
     \end{equation}
-    が成り立つ．test functionとして$\varphi=\qty(u-\sup_{\pOm}u)^+\in H^1_0(\Om)$を取る(ほんとに取れる？)．楕円型条件より
+    が成り立つ．test functionとして$\varphi=\qty(u-\sup_{\pOm}u)^+\in H^1_0(\Om)$を取る(ほんとに取れる？\footnote{取れる．$l=\sup_{\pOm}u=\inf\qty{k\in \Rset\mid (u-k)^+\in H^1_0(\Om)}$とおき，この$\inf$がachieveされることを見ればよい．minimizing sequence $\qty{k_j}_j$を取る．つまり$k_j\searrow l$かつ$(u-k_j)^+\in H^1_0(\Om)$．$H^1_0(\Om)$の定義より，各$j$に対して$\qty{\varphi^{(j)}_i}_i\subset C^\infty_0(\Om)$があり$\varphi^{(j)}_i\to (u-k_j)^+\inn H^1(\Om)$となる．
+    \begin{equation}
+        \norm{(u-l)^+ - \varphi^{(j)}_i}_{H^1}\leq \norm{(u-l)^+ - (u-k_j)^+}_{H^1}+\norm{(u-k_j)^+ - \varphi^{(j)}_i}_{H^1}
+    \end{equation}
+    である一方，
+    \begin{equation}
+        \norm{(u-l)^+ - (u-k_j)^+}_{H^1}=\norm{u-l}_{L^2\qty(\qty{l<u<k_j})}+\Lm^n(\Om)(k_j-l)+\norm{Du}_{L^2\qty(\qty{l\leq u<k_j})}\to 0\quad (j\to\infty) 
+    \end{equation}
+    であることがdominated convergenceなどによりわかり，したがって$(u-l)^+$に$H^1$-収束する$C^\infty_0(\Om)$の関数列が取れる．})．楕円型条件より
     \begin{equation}
         0\geq \int_{\Om}ADu\cdot D\varphi=\int_{\Om}AD\varphi\cdot D\varphi\geq \lambda \int_{\Om}\abs{D\varphi}^2
     \end{equation}
@@ -2232,5 +2243,18 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
 \begin{proof}
     系\ref{cor:schauder}の証明と同様に，アプリオリ評価からの帰結である．高階のアプリオリ評価は帰納法による．
 \end{proof}
-\section{Nash--De Giorgi--Moser評価とHilbertの第19問題}
+\section{De Giorgi--Nashの評価とHilbertの第19問題}
+\subsection{De Giorgi--Nashの評価}
+次の発散型線形作用素
+\begin{equation}
+    Lu(x)=\div(A(x)Du(x))\sum_{i,j=1}^{n}D_i(a^{ij}(x)D_ju(x))\inn \Om
+\end{equation}
+を考える．
+
+Schauder評価は$-Lu=0$であるとき，$a^{ij}$がHölder連続性から解$u$のHölder正則性が帰結するというものだった．
+
+一方で，本節では係数$a^{ij}$の連続性を仮定せずに(有界性は仮定する)，解$u$の(局所)有界性および局所Hölder連続性を示す．
+\subsubsection{\texorpdfstring{$L^2$-$L^\infty$評価}{TEXT}}
+\subsubsection{\texorpdfstring{oscillation decayと$L^\infty$-$C^{0,\alpha}$評価}{TEXT}}
+\subsection{Hilbertの第19問題}
 \end{document}
