@@ -34,6 +34,9 @@
 \newcommand{\loc}{\text{loc}}
 \newcommand{\pvert}[1]{\frac{\partial #1}{\partial \nu}}
 \newcommand{\snorm}[1]{\left[#1\right]}
+\newcommand{\one}{\mathrm{I}}
+\newcommand{\two}{\mathrm{I}\hspace{-1.2pt}\mathrm{I}}
+\newcommand{\three}{\mathrm{I}\hspace{-1.2pt}\mathrm{I}\hspace{-1.2pt}\mathrm{I}}
 \DeclareMathOperator{\diam}{\mathrm{diam}}
 \DeclareMathOperator{\dist}{\mathrm{dist}}
 \DeclareMathOperator{\supp}{\mathrm{supp}}
@@ -1809,7 +1812,7 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \end{equation}
     である．
 \end{thm}
-以下，この定理を証明するが，$\Om=B_1,\ \Om'=B_{1/2}$として示す(covering argumentよりこれで十分である)．
+以下，この定理を証明するが，$\Om=B_1,\ \Om'=B_{1/2}$として示す(covering argumentよりこれで十分である\footnote{covering argumentについて追記する．})．
 
 証明にはblow-up analysisと呼ばれる手法を用いる．初出は\cite{sim97}だそうである．まずより弱い次の補題から始める．
 \begin{lem}\label{lem:blowup}
@@ -1819,7 +1822,7 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
     \end{equation}
     が成り立つ．ここで
     \begin{equation}
-        C=C_{\delta,n,\alpha,\lambda,\Lambda,K}.
+        C_{\delta}=C_{\delta,n,\alpha,\lambda,\Lambda,K}.
     \end{equation}
 \end{lem}
 \begin{proof}
@@ -2175,39 +2178,39 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
 
     $\widetilde{a}^{ij}_k,\ \widetilde{u}_k$たちの満たす方程式を求めよう．$\varphi\in C_c^{\infty}(\Rset^n)$を固定する．十分大きな$k$に対して$\supp\varphi\subset B_{1/(2\rho_k)}$である．そのような$k$に対して
     \begin{equation}
-        \int_{\Rset^n}D\varphi\cdot \widetilde{A}_kD\widetilde{u}_k\,dx=\int D\varphi(x)\cdot A_k(z_k+\rho_kx)\frac{Du_k(z_k+\rho_kx)-Du_k(z_k-\rho_kx)}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\,dx\eqqcolon \mathrm{I}-\mathrm{I\!I}\label{eq:blowup_div_eqn}
+        \int_{\Rset^n}D\varphi\cdot \widetilde{A}_kD\widetilde{u}_k\,dx=\int D\varphi(x)\cdot A_k(z_k+\rho_kx)\frac{Du_k(z_k+\rho_kx)-Du_k(z_k-\rho_kx)}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\,dx\eqqcolon \one-\two\label{eq:blowup_div_eqn}
     \end{equation}
     と分ける．ここで
     \begin{align}
-        \mathrm{I}&\coloneqq \frac{1}{\rho_k^\alpha [u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot A_k(z_k+\rho_kx)Du_k(z_k+\rho_kx)\,dx\\
+        \one&\coloneqq \frac{1}{\rho_k^\alpha [u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot A_k(z_k+\rho_kx)Du_k(z_k+\rho_kx)\,dx\\
         &=\frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D_y \varphi(\rho_k^{-1}(y-z_k))\cdot A_k(y)Du_k(y)\,\rho_k^{-n+1}\,dy\\
         &=\frac{\rho_k^{-n+1-\alpha}}{[u_k]_{1,\alpha;B_1}}\int \varphi(\rho_k^{-1}(y-z_k))f_k(y)\,dy \\
         &=\frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\int \varphi(x)f_k(z_k+\rho_kx)\,dx ,
     \end{align}
     \begin{equation}
-        \mathrm{I\! I}\coloneqq \frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot A_k(z_k+\rho_kx)Du_k(z_k-\rho_kx)\,dx\eqqcolon \mathrm{I\! I}_1+\mathrm{I\! I}_2,
+        \two\coloneqq \frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot A_k(z_k+\rho_kx)Du_k(z_k-\rho_kx)\,dx\eqqcolon \two_1+\two_2,
     \end{equation}
-    と$\mathrm{I\! I}$を更に分け，
+    と$\two$を更に分け，
     \begin{align}
-        \mathrm{I\! I}_1&\coloneqq \frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot \qty(A_k(z_k+\rho_kx)-A_k(z_k-\rho_kx))Du_k(z_k-\rho_kx)\,dx,\\
-        \mathrm{I\!I}_2&\coloneqq \frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot A_k(z_k-\rho_kx)Du_k(z_k-\rho_kx)\,dx\\
+        \two_1&\coloneqq \frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot \qty(A_k(z_k+\rho_kx)-A_k(z_k-\rho_kx))Du_k(z_k-\rho_kx)\,dx,\\
+        \two_2&\coloneqq \frac{1}{\rho_k^\alpha[u_k]_{1,\alpha;B_1}}\int D\varphi(x)\cdot A_k(z_k-\rho_kx)Du_k(z_k-\rho_kx)\,dx\\
         &=\frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\int \varphi(x)f_k(z_k-\rho_kx)\,dx 
     \end{align}
-    とおく($\mathrm{I\! I}_2$の計算は$\mathrm{I}$のそれと同様)．
+    とおく($\two_2$の計算は$\one$のそれと同様)．
 
-    以下，$\mathrm{I},\ \mathrm{I\!I}_1,\ \mathrm{I\!I}_2$の各項が$k\to\infty$で0に収束することを示す(したがって\eqref{eq:blowup_div_eqn}の左辺は0に収束する)．
+    以下，$\one,\ \two_1,\ \two_2$の各項が$k\to\infty$で0に収束することを示す(したがって\eqref{eq:blowup_div_eqn}の左辺は0に収束する)．
 
     まずHölderの不等式などより($q_k^{-1}+q_k'^{-1}=1$として)
     \begin{align}
-        \abs{\mathrm{I}}&\leq \frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\abs{\int \varphi(x)f_k(z_k+\rho_kx)\,dx}\\
+        \abs{\one}&\leq \frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\abs{\int \varphi(x)f_k(z_k+\rho_kx)\,dx}\\
         &\leq \frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\norm{\varphi}_{q_k'}\qty(\int\abs{ f_k(z_k+\rho_kx)}^{q_k}\,dx)^{1/q_k}\\
         &\leq \frac{\rho_k^{1-\alpha}}{[u_k]_{1,\alpha;B_1}}\Lm^n(\supp\varphi)^{1/q_k'}\norm{\varphi}_\infty \norm{f}_{q_k}\rho_k^{-n/q_k}\\
         &\leq \max\qty{\Lm^n(\supp\varphi),\,1}\cdot\norm{\varphi}_{\infty}\frac{\norm{f}_{q_k}}{[u_k]_{1,\alpha;B_1}}\rho_k^{1-\alpha-n/q_k}\\
         &\leq C(\varphi)\frac{\rho_k^{1-\alpha-n/q_k}}{k}\to0\quad (k\to\infty)  
     \end{align}
-    である．なお仮定より$1-\alpha-n/q_k\geq0$である．同様に$\mathrm{I\!I}_2\to0$がわかる．
+    である．なお仮定より$1-\alpha-n/q_k\geq0$である．同様に$\two_2\to0$がわかる．
     \begin{align}
-        \abs{\mathrm{I\!I}_1}&\leq \frac{1}{\rho_k^{\alpha}[u_k]_{1,\alpha;B_1}}\sum_{i,j}\abs{\int (a^{ij}(z_k+\rho_kx)-a^{ij}(z_k-\rho_kx))D_i\varphi(x)D_ju_k(z_k-\rho_kx)\,dx}\\
+        \abs{\two_1}&\leq \frac{1}{\rho_k^{\alpha}[u_k]_{1,\alpha;B_1}}\sum_{i,j}\abs{\int (a^{ij}(z_k+\rho_kx)-a^{ij}(z_k-\rho_kx))D_i\varphi(x)D_ju_k(z_k-\rho_kx)\,dx}\\
         &\leq \frac{1}{\rho_k^\alpha [u_k]_{1,\alpha;B_1}}\sum_{i,j}\int[a^{ij}]_{0,\alpha;B_1}(2\rho_k\abs{x})^\alpha \abs{D_i\varphi(x)}[u]_{1;B_1}\,dx\\
         &\leq C(\varphi)K\frac{[u_k]_{1;B_1}}{[u_k]_{1,\alpha;B_1}}\\
         &\leq C(\varphi)K\frac{1}{k}\to0\quad (k\to\infty).
@@ -2243,18 +2246,111 @@ Harnackの不等式よりoscillation decay\footnote{oscillationは\textipa{/\'as
 \begin{proof}
     系\ref{cor:schauder}の証明と同様に，アプリオリ評価からの帰結である．高階のアプリオリ評価は帰納法による．
 \end{proof}
-\section{De Giorgi--Nashの評価とHilbertの第19問題}
-\subsection{De Giorgi--Nashの評価}
-次の発散型線形作用素
+\section{De Giorgi--Nash評価とHilbertの第19問題}
+本節ではDe Girogi--Nash評価とその応用としてHilbertの第19問題を取り扱う．$w\in H^1(\Om)$に対してエネルギー
 \begin{equation}
-    Lu(x)=\div(A(x)Du(x))\sum_{i,j=1}^{n}D_i(a^{ij}(x)D_ju(x))\inn \Om
+\mathop{\mathscr{E}}(w)=\frac{1}{2}\int_{\Om}\abs{Dw}^2\,dx 
+\end{equation}
+を考えると，エネルギーの極小点としてLaplace方程式$-\Delta u=0$の解が得られ，正則性の議論により$u$は$C^\infty$になるのだった．
+
+そこでエネルギー汎関数を一般化して
+\begin{equation}
+    \mathop{\mathscr{L}}(w)=\int_{\Om} L(Dw)\,dx 
+\end{equation}
+という形のものを考えてみる．ここで$L\colon \Rset^n\to\Rset$は滑らかかつ一様凸だとする．このときに$\mathop{\mathscr{L}}$の極小点$u$は滑らかか？というのがHilbertの第19問題である．
+
+Hilbertの第19問題の解決に向けた道筋について簡単に(informalにではあるが)説明しておきたい．極小点$u$が満たすEuler--Lagrange方程式は，形式的に計算してもわかるように
+\begin{equation}
+    \div(DL(Du))=\sum_{i,j=1}^n D_{ij}L(Du) D_{ij}u=0
+\end{equation}
+となる\footnote{この方程式は発散型方程式で弱解を用いて理解するべきものであるが，ここでは説明の簡単のため$u$の2階微分まで存在すると仮定して議論している．}．この方程式は今までとは違って非線形問題である．しかし，$a^{ij}(x)=D_{ij}L(Du(x))$とおいてみると$\sum_{i,j}a^{ij}D_{ij}u=0$という形であるので部分的には線形方程式の理論が使えそうだと期待できる．
+
+ここで1つ問題が生じる．このEuler--Lagrange方程式の弱解$u$は$H^1(\Om)$内に存在が保証されるものであり，それよりも強いregularityが示されていない状況ではSchauder評価が使えないのである．実際，なんの仮定も課さなければ$a^{ij}(x)=D_{ij}L(Du(x))$のHölder連続性は言えない．一方で，何らかの方法で$u$が$C^{1,\alpha}\ (0<\alpha<1)$であることが示されれば，$a^{ij}\in C^{0,\alpha}$が言え，Schauder評価より$u\in C^{2,\alpha}$が言える．これを繰り返すことで
+\begin{equation}
+    u\in C^{1,\alpha}\Rightarrow a^{ij}\in C^{0,\alpha}\Rightarrow u\in C^{2,\alpha}\Rightarrow a^{ij}\in C^{1,\alpha}\Rightarrow u\in C^{3,\alpha}\Rightarrow \cdots \Rightarrow u\in C^{\infty}
+\end{equation}
+となりHilbertの第19問題は解ける(このような議論をbootstrap argumentという)．そこで以下，当分の間は「係数の連続性を課さない線形方程式において解のHölder連続性を示すこと」が問題となる．
+\subsection{De Giorgi--Nash評価}
+次の発散型線形微分作用素
+\begin{equation}
+    Lu(x)=\div(A(x)Du(x))=\sum_{i,j=1}^{n}D_i(a^{ij}(x)D_ju(x))\inn \Om
 \end{equation}
 を考える．
 
-Schauder評価は$-Lu=0$であるとき，$a^{ij}$がHölder連続性から解$u$のHölder正則性が帰結するというものだった．
+ただし，係数$a^{ij}$は$L^\infty(\Om)$の関数であり，$A=(a^{ij})_{i,j}$は一様楕円性の条件を満たすとする．つまり，定数$\lambda,\Lambda>0$があり，次が成り立つと仮定する．
+\begin{equation}
+    \lambda\abs{\xi}^2\leq \sum_{i,j}a^{ij}(x)\xi_i\xi_j\quad (\forall x\in\Om,\ \forall \xi\in\Rset^n),
+\end{equation}
+\begin{equation}
+    \sum_{i,j}\abs{a^{ij}(x)}^2\leq \Lambda^2\quad (\forall x\in\Om).
+\end{equation}
+我々の目標は，次の定理である：
+\begin{thm}[De Giorgi--Nash]\label{thm:degiorgi_nash}
+    $\Om$は有界領域で，$v\in H^1(\Om)$は$-Lv=0$ weakly in $\Om$を満たすとする．このとき定数$\alpha=\alpha_{n,\lambda,\Lambda}\in (0,1)$があり，$v\in C^{0,\alpha}(\Om)$となる．さらに任意の$\Om'\ssubset \Om$に対して
+    \begin{equation}
+        \abs{v}_{0,\alpha;\Om'}\leq C_{n,\lambda,\Lambda,\Om,\Om'}\norm{v}_{L^2} 
+    \end{equation}
+    となる．
+\end{thm}
+以下，次の2ステップに分けて定理を証明する：
+\begin{enumerate}
+    \item $v$の$L^\infty$ノルムを$L^2$ノルムで上から抑える(解の先見的局所有界性)．
+    \item $v$のoscillation decayを示すことで，Hölder連続性を示す．
+\end{enumerate}
+なお，定理\ref{thm:degiorgi_nash}の結果は1950年代後半にDe GiorgiとNashによって独立に得られたものであるが，ここではDe Giorgiの手法に倣っている．
 
-一方で，本節では係数$a^{ij}$の連続性を仮定せずに(有界性は仮定する)，解$u$の(局所)有界性および局所Hölder連続性を示す．
+covering argumentにより$\Om=B_1,\ \Om=B_{1/2}$としてよい．
 \subsubsection{\texorpdfstring{$L^2$-$L^\infty$評価}{TEXT}}
+first stepとして「$L^\infty$ノルムを$L^2$ノルムで」評価する．まず2つの補題を示す．
+\begin{lem}[energy inequality]\label{lem:energy_ineq}
+    $v\in H^1(B_1)$が
+    \begin{equation}
+        v\geq0 \quad \text{and}\quad  -Lv\leq 0\inn B_1
+    \end{equation}
+    を満たすと仮定する．このとき，任意の$\varphi\in C^\infty_c(B_1)$に対して
+    \begin{equation}
+        \int_{B_1}\abs{D(\varphi v)}^2\,dx\leq C_{n,\lambda,\Lambda}\norm{D\varphi}_{L^\infty(B_1)}^2\int_{\supp \varphi}v^2\,dx 
+    \end{equation}
+    が成り立つ．
+\end{lem}
+\begin{proof}
+    $\eta\coloneqq \varphi^2v$は$\eta\in H^1_0(\Om)$かつ$\eta\geq0$を満たすので$-Lv\leq0$のtest functionとして使える：
+    \begin{equation}
+        \int_{B_1}D(\varphi^2v)\cdot ADv\leq0
+    \end{equation}
+    この左辺を変形するのだが，その際
+    \begin{equation}
+        D(\varphi^2 v)=\varphi D(\varphi v)+\varphi vD\varphi,\quad D(\varphi v)=\varphi Dv+v D\varphi
+    \end{equation}
+    に注意する．すると
+    \begin{align}
+        0&\geq \int_{B_1}D(\varphi^2v)\cdot ADv\\
+        &=\int_{B_1}\varphi D(\varphi v)\cdot ADv+\int_{B_1}\varphi v D\varphi\cdot ADv\\
+        &=\int_{B_1}D(\varphi v)\cdot AD(\varphi v)-\int_{B_1}v D(\varphi v)\cdot AD\varphi +\int_{B_1}\varphi v D\varphi \cdot ADv\\
+        &=\int_{B_1}D(\varphi v)\cdot AD(\varphi v)-\int_{B_1}vD(\varphi v)\cdot (A-\transpose{A})D\varphi+\int_{B_1}\qty(\varphi v D\varphi \cdot ADv-vD(\varphi v)\cdot \transpose{A}D\varphi)\\
+        &=\int_{B_1}D(\varphi v)\cdot AD(\varphi v)-\int_{B_1}vD(\varphi v)\cdot (A-\transpose{A})D\varphi-\int_{B_1}v^2D\varphi\cdot AD\varphi\\
+        &\eqqcolon \one-\two-\three
+    \end{align}
+    を得る．第2項についてHölderの不等式などより
+    \begin{align}
+        \two&=\int_{B_1}vD(\varphi v)\cdot (A-\transpose{A})D\varphi\\
+        &\leq \qty(\int_{B_1}\abs{v(A-\transpose{A})D\varphi}^2)^{1/2}\qty(\int_{B_1}\abs{D(\varphi v)}^2)^{1/2}\\
+        &\leq \qty(\int_{B_1}4\Lambda^2\abs{vD\varphi}^2)^{1/2}\qty(\int_{B_1}\frac{1}{\lambda}D(\varphi v)\cdot AD(\varphi v))^{1/2}\\
+        &=\qty(\frac{4\Lambda^2}{\lambda}\int_{B_1}\abs{vD\varphi}^2)^{1/2}\qty(\int_{B_1}D(\varphi v)\cdot AD(\varphi v))^{1/2}\\
+        &\leq \frac{2\Lambda^2}{\lambda}\int_{B_1}\abs{vD\varphi}^2+\frac{1}{2}\int_{B_1}D(\varphi v)\cdot AD(\varphi v)\\
+    \end{align}
+    となるので，
+    \begin{equation}
+        0\geq \one-\two-\three\geq \frac{1}{2}\int_{B_1}D(\varphi v)\cdot AD(\varphi v)-\frac{2\Lambda^2}{\lambda}\int_{B_1}\abs{vD\varphi}^2-\int_{B_1}v^2D\varphi\cdot AD\varphi
+    \end{equation}
+    となる．したがって，
+    \begin{align}
+        \int_{B_1}\abs{D(\varphi v)}^2&\leq \frac{1}{\lambda}\int_{B_1}D(\varphi v)\cdot AD(\varphi v)\\
+        &\leq \frac{2}{\lambda}\qty(\frac{2\Lambda^2}{\lambda}\int_{B_1}\abs{vD\varphi}^2+\int_{B_1}v^2D\varphi\cdot AD\varphi)\\
+        &\leq\qty(\frac{4\Lambda^2}{\lambda^2}+\frac{2\Lambda}{\lambda})\norm{D\varphi}_\infty^2\int_{\supp\varphi}v^2
+    \end{align}
+    を得る．
+\end{proof}
 \subsubsection{\texorpdfstring{oscillation decayと$L^\infty$-$C^{0,\alpha}$評価}{TEXT}}
 \subsection{Hilbertの第19問題}
 \end{document}
