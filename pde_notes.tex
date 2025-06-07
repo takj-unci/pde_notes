@@ -2273,11 +2273,11 @@ Hilbertの第19問題の解決に向けた道筋について簡単に(heuristic�
 \end{equation}
 つまり$a^{ij}(x)=D_{ij}L(Du(x)),\ v=D_ku$とおくと$\sum_{i,j}D_{i}(a^{ij}D_jv)=0$という発散型方程式が得られる．
 
-ここで1つ問題が生じる．このEuler--Lagrange方程式の弱解$u$は$H^1(\Om)$内に存在が保証されるものであり，それよりも強いregularityが示されていない状況ではSchauder評価が使えないのである．実際，なんの仮定も課さなければ$a^{ij}(x)=D_{ij}L(Du(x))$のHölder連続性は言えない．一方で，何らかの方法で$u$が$C^{1,\alpha}\ (0<\alpha<1)$であることが示されれば，$a^{ij}\in C^{0,\alpha}$が言え，Schauder評価より$u\in C^{2,\alpha}$が言える．これを繰り返すことで
+ここで1つ問題が生じる．このEuler--Lagrange方程式の弱解$u$は$H^1(\Om)$内に存在が保証されるものであり，それよりも強いregularityが示されていない状況ではSchauder評価が使えないのである．実際，なんの仮定も課さなければ$a^{ij}(x)=D_{ij}L(Du(x))$のHölder連続性は言えない．一方で，何らかの方法で$v$が$C^{0,\alpha}\ (0<\alpha<1)$であることが示されれば，$u\in C^{1,\alpha}$なので$a^{ij}\in C^{0,\alpha}$が言え，Schauder評価より$v\in C^{1,\alpha}$が言える．これを繰り返すことで
 \begin{equation}
-    u\in C^{1,\alpha}\Rightarrow a^{ij}\in C^{0,\alpha}\Rightarrow u\in C^{2,\alpha}\Rightarrow a^{ij}\in C^{1,\alpha}\Rightarrow u\in C^{3,\alpha}\Rightarrow \cdots \Rightarrow u\in C^{\infty}
+    v\in C^{0,\alpha}\Rightarrow a^{ij}\in C^{0,\alpha}\Rightarrow v\in C^{1,\alpha}\Rightarrow a^{ij}\in C^{1,\alpha}\Rightarrow v\in C^{2,\alpha}\Rightarrow \cdots \Rightarrow v\in C^{\infty}
 \end{equation}
-となりHilbertの第19問題は解ける(このような議論をbootstrap argumentという)．そこで以下，当分の間は「係数の連続性を課さない線形方程式において解のHölder連続性を示すこと」が問題となる．
+となり結局$u\in C^{\infty}$が示され，Hilbertの第19問題は解ける(このような議論をbootstrap argumentという\footnote{``bootstrap'' argumentの意味するところ，語源について：\url{https://en.wikipedia.org/wiki/Bootstrapping}を参照．})．そこで以下，当分の間は「係数の連続性を課さない線形方程式において解のHölder連続性を示すこと」が問題となる．
 \subsection{De Giorgi--Nash評価}
 次の発散型線形微分作用素
 \begin{equation}
@@ -2731,7 +2731,7 @@ Hilbertの第19問題について考えよう．設定は次のとおりであ�
 \end{proof}
 さて，最後にminimizer $u$のregularityについて考察しよう．
 
-de Giorgiの結果に加えて次のHölder連続関数のdifference quotientによる特徴づけに関する補題を用意する．
+De Giorgiの結果に加えて次のHölder連続関数のdifference quotientによる特徴づけに関する補題を用意する．
 \begin{lem}
     $\alpha\in (0,1],\ u\in L^\infty(\Om)$とする．定数$C_0>0$が存在して，$\norm{u}_{L^\infty(\Om)}\leq C_0$かつ十分小さな$\abs{h}>0$に対して
     \begin{equation}
@@ -2773,7 +2773,7 @@ de Giorgiの結果に加えて次のHölder連続関数のdifference quotientに
     \begin{equation}
         \int_{\Om}\widetilde{A}(x)D(\Delta^h_iu)(x)\cdot D\varphi(x)\,dx=0
     \end{equation}
-    となる．したがってde Giorgiの定理(定理\ref{thm:degiorgi_nash})から$\forall \Om''\ssubset \Om$に対して
+    となる．したがってDe Giorgiの定理(定理\ref{thm:degiorgi_nash})から$\forall \Om''\ssubset \Om$に対して
     \begin{equation}
         \abs{\Delta^h_i u}_{0,\alpha;\Om''}\leq C\norm{\Delta^h_i u}_{L^2(\Om')}\leq C\norm{Du}_{L^2(\Om )},\quad C=C_{n,\lambda,\Lambda,\Om',\Om''}
     \end{equation}
